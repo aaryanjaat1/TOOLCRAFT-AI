@@ -226,6 +226,10 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
     const clock = new THREE.Clock();
     let mouseX = 0;
     let mouseY = 0;
+    
+    // Tilt State
+    let currentTiltX = 0;
+    let currentTiltY = 0;
 
     // --- Events ---
     const handleMouseMove = (event: MouseEvent) => {
@@ -265,18 +269,32 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
       camera.position.x += (parallaxX - camera.position.x) * 0.05;
       camera.position.y += (parallaxY - camera.position.y) * 0.05;
 
-      // Camera Tilt (Banking Effect)
+      // 3. Camera Rotation (LookAt + Tilt)
       camera.lookAt(0, 0, 0);
-      const targetRotZ = mouseX * -0.15; // Bank into the turn
+
+      // Z-Banking (Roll)
+      const targetRotZ = mouseX * -0.15;
       camera.rotation.z = THREE.MathUtils.lerp(camera.rotation.z, targetRotZ, 0.05);
 
-      // 3. Logo Rotation & Breathing
+      // X/Y Tilt (Pitch/Yaw offsets)
+      // We smooth these independently so they don't jitter with raw mouse input
+      const targetTiltX = mouseY * 0.05; 
+      const targetTiltY = mouseX * -0.05;
+      
+      currentTiltX = THREE.MathUtils.lerp(currentTiltX, targetTiltX, 0.05);
+      currentTiltY = THREE.MathUtils.lerp(currentTiltY, targetTiltY, 0.05);
+
+      // Apply tilt offsets to the base rotation set by lookAt
+      camera.rotation.x += currentTiltX;
+      camera.rotation.y += currentTiltY;
+
+      // 4. Logo Rotation & Breathing
       logoGroup.rotation.x = time * 0.15;
       logoGroup.rotation.y = time * 0.25;
       const scalePulse = 1 + Math.sin(time * 2) * 0.02;
       logoGroup.scale.set(scalePulse, scalePulse, scalePulse);
 
-      // 4. Particle Assembly (Fragments -> Logo)
+      // 5. Particle Assembly (Fragments -> Logo)
       const positions = particlesGeo.attributes.position.array as Float32Array;
       const assemblyProgress = Math.min(Math.max((time - 0.5) / 2.5, 0), 1);
       const ease = 1 - Math.pow(1 - assemblyProgress, 3);
@@ -294,7 +312,7 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
       }
       particlesGeo.attributes.position.needsUpdate = true;
 
-      // 5. Tunnel Animation (High Speed)
+      // 6. Tunnel Animation (High Speed)
       const tPos = tunnelGeo.attributes.position.array as Float32Array;
       for(let i=0; i<tunnelCount; i++) {
           tPos[i*3+2] += tunnelSpeeds[i];
@@ -302,7 +320,7 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
       }
       tunnelGeo.attributes.position.needsUpdate = true;
 
-      // 6. Volumetric Glow Animation (Low Speed)
+      // 7. Volumetric Glow Animation (Low Speed)
       const gPos = glowGeo.attributes.position.array as Float32Array;
       for(let i=0; i<glowCount; i++) {
           gPos[i*3+2] += glowSpeeds[i];
@@ -310,7 +328,7 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
       }
       glowGeo.attributes.position.needsUpdate = true;
 
-      // 7. UI Sequencing
+      // 8. UI Sequencing
       if (time > 2.0 && !textVisible) setTextVisible(true);
       if (time > 3.5 && !buttonVisible) setButtonVisible(true);
 

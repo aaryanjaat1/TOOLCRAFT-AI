@@ -47,10 +47,37 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({ children, id, 
 };
 
 export const GlassCard: React.FC<{ children: React.ReactNode; className?: string; title?: string }> = ({ children, className = "", title }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => {
+      if (ref.current) observer.unobserve(ref.current);
+    };
+  }, []);
+
   return (
-    <div className={`glass-card rounded-2xl p-6 transition-all duration-500 hover:transform hover:-translate-y-2 neon-glow 
+    <div 
+      ref={ref}
+      className={`glass-card rounded-2xl p-6 transition-all duration-700 ease-out hover:transform hover:-translate-y-2 neon-glow 
       bg-white dark:bg-slate-900/60 border border-slate-300 dark:border-white/10 shadow-lg dark:shadow-none
-      ${className}`}>
+      ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
+      ${className}`}
+    >
       {title && <h3 className="text-xl font-bold mb-4 text-slate-900 dark:text-white border-b border-slate-300 dark:border-white/10 pb-2">{title}</h3>}
       {children}
     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign } from 'lucide-react';
-import { NeonButton, CursorGlow, BackToTop } from './components/UI';
+import { NeonButton, CursorGlow, BackToTop, AnimatedSection } from './components/UI';
 import { Hero3D } from './components/Hero3D';
 import { 
   BMICalculator, EMICalculator, AgeCalculator, GSTCalculator, QRGenerator, PasswordGenerator,
@@ -472,54 +472,55 @@ const App: React.FC = () => {
               {/* Tools Grid */}
               <div className="pb-32">
                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                   {filteredTools.map((tool) => (
-                    <div 
-                      key={tool.id}
-                      onClick={() => handleToolSelect(tool.id)}
-                      className="group relative h-full bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-blue-400 dark:hover:border-neonBlue/50 shadow-sm hover:shadow-xl dark:hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
-                    >
-                      {/* Inner Glow Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-white/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                   {filteredTools.map((tool, index) => (
+                    <AnimatedSection key={tool.id} delay={index * 50} className="h-full">
+                      <div 
+                        onClick={() => handleToolSelect(tool.id)}
+                        className="group relative h-full bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-blue-400 dark:hover:border-neonBlue/50 shadow-sm hover:shadow-xl dark:hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
+                      >
+                        {/* Inner Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-white/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-                      {/* Card Content */}
-                      <div className="relative z-10 flex flex-col h-full">
-                         
-                         {/* Header: Icon & Action */}
-                         <div className="flex justify-between items-start mb-6">
-                            {/* 3D Icon Container */}
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-900 border border-slate-200 dark:border-white/20 shadow-md dark:shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
-                               {/* Inner Light */}
-                               <div className="absolute inset-0 bg-blue-400/20 dark:bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
-                               {/* The Icon */}
-                               <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300 drop-shadow-sm">
-                                  {React.cloneElement(tool.icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })}
-                               </div>
-                            </div>
-                            
-                            {/* Arrow Action */}
-                            <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
-                               <ArrowUpRight size={20} />
-                            </div>
-                         </div>
+                        {/* Card Content */}
+                        <div className="relative z-10 flex flex-col h-full">
+                          
+                          {/* Header: Icon & Action */}
+                          <div className="flex justify-between items-start mb-6">
+                              {/* 3D Icon Container */}
+                              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-900 border border-slate-200 dark:border-white/20 shadow-md dark:shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                                {/* Inner Light */}
+                                <div className="absolute inset-0 bg-blue-400/20 dark:bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
+                                {/* The Icon */}
+                                <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300 drop-shadow-sm">
+                                    {React.cloneElement(tool.icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })}
+                                </div>
+                              </div>
+                              
+                              {/* Arrow Action */}
+                              <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
+                                <ArrowUpRight size={20} />
+                              </div>
+                          </div>
 
-                         {/* Text Info */}
-                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300">
-                           {tool.name}
-                         </h3>
-                         <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
-                           {tool.description}
-                         </p>
+                          {/* Text Info */}
+                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300">
+                            {tool.name}
+                          </h3>
+                          <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
+                            {tool.description}
+                          </p>
 
-                         {/* Tags Footer */}
-                         <div className="mt-auto flex flex-wrap gap-2">
-                            {tool.tags.split(' ').slice(0, 3).map(tag => (
-                              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-transparent group-hover:border-blue-200 dark:group-hover:border-neonBlue/20 transition-colors">
-                                #{tag}
-                              </span>
-                            ))}
-                         </div>
+                          {/* Tags Footer */}
+                          <div className="mt-auto flex flex-wrap gap-2">
+                              {tool.tags.split(' ').slice(0, 3).map(tag => (
+                                <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-transparent group-hover:border-blue-200 dark:group-hover:border-neonBlue/20 transition-colors">
+                                  #{tag}
+                                </span>
+                              ))}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </AnimatedSection>
                   ))}
                 </div>
 
@@ -533,7 +534,7 @@ const App: React.FC = () => {
 
               {/* About Section */}
               <div id="about" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
-                 <div className="max-w-3xl mx-auto text-center animate-fade-in-up">
+                 <AnimatedSection className="max-w-3xl mx-auto text-center">
                     <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">About ToolCraft AI</h2>
                     <p className="text-lg text-slate-700 dark:text-gray-300 mb-6 font-medium">
                        ToolCraft AI is a premium suite of utility tools designed for modern creators, developers, and professionals. 
@@ -556,12 +557,12 @@ const App: React.FC = () => {
                           <p className="text-sm text-slate-600 dark:text-slate-500">Glassmorphism and neomorphism inspired design.</p>
                        </div>
                     </div>
-                 </div>
+                 </AnimatedSection>
               </div>
 
               {/* Contact Section */}
               <div id="contact" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
-                 <div className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center shadow-lg dark:shadow-none animate-fade-in-up">
+                 <AnimatedSection className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center shadow-lg dark:shadow-none">
                     <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Get in Touch</h2>
                     <p className="text-slate-700 dark:text-gray-400 mb-8 font-medium">
                        Have a suggestion for a new tool? Found a bug? Just want to say hi?
@@ -577,7 +578,7 @@ const App: React.FC = () => {
                           <Linkedin size={20} /> LinkedIn
                        </a>
                     </div>
-                 </div>
+                 </AnimatedSection>
               </div>
 
             </div>
