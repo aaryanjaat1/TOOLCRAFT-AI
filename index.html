@@ -26,6 +26,7 @@
               'blob': 'blob 7s infinite',
               'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
               'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'micro-jitter': 'micro-jitter 0.3s infinite',
             },
             keyframes: {
               blob: {
@@ -37,6 +38,12 @@
               fadeInUp: {
                 '0%': { opacity: '0', transform: 'translateY(20px)' },
                 '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+              'micro-jitter': {
+                '0%, 100%': { transform: 'translate(0, 0)' },
+                '25%': { transform: 'translate(0.5px, 0.5px)' },
+                '50%': { transform: 'translate(-0.5px, -0.5px)' },
+                '75%': { transform: 'translate(-0.5px, 0.5px)' },
               }
             }
           },
@@ -79,6 +86,59 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #475569;
       }
+
+      /* 3D Coin Flip Animation */
+      @keyframes coin-flip {
+        0% { transform: translateY(0) rotateY(0) scale(1); }
+        40% { transform: translateY(-120px) rotateY(900deg) scale(1.2); }
+        100% { transform: translateY(0) rotateY(1800deg) scale(1); }
+      }
+      .animate-coin-flip {
+        animation: coin-flip 2s cubic-bezier(0.45, 0.05, 0.55, 0.95) forwards;
+        transform-style: preserve-3d;
+      }
+      
+      /* Glitch Effect for Hero Text */
+      .glitch-text {
+        position: relative;
+      }
+      .glitch-text::before,
+      .glitch-text::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .glitch-text::before {
+        left: 2px;
+        text-shadow: -1px 0 #00f3ff;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim 5s infinite linear alternate-reverse;
+      }
+      .glitch-text::after {
+        left: -2px;
+        text-shadow: -1px 0 #bc13fe;
+        clip: rect(44px, 450px, 56px, 0);
+        animation: glitch-anim2 5s infinite linear alternate-reverse;
+      }
+      @keyframes glitch-anim {
+        0% { clip: rect(2px, 9999px, 5px, 0); }
+        20% { clip: rect(65px, 9999px, 89px, 0); }
+        40% { clip: rect(32px, 9999px, 12px, 0); }
+        60% { clip: rect(12px, 9999px, 6px, 0); }
+        80% { clip: rect(54px, 9999px, 43px, 0); }
+        100% { clip: rect(23px, 9999px, 76px, 0); }
+      }
+      @keyframes glitch-anim2 {
+        0% { clip: rect(65px, 9999px, 89px, 0); }
+        20% { clip: rect(2px, 9999px, 5px, 0); }
+        40% { clip: rect(12px, 9999px, 6px, 0); }
+        60% { clip: rect(32px, 9999px, 12px, 0); }
+        80% { clip: rect(23px, 9999px, 76px, 0); }
+        100% { clip: rect(54px, 9999px, 43px, 0); }
+      }
     </style>
   <script type="importmap">
 {
@@ -87,7 +147,8 @@
     "react": "https://aistudiocdn.com/react@^19.2.0",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0"
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
   }
 }
 </script>

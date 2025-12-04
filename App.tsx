@@ -1,123 +1,287 @@
-
-import React, { useState, useEffect } from 'react';
-import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search } from 'lucide-react';
-import { AnimatedSection, NeonButton, CursorGlow, BackToTop } from './components/UI';
+import React, { useState, useEffect, useRef } from 'react';
+import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign } from 'lucide-react';
+import { NeonButton, CursorGlow, BackToTop } from './components/UI';
+import { Hero3D } from './components/Hero3D';
 import { 
-  BMICalculator, EMICalculator, AgeCalculator, GSTCalculator, QRGenerator, PasswordGenerator, 
-  OfficePDFConverter, PDFUtilityTools, ImagePDFConverter, VideoConverter 
+  BMICalculator, EMICalculator, AgeCalculator, GSTCalculator, QRGenerator, PasswordGenerator,
+  SpinWheel, CoinToss, DiceRoller, LuckyNumber, LoveCalculator,
+  TextStatistics, TextUtility, DevConverter, SeoPreview,
+  DomainTool, WebAnalyzer, DummyDataGen, DeviceInfo,
+  TodoTracker, BudgetTracker, HabitTracker,
+  UnitConverter, PercentageCalculator, BasicCalculator, DiscountCalculator,
+  YouTubeTitleGen, ReelHooksGen, ViralityScore, HashtagReach, BioAudit, ThumbnailAnalyzer, PostTimeOptimizer, EngagementRate,
+  ExamRankPredictor, AttendanceCalc, ProjectRisk, InternshipScore, TypingRank, SalaryHike, OfficeScore
 } from './components/Calculators';
 
-// --- Loading Screen ---
-const Loader: React.FC<{ onFinish: () => void }> = ({ onFinish }) => {
-  const [progress, setProgress] = useState(0);
+// --- Tool Data & Categorization ---
+const toolsList = [
+  // Health & Finance
+  { id: 'bmi', component: <BMICalculator />, icon: <Activity />, name: 'BMI Calculator', description: 'Calculate Body Mass Index and check health category.', tags: 'health weight mass index' },
+  { id: 'emi', component: <EMICalculator />, icon: <Calculator />, name: 'EMI Calculator', description: 'Calculate monthly loan payments and total interest.', tags: 'finance loan interest bank' },
+  { id: 'age', component: <AgeCalculator />, icon: <Calendar />, name: 'Age Calculator', description: 'Calculate your exact age in years, months, and days.', tags: 'date birthday years' },
+  { id: 'gst', component: <GSTCalculator />, icon: <Percent />, name: 'GST Calculator', description: 'Calculate Goods and Services Tax amounts easily.', tags: 'tax finance money' },
+  { id: 'discount', component: <DiscountCalculator />, icon: <Tag />, name: 'Discount Calculator', description: 'Find final price after discount and tax.', tags: 'finance sale price off' },
+  
+  // Math & Units
+  { id: 'basic-calc', component: <BasicCalculator />, icon: <Calculator />, name: 'Basic Calculator', description: 'Standard calculator for quick arithmetic.', tags: 'math add subtract multiply' },
+  { id: 'unit-conv', component: <UnitConverter />, icon: <ArrowRightLeft />, name: 'Unit Converter', description: 'Convert length, weight, and temperature units.', tags: 'length weight temp measure' },
+  { id: 'percent', component: <PercentageCalculator />, icon: <Percent />, name: 'Percentage Calc', description: 'Calculate percentages, changes, and fractions.', tags: 'math percent change' },
+  
+  // Utilities
+  { id: 'qr', component: <QRGenerator />, icon: <QrCode />, name: 'QR Code Generator', description: 'Generate custom QR codes for links or text.', tags: 'link scan barcode' },
+  { id: 'password', component: <PasswordGenerator />, icon: <Lock />, name: 'Strong Password', description: 'Generate secure, random passwords instantly.', tags: 'security crypto privacy' },
+  
+  // Fun
+  { id: 'spin', component: <SpinWheel />, icon: <Loader2 className="animate-spin" />, name: 'Spin the Wheel', description: 'Spin a virtual wheel to pick a random prize.', tags: 'game random prize luck' },
+  { id: 'coin', component: <CoinToss />, icon: <Circle />, name: 'Coin Toss', description: 'Flip a 3D virtual coin for heads or tails.', tags: 'heads tails random decision' },
+  { id: 'dice', component: <DiceRoller />, icon: <Dices />, name: 'Dice Roller', description: 'Roll 3D dice with custom side counts.', tags: 'game number random' },
+  { id: 'lucky', component: <LuckyNumber />, icon: <Sparkles />, name: 'Lucky Number', description: 'Generate your lucky number for the day.', tags: 'rng random generator' },
+  { id: 'love', component: <LoveCalculator />, icon: <Heart />, name: 'Love Calculator', description: 'Check relationship compatibility score.', tags: 'fun relationship percentage' },
+  
+  // Text & Productivity
+  { id: 'text-stats', component: <TextStatistics />, icon: <AlignLeft />, name: 'Text Statistics', description: 'Count words, characters, and reading time.', tags: 'word count char count reading time' },
+  { id: 'text-util', component: <TextUtility />, icon: <Type />, name: 'Text Utility', description: 'Clean, format, trim, and manipulate text.', tags: 'clean format case trim duplicate' },
+  { id: 'dev-convert', component: <DevConverter />, icon: <Code2 />, name: 'Dev Converter', description: 'Format JSON, Base64, and URL encoding.', tags: 'json base64 url encode decode minify' },
+  { id: 'seo-preview', component: <SeoPreview />, icon: <Search />, name: 'SEO Preview', description: 'Preview Google search result snippets.', tags: 'google serp meta title description' },
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 20);
+  // Web & Niche
+  { id: 'domain', component: <DomainTool />, icon: <Globe />, name: 'Domain Generator', description: 'Generate creative domain name ideas.', tags: 'name web url available' },
+  { id: 'web-perf', component: <WebAnalyzer />, icon: <Zap />, name: 'Speed Analyzer', description: 'Simulate website performance and SEO audit.', tags: 'seo speed performance audit' },
+  { id: 'dummy', component: <DummyDataGen />, icon: <Database />, name: 'Dummy Data', description: 'Generate mock JSON or CSV data for testing.', tags: 'json csv dev mock' },
+  { id: 'device', component: <DeviceInfo />, icon: <Smartphone />, name: 'Device Info', description: 'View your browser, OS, and screen details.', tags: 'browser user agent screen' },
 
-    const finishTimer = setTimeout(() => {
-      onFinish();
-    }, 1500);
+  // Personal Trackers
+  { id: 'todo', component: <TodoTracker />, icon: <ListTodo />, name: 'Task Master', description: 'Manage your daily to-do list effectively.', tags: 'todo list task tracker' },
+  { id: 'budget', component: <BudgetTracker />, icon: <Wallet />, name: 'Budget Tracker', description: 'Track income, expenses, and current balance.', tags: 'finance expense income money' },
+  { id: 'habit', component: <HabitTracker />, icon: <Flame />, name: 'Habit Streak', description: 'Track daily habits and build streaks.', tags: 'goal streak habit' },
 
-    return () => {
-      clearInterval(timer);
-      clearTimeout(finishTimer);
-    };
-  }, [onFinish]);
+  // Social & Viral
+  { id: 'yt-title', component: <YouTubeTitleGen />, icon: <Youtube />, name: 'YouTube Title Gen', description: 'Generate high-CTR viral video titles.', tags: 'youtube viral ctr video' },
+  { id: 'reel-hook', component: <ReelHooksGen />, icon: <Music />, name: 'Reel Hooks', description: 'Create scroll-stopping captions and hooks.', tags: 'instagram tiktok caption viral' },
+  { id: 'viral-score', component: <ViralityScore />, icon: <TrendingUp />, name: 'Virality Score', description: 'AI analysis of your content\'s viral potential.', tags: 'ai check post caption' },
+  { id: 'hashtag', component: <HashtagReach />, icon: <Hash />, name: 'Hashtag Reach', description: 'Estimate hashtag reach and competition.', tags: 'instagram reach growth' },
+  { id: 'bio-audit', component: <BioAudit />, icon: <UserCheck />, name: 'Bio Audit', description: 'Score and optimize your Instagram bio.', tags: 'instagram profile check' },
+  { id: 'thumb-text', component: <ThumbnailAnalyzer />, icon: <Image />, name: 'Thumbnail Text', description: 'Check thumbnail text impact and length.', tags: 'youtube image text check' },
+  { id: 'post-time', component: <PostTimeOptimizer />, icon: <Clock />, name: 'Best Post Time', description: 'Find the best time to post on social media.', tags: 'schedule social media' },
+  { id: 'engage-calc', component: <EngagementRate />, icon: <BarChart2 />, name: 'Engagement Rate', description: 'Calculate influencer engagement metrics.', tags: 'calculator influencer metrics' },
 
-  return (
-    <div className="fixed inset-0 z-[100] bg-slate-900 flex flex-col items-center justify-center">
-      <div className="text-4xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-neonBlue to-neonPurple animate-pulse mb-8">
-        TOOLCRAFT AI
-      </div>
-      <div className="w-64 h-2 bg-slate-800 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gradient-to-r from-neonBlue to-neonPurple transition-all duration-100 ease-out"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
-      <div className="mt-4 text-slate-500 font-mono text-sm">{progress}% INITIALIZING</div>
-    </div>
-  );
-};
+  // Career & Education
+  { id: 'exam-rank', component: <ExamRankPredictor />, icon: <GraduationCap />, name: 'Exam Rank Predictor', description: 'Predict your rank based on marks scored.', tags: 'student marks rank education' },
+  { id: 'attendance', component: <AttendanceCalc />, icon: <UserX />, name: 'Attendance Manager', description: 'Calculate attendance percentage and bunkers.', tags: 'student class bunk percentage' },
+  { id: 'project-risk', component: <ProjectRisk />, icon: <AlertTriangle />, name: 'Deadline Risk', description: 'Analyze project deadline feasibility.', tags: 'work project task management' },
+  { id: 'internship', component: <InternshipScore />, icon: <Briefcase />, name: 'Internship Ready', description: 'Check your readiness for corporate jobs.', tags: 'student career job' },
+  { id: 'typing', component: <TypingRank />, icon: <Keyboard />, name: 'Typing Rank', description: 'See where your typing speed ranks globally.', tags: 'speed wpm keyboard' },
+  { id: 'salary', component: <SalaryHike />, icon: <DollarSign />, name: 'Salary Hike', description: 'Predict your next salary appraisal.', tags: 'job money career' },
+  { id: 'office-score', component: <OfficeScore />, icon: <Coffee />, name: 'Office Score', description: 'Calculate your daily productivity score.', tags: 'productivity work efficiency' },
+];
+
+const categories = [
+  {
+    title: "Health & Personal",
+    items: [
+      { name: "BMI Calculator", id: "bmi" },
+      { name: "Age Calculator", id: "age" },
+      { name: "Task Master", id: "todo" },
+      { name: "Habit Streak", id: "habit" }
+    ]
+  },
+  {
+    title: "Career & Education",
+    items: [
+      { name: "Attendance Manager", id: "attendance" },
+      { name: "Exam Rank Predictor", id: "exam-rank" },
+      { name: "Internship Ready", id: "internship" },
+      { name: "Salary Hike", id: "salary" },
+      { name: "Office Score", id: "office-score" },
+      { name: "Typing Rank", id: "typing" },
+      { name: "Deadline Risk", id: "project-risk" }
+    ]
+  },
+  {
+    title: "Social Media & Viral",
+    items: [
+      { name: "YouTube Title Gen", id: "yt-title" },
+      { name: "Reel Hooks Gen", id: "reel-hook" },
+      { name: "Virality Score AI", id: "viral-score" },
+      { name: "Hashtag Reach", id: "hashtag" },
+      { name: "Bio Audit", id: "bio-audit" },
+      { name: "Thumbnail Text", id: "thumb-text" },
+      { name: "Best Post Time", id: "post-time" },
+      { name: "Engagement Calc", id: "engage-calc" }
+    ]
+  },
+  {
+    title: "Finance",
+    items: [
+      { name: "EMI Calculator", id: "emi" },
+      { name: "GST Calculator", id: "gst" },
+      { name: "Budget Tracker", id: "budget" },
+      { name: "Discount Calc", id: "discount" }
+    ]
+  },
+  {
+    title: "Math & Units",
+    items: [
+      { name: "Unit Converter", id: "unit-conv" },
+      { name: "Percentage Calc", id: "percent" },
+      { name: "Basic Calculator", id: "basic-calc" }
+    ]
+  },
+  {
+    title: "Web & Dev Tools",
+    items: [
+      { name: "Domain Generator", id: "domain" },
+      { name: "Speed Analyzer", id: "web-perf" },
+      { name: "Dummy Data Gen", id: "dummy" },
+      { name: "Device Info", id: "device" },
+      { name: "Dev Converter", id: "dev-convert" }
+    ]
+  },
+  {
+    title: "Text & Utilities",
+    items: [
+      { name: "QR Generator", id: "qr" },
+      { name: "Password Gen", id: "password" },
+      { name: "Text Statistics", id: "text-stats" },
+      { name: "Text Utility", id: "text-util" },
+      { name: "SEO Preview", id: "seo-preview" }
+    ]
+  },
+  {
+    title: "Fun & Engagement",
+    items: [
+      { name: "Dice Roller", id: "dice" },
+      { name: "Spin the Wheel", id: "spin" },
+      { name: "Coin Toss", id: "coin" },
+      { name: "Lucky Number", id: "lucky" },
+      { name: "Love Calculator", id: "love" },
+    ]
+  }
+];
 
 // --- Navbar ---
 interface NavbarProps {
   toggleTheme: () => void;
   isDark: boolean;
   onNavigate: (id: string) => void;
+  onToolSelect: (id: string) => void;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate }) => {
+const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onToolSelect }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  
+  // Dropdown States
+  const [toolsDropdownOpen, setToolsDropdownOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      // Check if click is inside desktop menu OR mobile menu
+      const inDesktop = dropdownRef.current && dropdownRef.current.contains(target);
+      const inMobile = mobileMenuRef.current && mobileMenuRef.current.contains(target);
+      
+      // If click is outside both, close dropdowns
+      if (!inDesktop && !inMobile) {
+        setToolsDropdownOpen(false);
+        setActiveCategory(null);
+      }
+    };
 
-  const links = [
-    { name: 'Tools', id: 'tools' },
-    { name: 'About', id: 'about' },
-    { name: 'Contact', id: 'contact' },
-  ];
+    window.addEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleNavClick = (id: string) => {
     setIsOpen(false);
     onNavigate(id);
-  }
+  };
+
+  const handleToolClick = (toolId: string) => {
+    // For desktop: close dropdown. For mobile: close menu completely.
+    setToolsDropdownOpen(false);
+    setActiveCategory(null);
+    setIsOpen(false);
+    onToolSelect(toolId);
+  };
 
   return (
     <nav className={`fixed top-0 w-full z-[60] transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 py-4' : 'bg-transparent py-6'}`}>
-      <div className="container mx-auto px-6 flex justify-between items-center">
-        <div className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+      <div className="container mx-auto px-6 flex justify-between items-center relative">
+        <div className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 cursor-pointer" onClick={() => handleNavClick('root')}>
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neonBlue to-neonPurple flex items-center justify-center text-slate-900 font-black">T</div>
           ToolCraft<span className="text-neonBlue">.ai</span>
         </div>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex space-x-8 items-center">
-          {links.map(link => (
+        <div className="hidden md:flex space-x-8 items-center" ref={dropdownRef}>
+          {/* Tools Dropdown Trigger */}
+          <div className="relative group">
             <button 
-              key={link.name} 
-              onClick={() => handleNavClick(link.id)} 
-              className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-medium tracking-wide cursor-pointer relative group bg-transparent border-none"
+              onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
+              className={`flex items-center gap-1 text-sm font-medium tracking-wide transition-colors ${toolsDropdownOpen ? 'text-neonBlue' : 'text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white'}`}
             >
-              {link.name}
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-neonBlue transition-all group-hover:w-full"></span>
+              Tools
+              <ChevronDown size={14} className={`transition-transform duration-300 ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
-          ))}
-          
-          <button 
-             onClick={toggleTheme}
-             className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:scale-110 transition-transform"
-          >
-             {isDark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
 
-          <button 
-            onClick={() => handleNavClick('tools')}
-            className="px-4 py-2 rounded-full border border-neonBlue/50 text-neonBlue text-xs font-bold uppercase tracking-wider hover:bg-neonBlue/10 transition-all cursor-pointer"
-          >
-            Start Now
+            {/* Tools Dropdown Menu */}
+            {toolsDropdownOpen && (
+              <div className="absolute top-full left-0 mt-4 w-60 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-visible p-2 animate-fade-in-up">
+                {categories.map((cat) => (
+                  <div key={cat.title} className="relative">
+                    <button
+                      onClick={() => setActiveCategory(activeCategory === cat.title ? null : cat.title)}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
+                        activeCategory === cat.title 
+                        ? 'bg-neonBlue/10 text-neonBlue' 
+                        : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      {cat.title}
+                      <ChevronRight size={14} className={`transition-transform ${activeCategory === cat.title ? 'rotate-90' : ''}`} />
+                    </button>
+
+                    {/* Nested Sub-Menu (Desktop - Flies out to the LEFT) */}
+                    {activeCategory === cat.title && (
+                      <div className="relative md:absolute md:right-full md:-top-1 md:mr-2 w-full md:w-56 bg-slate-50 dark:bg-slate-800/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-xl p-2 z-50">
+                        {cat.items.map((item) => (
+                          <button
+                            key={item.id}
+                            onClick={() => handleToolClick(item.id)}
+                            className="w-full text-left px-4 py-2.5 rounded-lg text-sm text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-colors flex items-center gap-2"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-neonPurple"></span>
+                            {item.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <button onClick={() => handleNavClick('about')} className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-medium tracking-wide">About</button>
+          <button onClick={() => handleNavClick('contact')} className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-medium tracking-wide">Contact</button>
+          
+          <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:scale-110 transition-transform">
+             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-4">
-           <button 
-             onClick={toggleTheme}
-             className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white z-[70]"
-           >
+           <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white z-[70]">
              {isDark ? <Sun size={18} /> : <Moon size={18} />}
            </button>
            <button className="text-slate-900 dark:text-white cursor-pointer z-[70]" onClick={() => setIsOpen(!isOpen)}>
@@ -126,226 +290,308 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate }) => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      <div className={`md:hidden absolute top-full left-0 w-full bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-white/10 overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-64' : 'max-h-0'}`}>
-        <div className="flex flex-col p-6 space-y-4">
-          {links.map(link => (
-            <button key={link.name} onClick={() => handleNavClick(link.id)} className="text-left text-slate-600 dark:text-gray-300 hover:text-neonBlue cursor-pointer bg-transparent border-none font-medium">
-              {link.name}
+      {/* Mobile Menu (Fixed Full Overlay) */}
+      <div 
+        ref={mobileMenuRef}
+        className={`md:hidden fixed inset-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl z-40 transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 -translate-y-4 pointer-events-none'}`}
+      >
+        <div className="flex flex-col h-full overflow-y-auto pt-28 px-4 space-y-2 custom-scrollbar overscroll-contain">
+          
+          {/* Tools Accordion */}
+          <div className="rounded-2xl overflow-hidden bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5 transition-all shrink-0">
+            <button 
+              onClick={(e) => { e.stopPropagation(); setToolsDropdownOpen(!toolsDropdownOpen); }}
+              className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none"
+            >
+              <span className="font-bold text-slate-900 dark:text-white flex items-center gap-2 pointer-events-none">
+                <span className="w-1.5 h-1.5 rounded-full bg-neonBlue"></span>
+                Tools Library
+              </span>
+              <ChevronDown size={18} className={`text-slate-500 transition-transform duration-300 pointer-events-none ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
             </button>
-          ))}
+            
+            <div className={`transition-all duration-300 ease-in-out ${toolsDropdownOpen ? 'max-h-[2500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+              <div className="px-3 pb-3 space-y-1">
+                {categories.map((cat) => (
+                  <div key={cat.title} className="rounded-xl overflow-hidden bg-white/50 dark:bg-black/20">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setActiveCategory(activeCategory === cat.title ? null : cat.title); }}
+                      className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium transition-all duration-200
+                        ${activeCategory === cat.title 
+                        ? 'text-neonBlue bg-slate-100 dark:bg-slate-800' 
+                        : 'text-slate-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-white/10'
+                        }`}
+                    >
+                      <span className="pointer-events-none">{cat.title}</span>
+                      <ChevronRight size={14} className={`transition-transform duration-300 pointer-events-none ${activeCategory === cat.title ? 'rotate-90' : ''}`} />
+                    </button>
+                    
+                    <div className={`transition-all duration-300 ease-in-out overflow-hidden ${activeCategory === cat.title ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                      <div className="pl-4 pr-2 py-2 space-y-1 bg-slate-100 dark:bg-slate-800 border-t border-slate-200 dark:border-white/5">
+                        {cat.items.map((item) => (
+                           <button 
+                             key={item.id} 
+                             onClick={(e) => { e.stopPropagation(); handleToolClick(item.id); }}
+                             className="flex items-center gap-3 w-full text-left px-4 py-3 text-xs font-medium text-slate-600 dark:text-gray-300 hover:text-neonBlue hover:bg-white dark:hover:bg-white/5 rounded-lg transition-all group"
+                           >
+                             <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-neonBlue transition-colors pointer-events-none"></div>
+                             <span className="pointer-events-none">{item.name}</span>
+                           </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex gap-2 shrink-0">
+             <button onClick={() => handleNavClick('about')} className="flex-1 px-5 py-4 font-bold text-slate-600 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">About</button>
+             <button onClick={() => handleNavClick('contact')} className="flex-1 px-5 py-4 font-bold text-slate-600 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">Contact</button>
+          </div>
+          
+          {/* Scroll Spacer to ensure last items are visible above mobile browser bars */}
+          <div className="h-32 shrink-0 w-full" aria-hidden="true"></div>
         </div>
       </div>
     </nav>
   );
 };
 
-// --- Tool Data ---
-const toolsList = [
-  { id: 'bmi', component: <BMICalculator />, name: 'BMI Calculator', tags: 'health weight mass index' },
-  { id: 'emi', component: <EMICalculator />, name: 'EMI Calculator', tags: 'finance loan interest bank' },
-  { id: 'office-pdf', component: <OfficePDFConverter />, name: 'Office Converter', tags: 'pdf word docx excel pptx' },
-  { id: 'pdf-tools', component: <PDFUtilityTools />, name: 'PDF Architect', tags: 'merge split protect ocr unlock' },
-  { id: 'image-pdf', component: <ImagePDFConverter />, name: 'Image ↔ PDF', tags: 'jpg png convert image pdf' },
-  { id: 'video', component: <VideoConverter />, name: 'Video Studio', tags: 'mp4 mp3 gif converter video' },
-  { id: 'age', component: <AgeCalculator />, name: 'Age Calculator', tags: 'date birthday years' },
-  { id: 'gst', component: <GSTCalculator />, name: 'GST Calculator', tags: 'tax finance money' },
-  { id: 'qr', component: <QRGenerator />, name: 'QR Code Generator', tags: 'link scan barcode' },
-  { id: 'password', component: <PasswordGenerator />, name: 'Strong Password', tags: 'security crypto privacy' },
-];
+const App: React.FC = () => {
+  const [showIntro, setShowIntro] = useState(true);
+  const [isDark, setIsDark] = useState(true);
+  const [search, setSearch] = useState('');
+  const [view, setView] = useState('home'); // home, about, contact, or tool-id
+  const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
 
-// --- Main App ---
-export default function App() {
-  const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
-  const [searchQuery, setSearchQuery] = useState('');
+  // Theme toggle
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  };
 
   useEffect(() => {
-    // Apply theme to document
-    const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
+    // Initial theme setup
+    document.documentElement.classList.add('dark');
+  }, []);
+
+  const handleToolSelect = (id: string) => {
+    setSelectedToolId(id);
+    setView('tool');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleNavigate = (id: string) => {
+    if (id === 'root') {
+      setView('home');
+      setSelectedToolId(null);
     } else {
-      root.classList.remove('dark');
+      setView(id);
     }
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const filteredTools = toolsList.filter(tool => 
-    tool.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    tool.tags.toLowerCase().includes(searchQuery.toLowerCase())
+  // Filter tools
+  const filteredTools = toolsList.filter(t => 
+    t.name.toLowerCase().includes(search.toLowerCase()) || 
+    t.tags.includes(search.toLowerCase())
   );
-
-  if (loading) {
-    return <Loader onFinish={() => setLoading(false)} />;
-  }
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white selection:bg-neonBlue selection:text-slate-900 relative transition-colors duration-300">
-      <CursorGlow />
-      <Navbar toggleTheme={toggleTheme} isDark={theme === 'dark'} onNavigate={scrollToSection} />
-
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
-        {/* Background Blobs */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-neonPurple/10 dark:bg-neonPurple/20 rounded-full blur-[100px] animate-blob"></div>
-          <div className="absolute bottom-[0%] right-[-10%] w-[500px] h-[500px] bg-neonBlue/10 dark:bg-neonBlue/20 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
-        </div>
-
-        <div className="container mx-auto text-center relative z-10">
-          <AnimatedSection>
-            <span className="inline-block py-1 px-3 rounded-full bg-white/40 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-neonBlue text-xs font-bold tracking-widest mb-6 backdrop-blur-sm shadow-sm dark:shadow-none">
-              PREMIUM UTILITIES SUITE
-            </span>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-slate-900 dark:text-white">
-              Tools for the <span className="neon-text-gradient">Modern Era</span>
-            </h1>
-            <p className="text-slate-600 dark:text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10">
-              A collection of beautifully designed calculators and generators. fast, responsive, and easy to use.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <NeonButton onClick={() => scrollToSection('tools')}>Explore Tools</NeonButton>
-              <NeonButton variant="secondary" onClick={() => scrollToSection('about')}>Learn More</NeonButton>
-            </div>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Tools Grid Section */}
-      <section id="tools" className="py-20 px-6 relative z-10">
-        <div className="container mx-auto">
-          <AnimatedSection className="mb-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Our <span className="text-neonBlue">Toolkit</span></h2>
-            <div className="w-20 h-1 bg-gradient-to-r from-neonBlue to-neonPurple mx-auto rounded-full"></div>
-          </AnimatedSection>
-
-          {/* Search Bar */}
-          <div className="max-w-md mx-auto mb-16 relative group z-20">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-slate-400 dark:text-slate-500 group-focus-within:text-neonBlue transition-colors" />
-            </div>
-            <input
-              type="text"
-              className="w-full bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-full py-3 pl-12 pr-4 text-slate-900 dark:text-white focus:ring-2 focus:ring-neonBlue focus:border-transparent outline-none transition-all shadow-lg dark:shadow-none hover:shadow-xl placeholder-slate-400 dark:placeholder-slate-500"
-              placeholder="Search tools (e.g., BMI, PDF, WiFi...)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          {filteredTools.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 min-h-[400px]">
-              {filteredTools.map((tool, index) => (
-                <AnimatedSection key={tool.id} delay={index * 50}>
-                  {tool.component}
-                </AnimatedSection>
-              ))}
-            </div>
-          ) : (
-             <div className="text-center py-20">
-                <p className="text-slate-500 dark:text-gray-400 text-lg">No tools found matching "{searchQuery}"</p>
-                <button 
-                  onClick={() => setSearchQuery('')}
-                  className="mt-4 text-neonBlue hover:underline"
-                >
-                  Clear search
-                </button>
-             </div>
-          )}
-        </div>
-      </section>
-
-      {/* About Section */}
-      <section id="about" className="py-20 px-6 bg-slate-100 dark:bg-slate-900/50 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-slate-200 dark:to-slate-900 pointer-events-none"></div>
-        <div className="container mx-auto relative z-10">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            <AnimatedSection className="w-full md:w-1/2">
-               <div className="relative group">
-                 <div className="absolute -inset-1 bg-gradient-to-r from-neonBlue to-neonPurple rounded-2xl blur opacity-25 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
-                 <div className="relative rounded-2xl bg-white dark:bg-slate-800 p-8 ring-1 ring-slate-200 dark:ring-white/10 leading-none shadow-xl dark:shadow-none">
-                    <div className="space-y-4 text-center py-12">
-                       <h3 className="text-4xl font-bold text-slate-900 dark:text-white">10k+</h3>
-                       <p className="text-slate-500 dark:text-gray-400">Daily Calculations</p>
-                       <div className="h-px bg-slate-200 dark:bg-white/10 w-1/2 mx-auto my-4"></div>
-                       <h3 className="text-4xl font-bold text-slate-900 dark:text-white">99.9%</h3>
-                       <p className="text-slate-500 dark:text-gray-400">Uptime Accuracy</p>
+    <>
+      {showIntro && <Hero3D onComplete={() => setShowIntro(false)} />}
+      
+      <div className={`min-h-screen transition-all duration-1000 transform ${showIntro ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} ${isDark ? 'dark bg-slate-900' : 'bg-slate-50'}`}>
+        <CursorGlow />
+        <Navbar toggleTheme={toggleTheme} isDark={isDark} onNavigate={handleNavigate} onToolSelect={handleToolSelect} />
+        
+        <main className="container mx-auto px-6 min-h-screen flex flex-col relative">
+          {view === 'home' && (
+            <div className="flex flex-col w-full">
+              {/* Full Screen Hero Section */}
+              <div className={`
+                 flex flex-col items-center justify-center text-center w-full max-w-4xl mx-auto
+                 transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]
+                 ${search ? 'min-h-[40vh] pt-32 pb-10' : 'min-h-screen pt-20'}
+              `}>
+                <div className="flex flex-col items-center animate-fade-in-up">
+                    <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-slate-900 dark:text-white leading-[1.1]">
+                      Supercharge Your <br />
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-neonBlue to-neonPurple animate-pulse">Productivity</span>
+                    </h1>
+                    <p className="text-xl md:text-2xl text-slate-600 dark:text-gray-400 mb-12 leading-relaxed max-w-2xl font-light">
+                      Access a suite of powerful, developer-grade tools designed to simplify your daily tasks.
+                    </p>
+                    
+                    <div className="relative w-full max-w-2xl group z-10">
+                      <div className="absolute inset-0 bg-gradient-to-r from-neonBlue to-neonPurple rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+                      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-2 flex items-center shadow-2xl border border-slate-200 dark:border-white/10 transition-transform duration-300 group-hover:scale-[1.02]">
+                        <Search className="ml-4 text-slate-400 w-6 h-6" />
+                        <input 
+                          type="text" 
+                          placeholder="Search tools (e.g. bmi, qr, loan)..." 
+                          className="w-full bg-transparent border-none outline-none px-4 py-4 text-xl text-slate-900 dark:text-white placeholder-slate-400"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          autoFocus={!showIntro}
+                        />
+                      </div>
                     </div>
-                 </div>
-               </div>
-            </AnimatedSection>
-            <AnimatedSection className="w-full md:w-1/2" delay={200}>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900 dark:text-white">About <span className="text-neonPurple">ToolCraft</span></h2>
-              <p className="text-slate-600 dark:text-gray-400 leading-relaxed mb-6">
-                We believe utility tools shouldn't just be functional—they should be beautiful. ToolCraft AI combines precise mathematical logic with high-end glassmorphism design to provide a superior user experience.
-              </p>
-              <p className="text-slate-600 dark:text-gray-400 leading-relaxed">
-                Whether you're calculating finances, checking health metrics, or generating secure data, our tools are optimized for speed, privacy, and visual delight.
-              </p>
-            </AnimatedSection>
-          </div>
-        </div>
-      </section>
+                </div>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 px-6">
-        <div className="container mx-auto max-w-4xl">
-           <AnimatedSection className="text-center mb-12">
-             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">Get in <span className="text-green-500 dark:text-green-400">Touch</span></h2>
-             <p className="text-slate-500 dark:text-gray-400">Have a suggestion for a new tool? We'd love to hear from you.</p>
-           </AnimatedSection>
+                {/* Scroll Indicator (Only visible when search is empty) */}
+                {!search && (
+                   <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 dark:text-slate-600 animate-bounce cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => window.scrollTo({top: window.innerHeight, behavior: 'smooth'})}>
+                      <span className="text-sm font-medium uppercase tracking-widest">Explore Tools</span>
+                      <ChevronDown size={24} />
+                   </div>
+                )}
+              </div>
 
-           <AnimatedSection delay={200}>
-             <form className="glass-card p-8 rounded-2xl space-y-6 bg-white dark:bg-slate-800" onSubmit={(e) => e.preventDefault()}>
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 <div>
-                   <label className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-2">Name</label>
-                   <input type="text" className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neonBlue outline-none text-slate-900 dark:text-white" placeholder="John Doe" />
-                 </div>
-                 <div>
-                   <label className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-2">Email</label>
-                   <input type="email" className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neonBlue outline-none text-slate-900 dark:text-white" placeholder="john@example.com" />
-                 </div>
-               </div>
-               <div>
-                  <label className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-2">Message</label>
-                  <textarea rows={4} className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neonBlue outline-none text-slate-900 dark:text-white" placeholder="I want a currency converter..."></textarea>
-               </div>
-               <NeonButton className="w-full md:w-auto">Send Message</NeonButton>
-             </form>
-           </AnimatedSection>
-        </div>
-      </section>
+              {/* Tools Grid */}
+              <div className="pb-32">
+                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                   {filteredTools.map((tool) => (
+                    <div 
+                      key={tool.id}
+                      onClick={() => handleToolSelect(tool.id)}
+                      className="group relative h-full bg-slate-50 dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-neonBlue/50 hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
+                    >
+                      {/* Inner Glow Effect */}
+                      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
-      {/* Footer */}
-      <footer className="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-white/5 pt-12 pb-6 px-6 transition-colors duration-300">
-        <div className="container mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-            <div className="mb-4 md:mb-0">
-               <span className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">ToolCraft<span className="text-neonBlue">.ai</span></span>
+                      {/* Card Content */}
+                      <div className="relative z-10 flex flex-col h-full">
+                         
+                         {/* Header: Icon & Action */}
+                         <div className="flex justify-between items-start mb-6">
+                            {/* 3D Icon Container */}
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-900 border-t border-l border-white/40 dark:border-white/20 shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                               {/* Inner Light */}
+                               <div className="absolute inset-0 bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
+                               {/* The Icon */}
+                               <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-neonBlue transition-colors duration-300 drop-shadow-md">
+                                  {React.cloneElement(tool.icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })}
+                               </div>
+                            </div>
+                            
+                            {/* Arrow Action */}
+                            <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-neonBlue group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
+                               <ArrowUpRight size={20} />
+                            </div>
+                         </div>
+
+                         {/* Text Info */}
+                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-neonBlue transition-colors duration-300">
+                           {tool.name}
+                         </h3>
+                         <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
+                           {tool.description}
+                         </p>
+
+                         {/* Tags Footer */}
+                         <div className="mt-auto flex flex-wrap gap-2">
+                            {tool.tags.split(' ').slice(0, 3).map(tag => (
+                              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-transparent group-hover:border-neonBlue/20 transition-colors">
+                                #{tag}
+                              </span>
+                            ))}
+                         </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {filteredTools.length === 0 && (
+                  <div className="text-center py-20">
+                    <p className="text-2xl text-slate-400 font-light">No tools found matching "<span className="text-neonBlue">{search}</span>"</p>
+                    <button onClick={() => setSearch('')} className="mt-4 text-neonPurple hover:underline">Clear Search</button>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="flex space-x-6">
-              <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white transition-colors"><Github size={20} /></a>
-              <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-white transition-colors"><Mail size={20} /></a>
-            </div>
-          </div>
-          <div className="text-center text-slate-500 dark:text-gray-600 text-sm border-t border-slate-200 dark:border-white/5 pt-6">
-            © {new Date().getFullYear()} ToolCraft AI. All rights reserved.
-          </div>
-        </div>
-      </footer>
+          )}
 
-      <BackToTop />
-    </div>
+          {view === 'tool' && selectedToolId && (
+            <div className="animate-fade-in-up pt-32">
+              <button onClick={() => setView('home')} className="mb-6 flex items-center gap-2 text-slate-500 hover:text-neonBlue transition-colors group">
+                <span className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-neonBlue group-hover:text-slate-900 transition-colors">
+                   <ChevronDown className="rotate-90" size={16} />
+                </span>
+                <span className="font-medium">Back to Tools</span>
+              </button>
+              <div className="max-w-4xl mx-auto min-h-[600px]">
+                {toolsList.find(t => t.id === selectedToolId)?.component}
+              </div>
+            </div>
+          )}
+
+          {view === 'about' && (
+             <div className="animate-fade-in-up pt-32">
+               <div className="max-w-3xl mx-auto text-center">
+                  <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">About ToolCraft AI</h2>
+                  <p className="text-lg text-slate-600 dark:text-gray-300 mb-6">
+                     ToolCraft AI is a premium suite of utility tools designed for modern creators, developers, and professionals. 
+                     We believe in clean design, speed, and privacy. All tools run client-side, meaning your data never leaves your device.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
+                        <div className="text-3xl mb-2">⚡</div>
+                        <h3 className="font-bold text-slate-900 dark:text-white">Lightning Fast</h3>
+                        <p className="text-sm text-slate-500">Optimized for instant load times and zero lag.</p>
+                     </div>
+                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
+                        <div className="text-3xl mb-2">🔒</div>
+                        <h3 className="font-bold text-slate-900 dark:text-white">Privacy First</h3>
+                        <p className="text-sm text-slate-500">No data collection. Everything runs locally.</p>
+                     </div>
+                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
+                        <div className="text-3xl mb-2">🎨</div>
+                        <h3 className="font-bold text-slate-900 dark:text-white">Modern UI</h3>
+                        <p className="text-sm text-slate-500">Glassmorphism and neomorphism inspired design.</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          )}
+
+          {view === 'contact' && (
+            <div className="animate-fade-in-up pt-32">
+               <div className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center">
+                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Get in Touch</h2>
+                  <p className="text-slate-600 dark:text-gray-400 mb-8">
+                     Have a suggestion for a new tool? Found a bug? Just want to say hi?
+                  </p>
+                  <div className="flex justify-center gap-6">
+                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-neonBlue hover:text-slate-900 transition-colors">
+                        <Github size={20} /> GitHub
+                     </a>
+                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-neonPurple hover:text-white transition-colors">
+                        <Mail size={20} /> Email
+                     </a>
+                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-500 hover:text-white transition-colors">
+                        <Linkedin size={20} /> LinkedIn
+                     </a>
+                  </div>
+               </div>
+            </div>
+          )}
+        </main>
+
+        <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/50">
+           <p>© {new Date().getFullYear()} ToolCraft AI. Made with 💙 and ☕.</p>
+        </footer>
+        
+        <BackToTop />
+      </div>
+    </>
   );
-}
+};
+
+export default App;

@@ -48,7 +48,7 @@ export const AnimatedSection: React.FC<AnimatedSectionProps> = ({ children, id, 
 
 export const GlassCard: React.FC<{ children: React.ReactNode; className?: string; title?: string }> = ({ children, className = "", title }) => {
   return (
-    <div className={`glass-card rounded-2xl p-6 transition-all duration-300 hover:transform hover:-translate-y-1 neon-glow 
+    <div className={`glass-card rounded-2xl p-6 transition-all duration-500 hover:transform hover:-translate-y-2 neon-glow 
       bg-white/70 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10 shadow-xl dark:shadow-none
       ${className}`}>
       {title && <h3 className="text-xl font-bold mb-4 text-slate-800 dark:text-white border-b border-slate-200 dark:border-white/10 pb-2">{title}</h3>}
@@ -58,22 +58,24 @@ export const GlassCard: React.FC<{ children: React.ReactNode; className?: string
 };
 
 export const NeonButton: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: 'primary' | 'secondary' }> = ({ children, className = "", variant = 'primary', ...props }) => {
-  const baseClasses = "relative px-6 py-3 rounded-xl font-semibold overflow-hidden transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 cursor-pointer";
+  const baseClasses = "relative px-6 py-3 rounded-xl font-semibold overflow-hidden transition-all duration-300 transform active:scale-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900 cursor-pointer group";
   const variants = {
-    primary: "bg-gradient-to-r from-neonBlue to-blue-600 text-slate-900 hover:shadow-[0_0_20px_rgba(0,243,255,0.5)] focus:ring-neonBlue",
-    secondary: "bg-transparent border border-neonPurple text-neonPurple dark:text-white hover:bg-neonPurple/10 hover:shadow-[0_0_15px_rgba(188,19,254,0.3)] focus:ring-neonPurple"
+    primary: "bg-gradient-to-r from-neonBlue to-blue-600 text-slate-900 hover:shadow-[0_0_25px_rgba(0,243,255,0.6)] focus:ring-neonBlue hover:brightness-110",
+    secondary: "bg-transparent border border-neonPurple text-neonPurple dark:text-white hover:bg-neonPurple/10 hover:shadow-[0_0_20px_rgba(188,19,254,0.4)] focus:ring-neonPurple hover:border-neonPurple/80"
   };
 
   return (
     <button className={`${baseClasses} ${variants[variant]} ${className}`} {...props}>
+      {/* Shine Effect */}
+      <span className="absolute inset-0 w-full h-full -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/25 to-transparent skew-x-12"></span>
       <span className="relative z-10 flex items-center justify-center gap-2 pointer-events-none">{children}</span>
     </button>
   );
 };
 
 export const InputGroup: React.FC<{ label: string; id: string; type?: string; value: string | number; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; placeholder?: string, min?: string, max?: string }> = ({ label, id, type = "text", value, onChange, placeholder, min, max }) => (
-  <div className="mb-4">
-    <label htmlFor={id} className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-1">{label}</label>
+  <div className="mb-4 group">
+    <label htmlFor={id} className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-1 transition-colors group-focus-within:text-neonBlue">{label}</label>
     <input
       type={type}
       id={id}
@@ -82,7 +84,8 @@ export const InputGroup: React.FC<{ label: string; id: string; type?: string; va
       placeholder={placeholder}
       min={min}
       max={max}
-      className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-neonBlue focus:border-transparent outline-none transition-all placeholder-gray-500"
+      className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white outline-none transition-all duration-300 placeholder-gray-500 
+      focus:ring-2 focus:ring-neonBlue focus:border-transparent focus:scale-[1.02] focus:shadow-[0_0_15px_rgba(0,243,255,0.15)] dark:focus:shadow-[0_0_15px_rgba(0,243,255,0.25)] focus:bg-white dark:focus:bg-slate-800"
     />
   </div>
 );
@@ -100,7 +103,7 @@ export const CursorGlow: React.FC = () => {
 
   return (
     <div
-      className="fixed z-50 transition-transform duration-75 ease-out hidden md:block pointer-events-none"
+      className="fixed z-50 transition-transform duration-100 ease-out hidden md:block pointer-events-none"
       style={{
         left: 0,
         top: 0,
