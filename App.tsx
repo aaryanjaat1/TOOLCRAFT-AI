@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign } from 'lucide-react';
+import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign, Shield } from 'lucide-react';
 import { NeonButton, CursorGlow, BackToTop, AnimatedSection } from './components/UI';
 import { Hero3D } from './components/Hero3D';
+import { AdminDashboard } from './components/AdminDashboard';
 import { 
   BMICalculator, EMICalculator, AgeCalculator, GSTCalculator, QRGenerator, PasswordGenerator,
   SpinWheel, CoinToss, DiceRoller, LuckyNumber, LoveCalculator,
@@ -363,7 +364,7 @@ const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [isDark, setIsDark] = useState(true);
   const [search, setSearch] = useState('');
-  const [view, setView] = useState('home'); // home, tool-id (about/contact are sections in home now)
+  const [view, setView] = useState('home'); // home, tool-id, admin
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
 
   // Theme toggle
@@ -408,7 +409,8 @@ const App: React.FC = () => {
         scrollToSection(id);
       }
     } else {
-      setView(id); // fallback for other potential routes
+      setView(id); // fallback for other potential routes (e.g. 'admin')
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
@@ -424,9 +426,20 @@ const App: React.FC = () => {
       
       <div className={`min-h-screen transition-all duration-1000 transform ${showIntro ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} ${isDark ? 'dark bg-slate-900' : 'bg-slate-50'}`}>
         <CursorGlow />
-        <Navbar toggleTheme={toggleTheme} isDark={isDark} onNavigate={handleNavigate} onToolSelect={handleToolSelect} />
+        {view !== 'admin' && (
+           <Navbar toggleTheme={toggleTheme} isDark={isDark} onNavigate={handleNavigate} onToolSelect={handleToolSelect} />
+        )}
         
         <main className="container mx-auto px-6 min-h-screen flex flex-col relative">
+          
+          {/* --- ADMIN VIEW --- */}
+          {view === 'admin' && (
+             <div className="pt-8">
+               <AdminDashboard onLogout={() => handleNavigate('root')} />
+             </div>
+          )}
+
+          {/* --- HOME VIEW --- */}
           {view === 'home' && (
             <div className="flex flex-col w-full">
               {/* Full Screen Hero Section */}
@@ -492,7 +505,7 @@ const App: React.FC = () => {
                                 <div className="absolute inset-0 bg-blue-400/20 dark:bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
                                 {/* The Icon */}
                                 <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300 drop-shadow-sm">
-                                    {React.cloneElement(tool.icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })}
+                                    {React.cloneElement(tool.icon as React.ReactElement<any>, { size: 32, strokeWidth: 1.5 })}
                                 </div>
                               </div>
                               
@@ -584,6 +597,7 @@ const App: React.FC = () => {
             </div>
           )}
 
+          {/* --- SINGLE TOOL VIEW --- */}
           {view === 'tool' && selectedToolId && (
             <div className="animate-fade-in-up pt-32">
               <button onClick={() => setView('home')} className="mb-6 flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:hover:text-neonBlue transition-colors group">
@@ -600,7 +614,12 @@ const App: React.FC = () => {
         </main>
 
         <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/50 font-medium">
-           <p>© {new Date().getFullYear()} ToolCraft AI. Made with 💙 and ☕.</p>
+           <p className="mb-2">© {new Date().getFullYear()} ToolCraft AI. Made with 💙 and ☕.</p>
+           {view !== 'admin' && (
+             <button onClick={() => handleNavigate('admin')} className="text-xs text-slate-400 hover:text-blue-600 dark:hover:text-neonBlue flex items-center gap-1 mx-auto transition-colors opacity-50 hover:opacity-100">
+               <Shield size={10} /> Admin Login
+             </button>
+           )}
         </footer>
         
         <BackToTop />
