@@ -214,11 +214,11 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
   };
 
   return (
-    <nav className={`fixed top-0 w-full z-[60] transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 py-4' : 'bg-transparent py-6'}`}>
+    <nav className={`fixed top-0 w-full z-[60] transition-all duration-300 ${scrolled ? 'bg-white/90 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 py-4' : 'bg-transparent py-6'}`}>
       <div className="container mx-auto px-6 flex justify-between items-center relative">
         <div className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 cursor-pointer" onClick={() => handleNavClick('root')}>
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-neonBlue to-neonPurple flex items-center justify-center text-slate-900 font-black">T</div>
-          ToolCraft<span className="text-neonBlue">.ai</span>
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple flex items-center justify-center text-white dark:text-slate-900 font-black">T</div>
+          ToolCraft<span className="text-blue-600 dark:text-neonBlue">.ai</span>
         </div>
 
         {/* Desktop Menu */}
@@ -227,7 +227,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
           <div className="relative group">
             <button 
               onClick={() => setToolsDropdownOpen(!toolsDropdownOpen)}
-              className={`flex items-center gap-1 text-sm font-medium tracking-wide transition-colors ${toolsDropdownOpen ? 'text-neonBlue' : 'text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white'}`}
+              className={`flex items-center gap-1 text-sm font-bold tracking-wide transition-colors ${toolsDropdownOpen ? 'text-blue-600 dark:text-neonBlue' : 'text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white'}`}
             >
               Tools
               <ChevronDown size={14} className={`transition-transform duration-300 ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
@@ -235,14 +235,14 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
 
             {/* Tools Dropdown Menu */}
             {toolsDropdownOpen && (
-              <div className="absolute top-full left-0 mt-4 w-60 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-visible p-2 animate-fade-in-up">
+              <div className="absolute top-full left-0 mt-4 w-60 bg-white dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-2xl overflow-visible p-2 animate-fade-in-up">
                 {categories.map((cat) => (
                   <div key={cat.title} className="relative">
                     <button
                       onClick={() => setActiveCategory(activeCategory === cat.title ? null : cat.title)}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all ${
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm transition-all font-medium ${
                         activeCategory === cat.title 
-                        ? 'bg-neonBlue/10 text-neonBlue' 
+                        ? 'bg-blue-50 dark:bg-neonBlue/10 text-blue-700 dark:text-neonBlue' 
                         : 'text-slate-700 dark:text-gray-300 hover:bg-slate-100 dark:hover:bg-white/5'
                       }`}
                     >
@@ -252,14 +252,14 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
 
                     {/* Nested Sub-Menu (Desktop - Flies out to the LEFT) */}
                     {activeCategory === cat.title && (
-                      <div className="relative md:absolute md:right-full md:-top-1 md:mr-2 w-full md:w-56 bg-slate-50 dark:bg-slate-800/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-xl p-2 z-50">
+                      <div className="relative md:absolute md:right-full md:-top-1 md:mr-2 w-full md:w-56 bg-white dark:bg-slate-800/95 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-xl shadow-xl p-2 z-50">
                         {cat.items.map((item) => (
                           <button
                             key={item.id}
                             onClick={() => handleToolClick(item.id)}
-                            className="w-full text-left px-4 py-2.5 rounded-lg text-sm text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-white/10 transition-colors flex items-center gap-2"
+                            className="w-full text-left px-4 py-2.5 rounded-lg text-sm text-slate-700 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10 transition-colors flex items-center gap-2 font-medium"
                           >
-                            <span className="w-1.5 h-1.5 rounded-full bg-neonPurple"></span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-purple-500 dark:bg-neonPurple"></span>
                             {item.name}
                           </button>
                         ))}
@@ -271,17 +271,17 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
             )}
           </div>
 
-          <button onClick={() => handleNavClick('about')} className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-medium tracking-wide">About</button>
-          <button onClick={() => handleNavClick('contact')} className="text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-medium tracking-wide">Contact</button>
+          <button onClick={() => handleNavClick('about')} className="text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-bold tracking-wide">About</button>
+          <button onClick={() => handleNavClick('contact')} className="text-slate-700 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white transition-colors text-sm font-bold tracking-wide">Contact</button>
           
-          <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:scale-110 transition-transform">
+          <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white hover:scale-110 transition-transform border border-slate-200 dark:border-slate-700">
              {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
 
         {/* Mobile Menu Toggle */}
         <div className="md:hidden flex items-center gap-4">
-           <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white z-[70]">
+           <button onClick={toggleTheme} className="p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white z-[70] border border-slate-200 dark:border-slate-700">
              {isDark ? <Sun size={18} /> : <Moon size={18} />}
            </button>
            <button className="text-slate-900 dark:text-white cursor-pointer z-[70]" onClick={() => setIsOpen(!isOpen)}>
@@ -304,7 +304,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
               className="w-full flex items-center justify-between px-5 py-4 text-left focus:outline-none"
             >
               <span className="font-bold text-slate-900 dark:text-white flex items-center gap-2 pointer-events-none">
-                <span className="w-1.5 h-1.5 rounded-full bg-neonBlue"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-neonBlue"></span>
                 Tools Library
               </span>
               <ChevronDown size={18} className={`text-slate-500 transition-transform duration-300 pointer-events-none ${toolsDropdownOpen ? 'rotate-180' : ''}`} />
@@ -318,8 +318,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
                       onClick={(e) => { e.stopPropagation(); setActiveCategory(activeCategory === cat.title ? null : cat.title); }}
                       className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium transition-all duration-200
                         ${activeCategory === cat.title 
-                        ? 'text-neonBlue bg-slate-100 dark:bg-slate-800' 
-                        : 'text-slate-600 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-white/10'
+                        ? 'text-blue-700 dark:text-neonBlue bg-slate-100 dark:bg-slate-800' 
+                        : 'text-slate-700 dark:text-gray-400 hover:bg-slate-100 dark:hover:bg-white/10'
                         }`}
                     >
                       <span className="pointer-events-none">{cat.title}</span>
@@ -332,9 +332,9 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
                            <button 
                              key={item.id} 
                              onClick={(e) => { e.stopPropagation(); handleToolClick(item.id); }}
-                             className="flex items-center gap-3 w-full text-left px-4 py-3 text-xs font-medium text-slate-600 dark:text-gray-300 hover:text-neonBlue hover:bg-white dark:hover:bg-white/5 rounded-lg transition-all group"
+                             className="flex items-center gap-3 w-full text-left px-4 py-3 text-xs font-medium text-slate-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-neonBlue hover:bg-white dark:hover:bg-white/5 rounded-lg transition-all group"
                            >
-                             <div className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 group-hover:bg-neonBlue transition-colors pointer-events-none"></div>
+                             <div className="w-1.5 h-1.5 rounded-full bg-slate-400 dark:bg-slate-600 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue transition-colors pointer-events-none"></div>
                              <span className="pointer-events-none">{item.name}</span>
                            </button>
                         ))}
@@ -347,8 +347,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
           </div>
 
           <div className="flex gap-2 shrink-0">
-             <button onClick={() => handleNavClick('about')} className="flex-1 px-5 py-4 font-bold text-slate-600 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">About</button>
-             <button onClick={() => handleNavClick('contact')} className="flex-1 px-5 py-4 font-bold text-slate-600 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">Contact</button>
+             <button onClick={() => handleNavClick('about')} className="flex-1 px-5 py-4 font-bold text-slate-700 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">About</button>
+             <button onClick={() => handleNavClick('contact')} className="flex-1 px-5 py-4 font-bold text-slate-700 dark:text-gray-300 bg-slate-50 dark:bg-white/5 hover:bg-slate-100 dark:hover:bg-white/10 rounded-2xl transition-colors border border-slate-200 dark:border-white/5">Contact</button>
           </div>
           
           {/* Scroll Spacer to ensure last items are visible above mobile browser bars */}
@@ -363,7 +363,7 @@ const App: React.FC = () => {
   const [showIntro, setShowIntro] = useState(true);
   const [isDark, setIsDark] = useState(true);
   const [search, setSearch] = useState('');
-  const [view, setView] = useState('home'); // home, about, contact, or tool-id
+  const [view, setView] = useState('home'); // home, tool-id (about/contact are sections in home now)
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
 
   // Theme toggle
@@ -387,14 +387,29 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const handleNavigate = (id: string) => {
     if (id === 'root') {
       setView('home');
       setSelectedToolId(null);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (id === 'about' || id === 'contact') {
+      if (view !== 'home') {
+        setView('home');
+        // Wait for state update and render, then scroll
+        setTimeout(() => scrollToSection(id), 100);
+      } else {
+        scrollToSection(id);
+      }
     } else {
-      setView(id);
+      setView(id); // fallback for other potential routes
     }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   // Filter tools
@@ -423,16 +438,16 @@ const App: React.FC = () => {
                 <div className="flex flex-col items-center animate-fade-in-up">
                     <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-slate-900 dark:text-white leading-[1.1]">
                       Supercharge Your <br />
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-neonBlue to-neonPurple animate-pulse">Productivity</span>
+                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple animate-pulse">Productivity</span>
                     </h1>
-                    <p className="text-xl md:text-2xl text-slate-600 dark:text-gray-400 mb-12 leading-relaxed max-w-2xl font-light">
+                    <p className="text-xl md:text-2xl text-slate-700 dark:text-gray-400 mb-12 leading-relaxed max-w-2xl font-light">
                       Access a suite of powerful, developer-grade tools designed to simplify your daily tasks.
                     </p>
                     
                     <div className="relative w-full max-w-2xl group z-10">
-                      <div className="absolute inset-0 bg-gradient-to-r from-neonBlue to-neonPurple rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
-                      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-2 flex items-center shadow-2xl border border-slate-200 dark:border-white/10 transition-transform duration-300 group-hover:scale-[1.02]">
-                        <Search className="ml-4 text-slate-400 w-6 h-6" />
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 dark:from-neonBlue dark:to-neonPurple rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
+                      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-2 flex items-center shadow-xl border border-slate-300 dark:border-white/10 transition-transform duration-300 group-hover:scale-[1.02]">
+                        <Search className="ml-4 text-slate-500 dark:text-slate-400 w-6 h-6" />
                         <input 
                           type="text" 
                           placeholder="Search tools (e.g. bmi, qr, loan)..." 
@@ -447,8 +462,8 @@ const App: React.FC = () => {
 
                 {/* Scroll Indicator (Only visible when search is empty) */}
                 {!search && (
-                   <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-400 dark:text-slate-600 animate-bounce cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => window.scrollTo({top: window.innerHeight, behavior: 'smooth'})}>
-                      <span className="text-sm font-medium uppercase tracking-widest">Explore Tools</span>
+                   <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 dark:text-slate-600 animate-bounce cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => window.scrollTo({top: window.innerHeight, behavior: 'smooth'})}>
+                      <span className="text-sm font-bold uppercase tracking-widest">Explore Tools</span>
                       <ChevronDown size={24} />
                    </div>
                 )}
@@ -461,10 +476,10 @@ const App: React.FC = () => {
                     <div 
                       key={tool.id}
                       onClick={() => handleToolSelect(tool.id)}
-                      className="group relative h-full bg-slate-50 dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-neonBlue/50 hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
+                      className="group relative h-full bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-blue-400 dark:hover:border-neonBlue/50 shadow-sm hover:shadow-xl dark:hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
                     >
                       {/* Inner Glow Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                      <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-white/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
 
                       {/* Card Content */}
                       <div className="relative z-10 flex flex-col h-full">
@@ -472,33 +487,33 @@ const App: React.FC = () => {
                          {/* Header: Icon & Action */}
                          <div className="flex justify-between items-start mb-6">
                             {/* 3D Icon Container */}
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-900 border-t border-l border-white/40 dark:border-white/20 shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
+                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-900 border border-slate-200 dark:border-white/20 shadow-md dark:shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
                                {/* Inner Light */}
-                               <div className="absolute inset-0 bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
+                               <div className="absolute inset-0 bg-blue-400/20 dark:bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
                                {/* The Icon */}
-                               <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-neonBlue transition-colors duration-300 drop-shadow-md">
+                               <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300 drop-shadow-sm">
                                   {React.cloneElement(tool.icon as React.ReactElement, { size: 32, strokeWidth: 1.5 })}
                                </div>
                             </div>
                             
                             {/* Arrow Action */}
-                            <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-neonBlue group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
+                            <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
                                <ArrowUpRight size={20} />
                             </div>
                          </div>
 
                          {/* Text Info */}
-                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-neonBlue transition-colors duration-300">
+                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300">
                            {tool.name}
                          </h3>
-                         <p className="text-base text-slate-500 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
+                         <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
                            {tool.description}
                          </p>
 
                          {/* Tags Footer */}
                          <div className="mt-auto flex flex-wrap gap-2">
                             {tool.tags.split(' ').slice(0, 3).map(tag => (
-                              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 bg-slate-200 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-transparent group-hover:border-neonBlue/20 transition-colors">
+                              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-transparent group-hover:border-blue-200 dark:group-hover:border-neonBlue/20 transition-colors">
                                 #{tag}
                               </span>
                             ))}
@@ -510,81 +525,80 @@ const App: React.FC = () => {
 
                 {filteredTools.length === 0 && (
                   <div className="text-center py-20">
-                    <p className="text-2xl text-slate-400 font-light">No tools found matching "<span className="text-neonBlue">{search}</span>"</p>
-                    <button onClick={() => setSearch('')} className="mt-4 text-neonPurple hover:underline">Clear Search</button>
+                    <p className="text-2xl text-slate-400 font-light">No tools found matching "<span className="text-blue-600 dark:text-neonBlue">{search}</span>"</p>
+                    <button onClick={() => setSearch('')} className="mt-4 text-purple-600 dark:text-neonPurple hover:underline font-medium">Clear Search</button>
                   </div>
                 )}
               </div>
+
+              {/* About Section */}
+              <div id="about" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
+                 <div className="max-w-3xl mx-auto text-center animate-fade-in-up">
+                    <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">About ToolCraft AI</h2>
+                    <p className="text-lg text-slate-700 dark:text-gray-300 mb-6 font-medium">
+                       ToolCraft AI is a premium suite of utility tools designed for modern creators, developers, and professionals. 
+                       We believe in clean design, speed, and privacy. All tools run client-side, meaning your data never leaves your device.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
+                          <div className="text-3xl mb-2">⚡</div>
+                          <h3 className="font-bold text-slate-900 dark:text-white">Lightning Fast</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-500">Optimized for instant load times and zero lag.</p>
+                       </div>
+                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
+                          <div className="text-3xl mb-2">🔒</div>
+                          <h3 className="font-bold text-slate-900 dark:text-white">Privacy First</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-500">No data collection. Everything runs locally.</p>
+                       </div>
+                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
+                          <div className="text-3xl mb-2">🎨</div>
+                          <h3 className="font-bold text-slate-900 dark:text-white">Modern UI</h3>
+                          <p className="text-sm text-slate-600 dark:text-slate-500">Glassmorphism and neomorphism inspired design.</p>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+
+              {/* Contact Section */}
+              <div id="contact" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
+                 <div className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center shadow-lg dark:shadow-none animate-fade-in-up">
+                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Get in Touch</h2>
+                    <p className="text-slate-700 dark:text-gray-400 mb-8 font-medium">
+                       Have a suggestion for a new tool? Found a bug? Just want to say hi?
+                    </p>
+                    <div className="flex justify-center gap-6">
+                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-600 dark:hover:bg-neonBlue hover:text-white dark:hover:text-slate-900 transition-colors font-bold text-slate-700 dark:text-white">
+                          <Github size={20} /> GitHub
+                       </a>
+                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-purple-600 dark:hover:bg-neonPurple hover:text-white transition-colors font-bold text-slate-700 dark:text-white">
+                          <Mail size={20} /> Email
+                       </a>
+                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-500 hover:text-white transition-colors font-bold text-slate-700 dark:text-white">
+                          <Linkedin size={20} /> LinkedIn
+                       </a>
+                    </div>
+                 </div>
+              </div>
+
             </div>
           )}
 
           {view === 'tool' && selectedToolId && (
             <div className="animate-fade-in-up pt-32">
-              <button onClick={() => setView('home')} className="mb-6 flex items-center gap-2 text-slate-500 hover:text-neonBlue transition-colors group">
-                <span className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-neonBlue group-hover:text-slate-900 transition-colors">
+              <button onClick={() => setView('home')} className="mb-6 flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:hover:text-neonBlue transition-colors group">
+                <span className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 transition-colors">
                    <ChevronDown className="rotate-90" size={16} />
                 </span>
-                <span className="font-medium">Back to Tools</span>
+                <span className="font-bold">Back to Tools</span>
               </button>
               <div className="max-w-4xl mx-auto min-h-[600px]">
                 {toolsList.find(t => t.id === selectedToolId)?.component}
               </div>
             </div>
           )}
-
-          {view === 'about' && (
-             <div className="animate-fade-in-up pt-32">
-               <div className="max-w-3xl mx-auto text-center">
-                  <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">About ToolCraft AI</h2>
-                  <p className="text-lg text-slate-600 dark:text-gray-300 mb-6">
-                     ToolCraft AI is a premium suite of utility tools designed for modern creators, developers, and professionals. 
-                     We believe in clean design, speed, and privacy. All tools run client-side, meaning your data never leaves your device.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
-                        <div className="text-3xl mb-2">⚡</div>
-                        <h3 className="font-bold text-slate-900 dark:text-white">Lightning Fast</h3>
-                        <p className="text-sm text-slate-500">Optimized for instant load times and zero lag.</p>
-                     </div>
-                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
-                        <div className="text-3xl mb-2">🔒</div>
-                        <h3 className="font-bold text-slate-900 dark:text-white">Privacy First</h3>
-                        <p className="text-sm text-slate-500">No data collection. Everything runs locally.</p>
-                     </div>
-                     <div className="p-6 rounded-2xl bg-slate-100 dark:bg-white/5">
-                        <div className="text-3xl mb-2">🎨</div>
-                        <h3 className="font-bold text-slate-900 dark:text-white">Modern UI</h3>
-                        <p className="text-sm text-slate-500">Glassmorphism and neomorphism inspired design.</p>
-                     </div>
-                  </div>
-               </div>
-            </div>
-          )}
-
-          {view === 'contact' && (
-            <div className="animate-fade-in-up pt-32">
-               <div className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center">
-                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Get in Touch</h2>
-                  <p className="text-slate-600 dark:text-gray-400 mb-8">
-                     Have a suggestion for a new tool? Found a bug? Just want to say hi?
-                  </p>
-                  <div className="flex justify-center gap-6">
-                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-neonBlue hover:text-slate-900 transition-colors">
-                        <Github size={20} /> GitHub
-                     </a>
-                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-neonPurple hover:text-white transition-colors">
-                        <Mail size={20} /> Email
-                     </a>
-                     <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-500 hover:text-white transition-colors">
-                        <Linkedin size={20} /> LinkedIn
-                     </a>
-                  </div>
-               </div>
-            </div>
-          )}
         </main>
 
-        <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/50">
+        <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/50 font-medium">
            <p>© {new Date().getFullYear()} ToolCraft AI. Made with 💙 and ☕.</p>
         </footer>
         

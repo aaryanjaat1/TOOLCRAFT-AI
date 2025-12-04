@@ -8,7 +8,7 @@ import {
   Trash2, Plus, ArrowRight, Wifi, Battery, Monitor, Calculator, 
   Scale, Percent, Tag, Delete, Youtube, Instagram, Twitter, Hash,
   BarChart2, Clock, Image, ThumbsUp, GraduationCap, Briefcase, 
-  TrendingUp, AlertTriangle, Keyboard, UserCheck, Calendar
+  TrendingUp, AlertTriangle, Keyboard, UserCheck, Calendar, Loader2
 } from 'lucide-react';
 
 // --- BMI Calculator ---
@@ -27,10 +27,10 @@ export const BMICalculator: React.FC = () => {
   };
 
   const getCategory = (val: number) => {
-    if (val < 18.5) return { label: 'Underweight', color: 'text-yellow-600 dark:text-yellow-400' };
-    if (val < 24.9) return { label: 'Normal', color: 'text-green-600 dark:text-green-400' };
-    if (val < 29.9) return { label: 'Overweight', color: 'text-orange-600 dark:text-orange-400' };
-    return { label: 'Obese', color: 'text-red-600 dark:text-red-500' };
+    if (val < 18.5) return { label: 'Underweight', color: 'text-yellow-700 dark:text-yellow-400' };
+    if (val < 24.9) return { label: 'Normal', color: 'text-green-700 dark:text-green-400' };
+    if (val < 29.9) return { label: 'Overweight', color: 'text-orange-700 dark:text-orange-400' };
+    return { label: 'Obese', color: 'text-red-700 dark:text-red-500' };
   };
 
   return (
@@ -41,10 +41,10 @@ export const BMICalculator: React.FC = () => {
         <NeonButton onClick={calculate} className="w-full mt-4">Calculate BMI</NeonButton>
       </div>
       {bmi !== null && (
-        <div className="mt-6 p-4 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 text-center animate-pulse-slow">
-          <p className="text-gray-500 dark:text-gray-400 text-sm">Your BMI</p>
-          <div className="text-4xl font-bold text-slate-800 dark:text-white my-2">{bmi}</div>
-          <p className={`font-semibold ${getCategory(bmi).color}`}>{getCategory(bmi).label}</p>
+        <div className="mt-6 p-4 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-300 dark:border-white/10 text-center animate-pulse-slow">
+          <p className="text-slate-600 dark:text-gray-400 text-sm font-medium">Your BMI</p>
+          <div className="text-4xl font-bold text-slate-900 dark:text-white my-2">{bmi}</div>
+          <p className={`font-bold ${getCategory(bmi).color}`}>{getCategory(bmi).label}</p>
         </div>
       )}
     </GlassCard>
@@ -80,7 +80,7 @@ export const EMICalculator: React.FC = () => {
     { name: 'Interest', value: result.totalInterest },
   ] : [];
 
-  const COLORS = ['#00f3ff', '#bc13fe'];
+  const COLORS = ['#0284c7', '#9333ea'];
 
   return (
     <GlassCard title="EMI Calculator" className="h-full flex flex-col">
@@ -94,12 +94,12 @@ export const EMICalculator: React.FC = () => {
         <div className="mt-6">
           <div className="flex justify-between items-center mb-4">
              <div className="text-left">
-                <p className="text-gray-500 dark:text-gray-400 text-xs">Monthly EMI</p>
-                <p className="text-xl font-bold text-neonBlue">${result.emi.toLocaleString()}</p>
+                <p className="text-slate-600 dark:text-gray-400 text-xs font-semibold">Monthly EMI</p>
+                <p className="text-xl font-bold text-blue-600 dark:text-neonBlue">${result.emi.toLocaleString()}</p>
              </div>
              <div className="text-right">
-                <p className="text-gray-500 dark:text-gray-400 text-xs">Total Interest</p>
-                <p className="text-xl font-bold text-neonPurple">${result.totalInterest.toLocaleString()}</p>
+                <p className="text-slate-600 dark:text-gray-400 text-xs font-semibold">Total Interest</p>
+                <p className="text-xl font-bold text-purple-600 dark:text-neonPurple">${result.totalInterest.toLocaleString()}</p>
              </div>
           </div>
           <div className="h-40 w-full">
@@ -119,8 +119,8 @@ export const EMICalculator: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
-                <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px' }} />
-                <Legend iconSize={8} wrapperStyle={{ fontSize: '12px' }}/>
+                <RechartsTooltip contentStyle={{ backgroundColor: '#1e293b', border: 'none', borderRadius: '8px', color: '#fff' }} />
+                <Legend iconSize={8} wrapperStyle={{ fontSize: '12px', color: '#475569' }}/>
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -163,17 +163,17 @@ export const AgeCalculator: React.FC = () => {
       </div>
       {age && (
         <div className="mt-8 grid grid-cols-3 gap-2 text-center">
-          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-200 dark:border-white/10">
-            <div className="text-2xl font-bold text-neonBlue">{age.years}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Years</div>
+          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-300 dark:border-white/10">
+            <div className="text-2xl font-bold text-blue-600 dark:text-neonBlue">{age.years}</div>
+            <div className="text-xs font-semibold text-slate-600 dark:text-gray-400">Years</div>
           </div>
-          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-200 dark:border-white/10">
-            <div className="text-2xl font-bold text-neonPurple">{age.months}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Months</div>
+          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-300 dark:border-white/10">
+            <div className="text-2xl font-bold text-purple-600 dark:text-neonPurple">{age.months}</div>
+            <div className="text-xs font-semibold text-slate-600 dark:text-gray-400">Months</div>
           </div>
-          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-200 dark:border-white/10">
-            <div className="text-2xl font-bold text-green-500 dark:text-green-400">{age.days}</div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Days</div>
+          <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg border border-slate-300 dark:border-white/10">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">{age.days}</div>
+            <div className="text-xs font-semibold text-slate-600 dark:text-gray-400">Days</div>
           </div>
         </div>
       )}
@@ -201,11 +201,11 @@ export const GSTCalculator: React.FC = () => {
       <div className="space-y-4">
         <InputGroup label="Original Amount" id="gst-amount" type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
         <div className="mb-4">
-          <label className="block text-sm font-medium text-slate-600 dark:text-gray-300 mb-1">GST Slab</label>
+          <label className="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-1">GST Slab</label>
           <select
             value={gst}
             onChange={(e) => setGst(e.target.value)}
-            className="w-full bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-neonBlue outline-none transition-all duration-300 focus:scale-[1.02]"
+            className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-slate-900 dark:text-white focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue outline-none transition-all duration-300 focus:scale-[1.02]"
           >
             <option value="5">5%</option>
             <option value="12">12%</option>
@@ -217,13 +217,13 @@ export const GSTCalculator: React.FC = () => {
       </div>
       {result && (
         <div className="mt-6 space-y-3">
-          <div className="flex justify-between border-b border-slate-200 dark:border-white/10 pb-2">
-             <span className="text-gray-500 dark:text-gray-400">GST Amount</span>
-             <span className="text-neonPurple font-semibold">+{result.gstAmount.toFixed(2)}</span>
+          <div className="flex justify-between border-b border-slate-300 dark:border-white/10 pb-2">
+             <span className="text-slate-600 dark:text-gray-400 font-medium">GST Amount</span>
+             <span className="text-purple-600 dark:text-neonPurple font-bold">+{result.gstAmount.toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center">
-             <span className="text-slate-800 dark:text-white font-bold">Total Payable</span>
-             <span className="text-2xl font-bold text-neonBlue">{result.total.toFixed(2)}</span>
+             <span className="text-slate-900 dark:text-white font-bold">Total Payable</span>
+             <span className="text-2xl font-bold text-blue-600 dark:text-neonBlue">{result.total.toFixed(2)}</span>
           </div>
         </div>
       )}
@@ -265,11 +265,11 @@ export const QRGenerator: React.FC = () => {
         <NeonButton onClick={generate} className="w-full">Generate QR</NeonButton>
       </div>
       <div className="mt-6 flex flex-col items-center justify-center space-y-4">
-        <div className="h-[200px] w-full bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 relative overflow-hidden flex items-center justify-center transition-all hover:shadow-[0_0_15px_rgba(0,243,255,0.15)]">
+        <div className="h-[200px] w-full bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-300 dark:border-white/10 relative overflow-hidden flex items-center justify-center transition-all hover:shadow-lg">
           {qrUrl ? (
             <img src={qrUrl} alt="QR Code" className="rounded-lg shadow-lg mix-blend-multiply dark:mix-blend-screen" />
           ) : (
-            <p className="text-gray-500 text-sm">QR Code will appear here</p>
+            <p className="text-slate-500 text-sm">QR Code will appear here</p>
           )}
         </div>
         {qrUrl && (
@@ -323,23 +323,23 @@ export const PasswordGenerator: React.FC = () => {
       <div className="space-y-4">
         <div>
            <div className="flex justify-between mb-2">
-             <span className="text-sm text-slate-600 dark:text-gray-300">Length</span>
-             <span className="text-sm font-bold text-neonBlue">{length}</span>
+             <span className="text-sm text-slate-700 dark:text-gray-300 font-medium">Length</span>
+             <span className="text-sm font-bold text-blue-600 dark:text-neonBlue">{length}</span>
            </div>
            <input
              type="range" min="6" max="32" value={length}
              onChange={(e) => setLength(parseInt(e.target.value))}
-             className="w-full h-2 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-neonBlue"
+             className="w-full h-2 bg-slate-300 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 dark:accent-neonBlue"
            />
         </div>
-        <div className="grid grid-cols-2 gap-2 text-sm text-slate-600 dark:text-gray-300">
+        <div className="grid grid-cols-2 gap-2 text-sm text-slate-700 dark:text-gray-300 font-medium">
            {Object.keys(options).map(key => (
              <label key={key} className="flex items-center space-x-2 cursor-pointer hover:text-slate-900 dark:hover:text-white transition-colors">
                <input
                  type="checkbox"
                  checked={options[key as keyof typeof options]}
                  onChange={() => setOptions({...options, [key]: !options[key as keyof typeof options]})}
-                 className="form-checkbox rounded text-neonPurple focus:ring-0 bg-slate-200 dark:bg-slate-700 border-none mr-2 transition-transform active:scale-90"
+                 className="form-checkbox rounded text-purple-600 dark:text-neonPurple focus:ring-0 bg-slate-200 dark:bg-slate-700 border-none mr-2 transition-transform active:scale-90"
                />
                <span className="capitalize">{key}</span>
              </label>
@@ -351,12 +351,12 @@ export const PasswordGenerator: React.FC = () => {
         </NeonButton>
       </div>
       <div className="mt-4 relative group">
-        <div className="w-full bg-white dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl p-4 font-mono text-center text-lg min-h-[60px] flex items-center justify-center break-all text-neonGreen shadow-inner transition-all group-hover:border-neonGreen/30">
+        <div className="w-full bg-white dark:bg-black/30 border border-slate-300 dark:border-white/10 rounded-xl p-4 font-mono text-center text-lg min-h-[60px] flex items-center justify-center break-all text-green-600 dark:text-neonGreen shadow-inner transition-all group-hover:border-green-500/30">
            {password || "...."}
         </div>
         <button
           onClick={copyToClipboard}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg transition-colors text-gray-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 hover:bg-slate-200 dark:hover:bg-white/10 rounded-lg transition-colors text-slate-500 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white"
           title="Copy"
         >
           {copied ? <Check size={18} className="text-green-500"/> : <Copy size={18} />}
@@ -399,19 +399,19 @@ export const DiceRoller: React.FC = () => {
     <GlassCard title="Dice Roller" className="h-full flex flex-col">
        <div className="grid grid-cols-2 gap-4 mb-4">
          <div>
-            <label className="text-xs font-semibold text-slate-500 mb-1 block">Count</label>
+            <label className="text-xs font-bold text-slate-600 mb-1 block">Count</label>
             <div className="flex items-center space-x-2">
-               <button onClick={() => setNumDice(Math.max(1, numDice - 1))} className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs hover:bg-slate-300 hover:shadow-md active:scale-95 transition-all">-</button>
-               <span className="font-bold text-lg w-6 text-center">{numDice}</span>
-               <button onClick={() => setNumDice(Math.min(6, numDice + 1))} className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs hover:bg-slate-300 hover:shadow-md active:scale-95 transition-all">+</button>
+               <button onClick={() => setNumDice(Math.max(1, numDice - 1))} className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs hover:bg-slate-300 hover:shadow-md active:scale-95 transition-all font-bold text-slate-700 dark:text-white">-</button>
+               <span className="font-bold text-lg w-6 text-center text-slate-800 dark:text-white">{numDice}</span>
+               <button onClick={() => setNumDice(Math.min(6, numDice + 1))} className="p-2 bg-slate-200 dark:bg-slate-700 rounded-lg text-xs hover:bg-slate-300 hover:shadow-md active:scale-95 transition-all font-bold text-slate-700 dark:text-white">+</button>
             </div>
          </div>
          <div>
-            <label className="text-xs font-semibold text-slate-500 mb-1 block">Type</label>
+            <label className="text-xs font-bold text-slate-600 mb-1 block">Type</label>
             <select 
                value={sides} 
                onChange={(e) => setSides(Number(e.target.value))}
-               className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-neonBlue transition-all focus:scale-[1.02]"
+               className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded-lg p-2 text-sm outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all focus:scale-[1.02] text-slate-900 dark:text-white font-medium"
             >
                <option value="4">D4 (Tetrahedron)</option>
                <option value="6">D6 (Cube)</option>
@@ -423,7 +423,7 @@ export const DiceRoller: React.FC = () => {
          </div>
        </div>
 
-       <div className="flex-grow flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl mb-4 min-h-[160px]">
+       <div className="flex-grow flex flex-col items-center justify-center p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl mb-4 min-h-[160px] border border-slate-200 dark:border-white/5">
           <div className="flex flex-wrap justify-center gap-4 mb-4">
              {results.map((val, idx) => (
                 <div 
@@ -432,15 +432,16 @@ export const DiceRoller: React.FC = () => {
                   style={{
                      backgroundColor: sides === 6 ? 'white' : sides === 20 ? '#dc2626' : sides === 12 ? '#9333ea' : sides === 10 ? '#2563eb' : sides === 8 ? '#16a34a' : '#ea580c',
                      borderRadius: sides === 6 ? '12px' : '50%', // Simple approximation for non-D6
-                     color: sides === 6 ? '#0f172a' : 'white'
+                     color: sides === 6 ? '#0f172a' : 'white',
+                     border: sides === 6 ? '1px solid #e2e8f0' : 'none'
                   }}
                 >
                    {val}
                 </div>
              ))}
           </div>
-          <div className="text-slate-500 text-sm font-medium">
-             Total: <span className="text-neonBlue font-bold text-lg">{total}</span>
+          <div className="text-slate-600 text-sm font-bold">
+             Total: <span className="text-blue-600 dark:text-neonBlue font-black text-lg">{total}</span>
           </div>
        </div>
        
@@ -460,7 +461,7 @@ export const SpinWheel: React.FC = () => {
   const [result, setResult] = useState<string | null>(null);
 
   const segments = ['Prize A', 'Try Again', 'Bonus!', 'Jackpot', 'Mystery', 'No Luck'];
-  const colors = ['#00f3ff', '#bc13fe', '#0aff60', '#ff0055', '#ffaa00', '#6b7280'];
+  const colors = ['#0ea5e9', '#d946ef', '#22c55e', '#f43f5e', '#f97316', '#64748b'];
 
   const spin = () => {
     if (spinning) return;
@@ -489,7 +490,7 @@ export const SpinWheel: React.FC = () => {
         <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent border-t-[20px] border-t-slate-800 dark:border-t-white z-20 drop-shadow-lg"></div>
         
         <div 
-          className="w-40 h-40 rounded-full border-4 border-slate-200 dark:border-white/10 overflow-hidden shadow-2xl relative transition-transform cubic-bezier(0.25, 0.1, 0.25, 1)"
+          className="w-40 h-40 rounded-full border-4 border-slate-300 dark:border-white/10 overflow-hidden shadow-2xl relative transition-transform cubic-bezier(0.25, 0.1, 0.25, 1)"
           style={{ 
             background: `conic-gradient(
               ${colors[0]} 0deg 60deg, 
@@ -510,7 +511,7 @@ export const SpinWheel: React.FC = () => {
       </div>
       
       <div className="h-8 mb-2">
-         {result && <div className="text-xl font-bold text-neonBlue animate-pulse">{result}</div>}
+         {result && <div className="text-xl font-bold text-blue-600 dark:text-neonBlue animate-pulse">{result}</div>}
       </div>
       
       <NeonButton onClick={spin} disabled={spinning} className="w-full">
@@ -593,11 +594,11 @@ export const LuckyNumber: React.FC = () => {
        
        <div className="flex-grow flex items-center justify-center py-6">
           {lucky !== null ? (
-             <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-neonBlue to-neonGreen animate-pulse">
+             <div className="text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-green-500 dark:from-neonBlue dark:to-neonGreen animate-pulse">
                 {lucky}
              </div>
           ) : (
-             <div className="text-slate-400 text-sm">Set range & generate</div>
+             <div className="text-slate-400 text-sm font-medium">Set range & generate</div>
           )}
        </div>
 
@@ -635,9 +636,9 @@ export const LoveCalculator: React.FC = () => {
        <div className="flex-grow flex flex-col items-center justify-center relative min-h-[100px]">
           {score !== null ? (
              <>
-               <Heart className={`text-red-500 fill-red-500 animate-pulse transition-all duration-1000 mb-2`} size={48 + (score/2)} />
-               <div className="text-4xl font-bold text-slate-800 dark:text-white">{score}%</div>
-               <div className="text-xs text-slate-500 mt-1">
+               <Heart className={`text-red-600 fill-red-600 animate-pulse transition-all duration-1000 mb-2`} size={48 + (score/2)} />
+               <div className="text-4xl font-bold text-slate-900 dark:text-white">{score}%</div>
+               <div className="text-xs text-slate-500 mt-1 font-medium">
                  {score > 80 ? 'Soulmates!' : score > 50 ? 'Good Match' : 'Just Friends?'}
                </div>
              </>
@@ -673,27 +674,27 @@ export const TextStatistics: React.FC = () => {
   return (
     <GlassCard title="Text Statistics" className="h-full flex flex-col">
       <textarea
-        className="w-full h-32 bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none mb-4 resize-none transition-all duration-300 focus:ring-2 focus:ring-neonBlue focus:scale-[1.01] focus:shadow-[0_0_15px_rgba(0,243,255,0.1)]"
+        className="w-full h-32 bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none mb-4 resize-none transition-all duration-300 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue focus:scale-[1.01] focus:shadow-md dark:focus:shadow-[0_0_15px_rgba(0,243,255,0.1)] text-slate-900 dark:text-white placeholder-slate-400"
         placeholder="Paste your text here..."
         value={text}
         onChange={(e) => setText(e.target.value)}
       />
       <div className="grid grid-cols-2 gap-3 flex-grow">
-        <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105">
-           <div className="text-2xl font-bold text-neonBlue">{stats.words}</div>
-           <div className="text-xs text-slate-500">Words</div>
+        <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105 border border-slate-200 dark:border-white/5">
+           <div className="text-2xl font-bold text-blue-600 dark:text-neonBlue">{stats.words}</div>
+           <div className="text-xs text-slate-600 dark:text-slate-500 font-medium">Words</div>
         </div>
-        <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105">
-           <div className="text-2xl font-bold text-neonPurple">{stats.chars}</div>
-           <div className="text-xs text-slate-500">Characters</div>
+        <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105 border border-slate-200 dark:border-white/5">
+           <div className="text-2xl font-bold text-purple-600 dark:text-neonPurple">{stats.chars}</div>
+           <div className="text-xs text-slate-600 dark:text-slate-500 font-medium">Characters</div>
         </div>
-        <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105">
+        <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105 border border-slate-200 dark:border-white/5">
            <div className="text-xl font-bold text-slate-800 dark:text-white">{stats.sentences}</div>
-           <div className="text-xs text-slate-500">Sentences</div>
+           <div className="text-xs text-slate-600 dark:text-slate-500 font-medium">Sentences</div>
         </div>
-        <div className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105">
+        <div className="bg-slate-100 dark:bg-white/5 p-3 rounded-lg text-center transition-transform hover:scale-105 border border-slate-200 dark:border-white/5">
            <div className="text-xl font-bold text-slate-800 dark:text-white">{stats.readingTime}m</div>
-           <div className="text-xs text-slate-500">Read Time</div>
+           <div className="text-xs text-slate-600 dark:text-slate-500 font-medium">Read Time</div>
         </div>
       </div>
       <NeonButton onClick={() => setText('')} variant="secondary" className="w-full mt-4 h-10 py-0">Clear</NeonButton>
@@ -729,24 +730,24 @@ export const TextUtility: React.FC = () => {
   return (
     <GlassCard title="Text Utility" className="h-full flex flex-col">
        <div className="flex gap-2 mb-2 overflow-x-auto pb-2 scrollbar-hide">
-         <button onClick={() => process('upper')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonBlue hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95">UPPER</button>
-         <button onClick={() => process('lower')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonBlue hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95">lower</button>
-         <button onClick={() => process('title')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonBlue hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95">Title Case</button>
-         <button onClick={() => process('reverse')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonBlue hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95">Reverse</button>
+         <button onClick={() => process('upper')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-blue-500 hover:text-white dark:hover:bg-neonBlue dark:hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95 font-medium text-slate-700 dark:text-white">UPPER</button>
+         <button onClick={() => process('lower')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-blue-500 hover:text-white dark:hover:bg-neonBlue dark:hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95 font-medium text-slate-700 dark:text-white">lower</button>
+         <button onClick={() => process('title')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-blue-500 hover:text-white dark:hover:bg-neonBlue dark:hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95 font-medium text-slate-700 dark:text-white">Title Case</button>
+         <button onClick={() => process('reverse')} className="px-2 py-1 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-blue-500 hover:text-white dark:hover:bg-neonBlue dark:hover:text-slate-900 transition-colors whitespace-nowrap active:scale-95 font-medium text-slate-700 dark:text-white">Reverse</button>
        </div>
        <div className="flex gap-2 mb-3">
-         <button onClick={() => process('trim')} className="flex-1 px-2 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonPurple hover:text-white transition-colors flex items-center justify-center gap-1 active:scale-95"><Scissors size={12}/> Trim Space</button>
-         <button onClick={() => process('dedupe')} className="flex-1 px-2 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-neonPurple hover:text-white transition-colors flex items-center justify-center gap-1 active:scale-95"><Eraser size={12}/> Dedupe Lines</button>
+         <button onClick={() => process('trim')} className="flex-1 px-2 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-purple-500 hover:text-white dark:hover:bg-neonPurple dark:hover:text-white transition-colors flex items-center justify-center gap-1 active:scale-95 font-medium text-slate-700 dark:text-white"><Scissors size={12}/> Trim Space</button>
+         <button onClick={() => process('dedupe')} className="flex-1 px-2 py-1.5 bg-slate-200 dark:bg-slate-700 rounded text-xs hover:bg-purple-500 hover:text-white dark:hover:bg-neonPurple dark:hover:text-white transition-colors flex items-center justify-center gap-1 active:scale-95 font-medium text-slate-700 dark:text-white"><Eraser size={12}/> Dedupe Lines</button>
        </div>
        
        <div className="relative flex-grow">
           <textarea
-            className="w-full h-full min-h-[140px] bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none resize-none font-mono transition-all duration-300 focus:ring-2 focus:ring-neonBlue focus:scale-[1.01]"
+            className="w-full h-full min-h-[140px] bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none resize-none font-mono transition-all duration-300 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue focus:scale-[1.01] text-slate-900 dark:text-white placeholder-slate-400"
             placeholder="Type or paste text..."
             value={text}
             onChange={(e) => setText(e.target.value)}
           />
-          {msg && <div className="absolute top-2 right-2 bg-black/70 text-white text-[10px] px-2 py-1 rounded fade-in">{msg}</div>}
+          {msg && <div className="absolute top-2 right-2 bg-slate-900/90 text-white text-[10px] px-2 py-1 rounded fade-in shadow-md">{msg}</div>}
        </div>
 
        <div className="flex gap-2 mt-3">
@@ -785,12 +786,12 @@ export const DevConverter: React.FC = () => {
 
   return (
     <GlassCard title="Dev Converter" className="h-full flex flex-col">
-       <div className="flex border-b border-slate-200 dark:border-white/10 mb-3">
+       <div className="flex border-b border-slate-300 dark:border-white/10 mb-3">
           {['json', 'base64', 'url'].map(m => (
              <button 
                key={m} 
                onClick={() => setMode(m)}
-               className={`flex-1 pb-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${mode === m ? 'text-neonBlue border-b-2 border-neonBlue drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]' : 'text-slate-500'}`}
+               className={`flex-1 pb-2 text-xs font-bold uppercase tracking-wider transition-all duration-300 ${mode === m ? 'text-blue-600 dark:text-neonBlue border-b-2 border-blue-600 dark:border-neonBlue' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
              >
                {m}
              </button>
@@ -798,7 +799,7 @@ export const DevConverter: React.FC = () => {
        </div>
 
        <textarea
-          className="w-full flex-grow min-h-[120px] bg-slate-900 text-green-400 border border-slate-700 rounded-lg p-3 text-xs focus:ring-1 focus:ring-neonBlue outline-none resize-none font-mono mb-3"
+          className="w-full flex-grow min-h-[120px] bg-slate-900 text-green-400 border border-slate-700 rounded-lg p-3 text-xs focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue outline-none resize-none font-mono mb-3 shadow-inner"
           placeholder={mode === 'json' ? 'Paste JSON...' : 'Paste Text...'}
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -833,39 +834,35 @@ export const SeoPreview: React.FC = () => {
     <GlassCard title="SEO Preview" className="h-full flex flex-col">
        <div className="space-y-3 mb-4">
          <div>
-            <label className="text-xs text-slate-500 mb-1 flex justify-between">
+            <label className="text-xs font-bold text-slate-600 mb-1 flex justify-between">
               <span>Title</span>
-              <span className={title.length > 60 ? 'text-red-500' : 'text-green-500'}>{title.length}/60</span>
+              <span className={title.length > 60 ? 'text-red-500' : 'text-green-600'}>{title.length}/60</span>
             </label>
-            <input className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm outline-none transition-all focus:ring-1 focus:ring-neonBlue" value={title} onChange={e => setTitle(e.target.value)} />
+            <input className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm outline-none transition-all focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white" value={title} onChange={e => setTitle(e.target.value)} />
          </div>
          <div>
-            <label className="text-xs text-slate-500 mb-1 flex justify-between">
+            <label className="text-xs font-bold text-slate-600 mb-1 flex justify-between">
               <span>Description</span>
-              <span className={desc.length > 160 ? 'text-red-500' : 'text-green-500'}>{desc.length}/160</span>
+              <span className={desc.length > 160 ? 'text-red-500' : 'text-green-600'}>{desc.length}/160</span>
             </label>
-            <textarea className="w-full bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm outline-none h-16 resize-none transition-all focus:ring-1 focus:ring-neonBlue" value={desc} onChange={e => setDesc(e.target.value)} />
+            <textarea className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-600 rounded px-2 py-1 text-sm outline-none h-16 resize-none transition-all focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white" value={desc} onChange={e => setDesc(e.target.value)} />
          </div>
        </div>
 
-       <div className="flex-grow bg-white p-4 rounded-xl border border-slate-200 shadow-sm overflow-hidden transition-transform hover:scale-[1.01]">
+       <div className="flex-grow bg-white p-4 rounded-xl border border-slate-300 shadow-md overflow-hidden transition-transform hover:scale-[1.01]">
           <div className="flex items-center gap-2 mb-1">
-             <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center text-[10px]">G</div>
+             <div className="w-6 h-6 bg-slate-100 rounded-full flex items-center justify-center text-[10px] text-slate-700 font-bold border border-slate-200">G</div>
              <div className="flex flex-col">
-                <span className="text-[11px] text-slate-800 font-medium">ToolCraft AI</span>
+                <span className="text-[11px] text-slate-900 font-bold">ToolCraft AI</span>
                 <span className="text-[10px] text-slate-500 truncate max-w-[200px]">{url}</span>
              </div>
           </div>
-          <h4 className="text-[#1a0dab] text-lg leading-tight hover:underline cursor-pointer truncate">{title}</h4>
+          <h4 className="text-[#1a0dab] text-lg leading-tight hover:underline cursor-pointer truncate font-medium">{title}</h4>
           <p className="text-xs text-slate-600 mt-1 line-clamp-2">{desc}</p>
        </div>
     </GlassCard>
   );
 };
-
-// -----------------------------------------------------
-// WEB & NICHE TOOLS
-// -----------------------------------------------------
 
 // --- Domain Generator ---
 export const DomainTool: React.FC = () => {
@@ -910,7 +907,7 @@ export const DomainTool: React.FC = () => {
     <GlassCard title="Domain Name Gen" className="h-full flex flex-col">
       <div className="flex gap-2 mb-4">
         <input 
-          className="flex-grow bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 outline-none transition-all duration-300 focus:ring-2 focus:ring-neonBlue focus:scale-[1.01]"
+          className="flex-grow bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 outline-none transition-all duration-300 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue focus:scale-[1.01] text-slate-900 dark:text-white"
           placeholder="Enter keyword (e.g. craft)"
           value={keyword}
           onChange={e => setKeyword(e.target.value)}
@@ -923,18 +920,18 @@ export const DomainTool: React.FC = () => {
       
       <div className="flex-grow overflow-y-auto min-h-[150px] space-y-2 pr-1 custom-scrollbar">
         {loading ? (
-          <div className="text-center py-8 text-slate-400 animate-pulse">Checking global availability...</div>
+          <div className="text-center py-8 text-slate-400 animate-pulse font-medium">Checking global availability...</div>
         ) : domains.length > 0 ? (
           domains.map((d, i) => (
-            <div key={i} className="flex items-center justify-between p-2 bg-slate-50 dark:bg-white/5 rounded-lg border border-slate-100 dark:border-white/5 transition-colors hover:bg-slate-100 dark:hover:bg-white/10">
-              <span className="font-medium text-sm text-slate-700 dark:text-gray-200">{d.name}</span>
-              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${d.status ? 'bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-500 dark:bg-red-900/30 dark:text-red-400'}`}>
+            <div key={i} className="flex items-center justify-between p-2 bg-slate-100 dark:bg-white/5 rounded-lg border border-slate-200 dark:border-white/5 transition-colors hover:bg-slate-200 dark:hover:bg-white/10">
+              <span className="font-bold text-sm text-slate-800 dark:text-gray-200">{d.name}</span>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${d.status ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400'}`}>
                 {d.status ? 'AVAILABLE' : 'TAKEN'}
               </span>
             </div>
           ))
         ) : (
-          <div className="text-center py-8 text-slate-400 text-xs">Enter a keyword to generate ideas</div>
+          <div className="text-center py-8 text-slate-400 text-xs font-medium">Enter a keyword to generate ideas</div>
         )}
       </div>
     </GlassCard>
@@ -971,10 +968,10 @@ export const WebAnalyzer: React.FC = () => {
 
   const Gauge: React.FC<{val: number, label: string, color: string}> = ({val, label, color}) => (
     <div className="flex flex-col items-center animate-fade-in-up">
-      <div className={`relative w-16 h-16 rounded-full border-4 flex items-center justify-center font-bold text-lg mb-2 transition-all hover:scale-110 ${color === 'green' ? 'border-green-500 text-green-500' : color === 'orange' ? 'border-orange-500 text-orange-500' : 'border-red-500 text-red-500'}`}>
+      <div className={`relative w-16 h-16 rounded-full border-4 flex items-center justify-center font-bold text-lg mb-2 transition-all hover:scale-110 ${color === 'green' ? 'border-green-500 text-green-600 dark:text-green-500' : color === 'orange' ? 'border-orange-500 text-orange-600 dark:text-orange-500' : 'border-red-500 text-red-600 dark:text-red-500'}`}>
         {val}
       </div>
-      <span className="text-[10px] uppercase font-bold text-slate-500">{label}</span>
+      <span className="text-[10px] uppercase font-bold text-slate-600 dark:text-slate-500">{label}</span>
     </div>
   );
 
@@ -982,7 +979,7 @@ export const WebAnalyzer: React.FC = () => {
     <GlassCard title="Site Speed Audit" className="h-full flex flex-col">
        <div className="flex gap-2 mb-6">
          <input 
-            className="flex-grow bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-neonBlue focus:scale-[1.01]"
+            className="flex-grow bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 text-sm outline-none transition-all duration-300 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue focus:scale-[1.01] text-slate-900 dark:text-white"
             placeholder="https://example.com"
             value={url}
             onChange={e => setUrl(e.target.value)}
@@ -995,8 +992,8 @@ export const WebAnalyzer: React.FC = () => {
        <div className="flex-grow flex items-center justify-center">
          {analyzing ? (
            <div className="text-center">
-              <RefreshCw className="animate-spin text-neonBlue mx-auto mb-2" />
-              <p className="text-xs text-slate-500">{stage}</p>
+              <RefreshCw className="animate-spin text-blue-600 dark:text-neonBlue mx-auto mb-2" />
+              <p className="text-xs text-slate-500 font-medium">{stage}</p>
            </div>
          ) : score ? (
            <div className="w-full flex justify-around">
@@ -1005,7 +1002,7 @@ export const WebAnalyzer: React.FC = () => {
               <Gauge val={score.access} label="Accessibility" color={score.access > 80 ? 'green' : score.access > 50 ? 'orange' : 'red'} />
            </div>
          ) : (
-           <div className="text-center text-slate-400 text-xs">
+           <div className="text-center text-slate-400 text-xs font-medium">
              <Globe className="mx-auto mb-2 opacity-50" size={32} />
              Enter URL to check performance
            </div>
@@ -1060,19 +1057,19 @@ export const DummyDataGen: React.FC = () => {
   return (
     <GlassCard title="Dummy Data" className="h-full flex flex-col">
        <div className="grid grid-cols-3 gap-2 mb-3">
-         <select className="bg-slate-100 dark:bg-slate-800 rounded p-1 text-xs outline-none focus:ring-1 focus:ring-neonBlue" value={type} onChange={e=>setType(e.target.value)}>
+         <select className="bg-slate-50 dark:bg-slate-800 rounded p-1 text-xs outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={type} onChange={e=>setType(e.target.value)}>
            <option value="users">Users</option>
            <option value="products">Products</option>
          </select>
-         <select className="bg-slate-100 dark:bg-slate-800 rounded p-1 text-xs outline-none focus:ring-1 focus:ring-neonBlue" value={format} onChange={e=>setFormat(e.target.value)}>
+         <select className="bg-slate-50 dark:bg-slate-800 rounded p-1 text-xs outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={format} onChange={e=>setFormat(e.target.value)}>
            <option value="json">JSON</option>
            <option value="csv">CSV</option>
          </select>
-         <input type="number" className="bg-slate-100 dark:bg-slate-800 rounded p-1 text-xs outline-none pl-2 focus:ring-1 focus:ring-neonBlue" value={count} onChange={e=>setCount(Number(e.target.value))} min="1" max="50" />
+         <input type="number" className="bg-slate-50 dark:bg-slate-800 rounded p-1 text-xs outline-none pl-2 focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={count} onChange={e=>setCount(Number(e.target.value))} min="1" max="50" />
        </div>
 
        <textarea 
-         className="flex-grow bg-slate-900 text-green-400 font-mono text-[10px] p-2 rounded-lg resize-none mb-3 outline-none focus:ring-1 focus:ring-neonBlue"
+         className="flex-grow bg-slate-900 text-green-400 font-mono text-[10px] p-2 rounded-lg resize-none mb-3 outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue shadow-inner"
          value={data}
          readOnly
          placeholder="Generated data will appear here..."
@@ -1100,9 +1097,9 @@ export const DeviceInfo: React.FC = () => {
   }, []);
 
   const Item = ({label, val}: {label:string, val: string}) => (
-    <div className="flex justify-between items-center py-2 border-b border-slate-100 dark:border-white/5 last:border-0 hover:bg-slate-50 dark:hover:bg-white/5 px-2 transition-colors rounded">
-      <span className="text-xs text-slate-500">{label}</span>
-      <span className="text-sm font-medium text-slate-800 dark:text-gray-200 truncate max-w-[150px]" title={val}>{val}</span>
+    <div className="flex justify-between items-center py-2 border-b border-slate-200 dark:border-white/5 last:border-0 hover:bg-slate-100 dark:hover:bg-white/5 px-2 transition-colors rounded">
+      <span className="text-xs text-slate-500 font-medium">{label}</span>
+      <span className="text-sm font-bold text-slate-800 dark:text-gray-200 truncate max-w-[150px]" title={val}>{val}</span>
     </div>
   );
 
@@ -1116,8 +1113,8 @@ export const DeviceInfo: React.FC = () => {
           <Item label="Memory (RAM)" val={info.memory} />
           <Item label="Online Status" val={info.online} />
           <div className="mt-2">
-            <span className="text-xs text-slate-500 block mb-1">User Agent</span>
-            <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-[10px] text-slate-600 dark:text-gray-400 break-all leading-tight">
+            <span className="text-xs text-slate-500 font-medium block mb-1">User Agent</span>
+            <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded text-[10px] text-slate-700 dark:text-gray-400 break-all leading-tight border border-slate-200 dark:border-slate-700">
                {info.ua}
             </div>
           </div>
@@ -1151,25 +1148,25 @@ export const TodoTracker: React.FC = () => {
     <GlassCard title="Task Master" className="h-full flex flex-col">
        <div className="flex gap-2 mb-4">
           <input 
-             className="flex-grow bg-slate-100 dark:bg-slate-800/50 border-none rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-neonBlue transition-all focus:shadow-[0_0_10px_rgba(0,243,255,0.2)]"
+             className="flex-grow bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-700 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all focus:shadow-md text-slate-900 dark:text-white"
              placeholder="Add a task..."
              value={input}
              onChange={e => setInput(e.target.value)}
              onKeyDown={e => e.key === 'Enter' && add()}
           />
-          <button onClick={add} className="bg-neonBlue text-slate-900 rounded-lg w-10 flex items-center justify-center hover:opacity-90 active:scale-95 transition-transform"><Plus size={18}/></button>
+          <button onClick={add} className="bg-blue-600 dark:bg-neonBlue text-white dark:text-slate-900 rounded-lg w-10 flex items-center justify-center hover:opacity-90 active:scale-95 transition-transform"><Plus size={18}/></button>
        </div>
        
        <div className="flex-grow overflow-y-auto space-y-2 max-h-[200px] pr-1 custom-scrollbar">
           {tasks.length > 0 ? tasks.map(t => (
-             <div key={t.id} className={`flex items-center gap-3 p-2 rounded-lg transition-colors ${t.done ? 'bg-slate-50 dark:bg-white/5 opacity-60' : 'bg-white dark:bg-slate-800 shadow-sm'}`}>
-                <button onClick={() => toggle(t.id)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${t.done ? 'bg-green-500 border-green-500 text-white' : 'border-slate-300 dark:border-slate-600'}`}>
-                   {t.done && <Check size={12} />}
+             <div key={t.id} className={`flex items-center gap-3 p-2 rounded-lg transition-colors border ${t.done ? 'bg-slate-100 dark:bg-white/5 opacity-60 border-transparent' : 'bg-white dark:bg-slate-800 shadow-sm border-slate-200 dark:border-slate-700'}`}>
+                <button onClick={() => toggle(t.id)} className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${t.done ? 'bg-green-500 border-green-500 text-white' : 'border-slate-400 dark:border-slate-600 text-transparent hover:border-blue-500'}`}>
+                   <Check size={12} />
                 </button>
-                <span className={`flex-grow text-sm ${t.done ? 'line-through text-slate-400' : 'text-slate-700 dark:text-gray-200'}`}>{t.text}</span>
+                <span className={`flex-grow text-sm font-medium ${t.done ? 'line-through text-slate-400' : 'text-slate-800 dark:text-gray-200'}`}>{t.text}</span>
                 <button onClick={() => remove(t.id)} className="text-slate-400 hover:text-red-500"><Trash2 size={14}/></button>
              </div>
-          )) : <div className="text-center text-slate-400 text-xs mt-8">No tasks yet</div>}
+          )) : <div className="text-center text-slate-400 text-xs mt-8 font-medium">No tasks yet</div>}
        </div>
     </GlassCard>
   );
@@ -1192,26 +1189,26 @@ export const BudgetTracker: React.FC = () => {
 
   return (
     <GlassCard title="Budget Tracker" className="h-full flex flex-col">
-       <div className="bg-slate-900 text-white p-4 rounded-xl mb-4 flex justify-between items-center shadow-lg transition-transform hover:scale-[1.02]">
-          <span className="text-sm opacity-80">Balance</span>
-          <span className={`text-xl font-bold ${balance >= 0 ? 'text-neonGreen' : 'text-red-400'}`}>${balance.toFixed(2)}</span>
+       <div className="bg-slate-800 dark:bg-slate-900 text-white p-4 rounded-xl mb-4 flex justify-between items-center shadow-lg transition-transform hover:scale-[1.02]">
+          <span className="text-sm opacity-80 font-medium">Balance</span>
+          <span className={`text-xl font-bold ${balance >= 0 ? 'text-green-400' : 'text-red-400'}`}>${balance.toFixed(2)}</span>
        </div>
        
        <div className="flex gap-2 mb-2">
-          <input className="flex-[2] bg-slate-100 dark:bg-slate-800/50 rounded px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-neonBlue" placeholder="Item" value={desc} onChange={e=>setDesc(e.target.value)} />
-          <input className="flex-1 bg-slate-100 dark:bg-slate-800/50 rounded px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-neonBlue" type="number" placeholder="$" value={amt} onChange={e=>setAmt(e.target.value)} />
+          <input className="flex-[2] bg-slate-50 dark:bg-slate-800/50 rounded px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" placeholder="Item" value={desc} onChange={e=>setDesc(e.target.value)} />
+          <input className="flex-1 bg-slate-50 dark:bg-slate-800/50 rounded px-2 py-1 text-xs outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" type="number" placeholder="$" value={amt} onChange={e=>setAmt(e.target.value)} />
        </div>
        <div className="flex gap-2 mb-4">
-          <button onClick={() => setType('inc')} className={`flex-1 py-1 text-xs rounded font-bold transition-all ${type==='inc' ? 'bg-green-500 text-white shadow-[0_0_10px_rgba(34,197,94,0.4)]' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>+ Income</button>
-          <button onClick={() => setType('exp')} className={`flex-1 py-1 text-xs rounded font-bold transition-all ${type==='exp' ? 'bg-red-500 text-white shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>- Expense</button>
-          <button onClick={add} className="flex-none w-8 bg-neonBlue text-slate-900 rounded flex items-center justify-center hover:shadow-[0_0_10px_rgba(0,243,255,0.4)]"><ArrowRight size={14}/></button>
+          <button onClick={() => setType('inc')} className={`flex-1 py-1 text-xs rounded font-bold transition-all ${type==='inc' ? 'bg-green-600 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>+ Income</button>
+          <button onClick={() => setType('exp')} className={`flex-1 py-1 text-xs rounded font-bold transition-all ${type==='exp' ? 'bg-red-600 text-white shadow-md' : 'bg-slate-200 dark:bg-slate-700 text-slate-500'}`}>- Expense</button>
+          <button onClick={add} className="flex-none w-8 bg-blue-600 dark:bg-neonBlue text-white dark:text-slate-900 rounded flex items-center justify-center hover:shadow-md transition-shadow"><ArrowRight size={14}/></button>
        </div>
 
        <div className="flex-grow overflow-y-auto space-y-2 max-h-[150px] pr-1 custom-scrollbar">
           {items.map(i => (
-             <div key={i.id} className="flex justify-between text-xs border-b border-slate-100 dark:border-white/5 py-1 last:border-0">
-                <span className="text-slate-600 dark:text-gray-300">{i.desc}</span>
-                <span className={`font-medium ${i.type === 'inc' ? 'text-green-500' : 'text-red-500'}`}>
+             <div key={i.id} className="flex justify-between text-xs border-b border-slate-200 dark:border-white/5 py-1 last:border-0 font-medium">
+                <span className="text-slate-700 dark:text-gray-300">{i.desc}</span>
+                <span className={`font-bold ${i.type === 'inc' ? 'text-green-600' : 'text-red-600'}`}>
                    {i.type==='inc'?'+':'-'} ${i.amount}
                 </span>
              </div>
@@ -1243,20 +1240,20 @@ export const HabitTracker: React.FC = () => {
     <GlassCard title="Habit Streak" className="h-full flex flex-col">
        <div className="flex gap-2 mb-4">
           <input 
-             className="flex-grow bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-neonPurple transition-all" 
+             className="flex-grow bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm outline-none focus:ring-1 focus:ring-purple-600 dark:focus:ring-neonPurple transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" 
              placeholder="New habit..."
              value={newHabit}
              onChange={e=>setNewHabit(e.target.value)}
           />
-          <button onClick={add} className="bg-neonPurple text-white rounded-lg px-3 text-xs font-bold hover:shadow-[0_0_10px_rgba(188,19,254,0.4)] active:scale-95 transition-all">Add</button>
+          <button onClick={add} className="bg-purple-600 dark:bg-neonPurple text-white rounded-lg px-3 text-xs font-bold hover:shadow-md active:scale-95 transition-all">Add</button>
        </div>
 
        <div className="space-y-3 flex-grow overflow-y-auto pr-1">
           {habits.map(h => (
-            <div key={h.id} className="bg-slate-50 dark:bg-white/5 p-3 rounded-xl flex items-center justify-between transition-transform hover:scale-[1.02]">
+            <div key={h.id} className="bg-slate-50 dark:bg-white/5 p-3 rounded-xl flex items-center justify-between transition-transform hover:scale-[1.02] border border-slate-200 dark:border-white/5 shadow-sm">
                <div>
-                  <div className="text-sm font-medium text-slate-800 dark:text-gray-200">{h.name}</div>
-                  <div className="text-[10px] text-slate-500">{h.streak} day streak 🔥</div>
+                  <div className="text-sm font-bold text-slate-800 dark:text-gray-200">{h.name}</div>
+                  <div className="text-[10px] text-slate-500 font-medium">{h.streak} day streak 🔥</div>
                </div>
                <button onClick={() => increment(h.id)} className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-700 hover:bg-green-500 hover:text-white transition-colors flex items-center justify-center text-slate-500">
                   <Check size={14} />
@@ -1267,10 +1264,6 @@ export const HabitTracker: React.FC = () => {
     </GlassCard>
   );
 };
-
-// -----------------------------------------------------
-// MATH & UNIT CONVERTERS
-// -----------------------------------------------------
 
 // --- Unit Converter ---
 export const UnitConverter: React.FC = () => {
@@ -1293,7 +1286,7 @@ export const UnitConverter: React.FC = () => {
   const convert = () => {
      if(!val) return '---';
      const v = parseFloat(val);
-     
+     // ... conversion logic ...
      if (category === 'temp') {
         if(fromUnit === 'C' && toUnit === 'F') return (v * 9/5) + 32;
         if(fromUnit === 'F' && toUnit === 'C') return (v - 32) * 5/9;
@@ -1318,12 +1311,12 @@ export const UnitConverter: React.FC = () => {
 
   return (
     <GlassCard title="Unit Converter" className="h-full flex flex-col">
-       <div className="flex border-b border-slate-200 dark:border-white/10 mb-4">
+       <div className="flex border-b border-slate-300 dark:border-white/10 mb-4">
          {Object.keys(categories).map(c => (
            <button 
              key={c}
              onClick={() => setCategory(c as any)}
-             className={`flex-1 pb-2 text-xs font-bold uppercase transition-all duration-300 ${category === c ? 'text-neonBlue border-b-2 border-neonBlue drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
+             className={`flex-1 pb-2 text-xs font-bold uppercase transition-all duration-300 ${category === c ? 'text-blue-600 dark:text-neonBlue border-b-2 border-blue-600 dark:border-neonBlue drop-shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
            >
              {c}
            </button>
@@ -1334,13 +1327,13 @@ export const UnitConverter: React.FC = () => {
           <div className="flex gap-2">
             <input 
               type="number" 
-              className="w-1/2 bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all focus:scale-[1.02]"
+              className="w-1/2 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all focus:scale-[1.02] border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white"
               placeholder="Value"
               value={val}
               onChange={e => setVal(e.target.value)}
             />
             <select 
-              className="w-1/2 bg-slate-100 dark:bg-slate-800/50 rounded-lg px-2 text-sm outline-none focus:ring-1 focus:ring-neonBlue transition-all"
+              className="w-1/2 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-2 text-sm outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium"
               value={fromUnit}
               onChange={e => setFromUnit(e.target.value)}
             >
@@ -1351,68 +1344,17 @@ export const UnitConverter: React.FC = () => {
           <div className="flex justify-center text-slate-400"><ArrowRight size={20} className="rotate-90" /></div>
 
           <div className="flex gap-2">
-            <div className="w-1/2 bg-slate-50 dark:bg-white/5 rounded-lg px-3 py-2 text-slate-800 dark:text-white font-mono truncate border border-transparent transition-all hover:border-neonBlue/30">
+            <div className="w-1/2 bg-slate-100 dark:bg-white/5 rounded-lg px-3 py-2 text-slate-900 dark:text-white font-mono truncate border border-slate-300 dark:border-transparent transition-all hover:border-blue-400 font-bold">
                {typeof result === 'number' ? result.toLocaleString(undefined, {maximumFractionDigits: 4}) : result}
             </div>
             <select 
-              className="w-1/2 bg-slate-100 dark:bg-slate-800/50 rounded-lg px-2 text-sm outline-none focus:ring-1 focus:ring-neonBlue transition-all"
+              className="w-1/2 bg-slate-50 dark:bg-slate-800/50 rounded-lg px-2 text-sm outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white font-medium"
               value={toUnit}
               onChange={e => setToUnit(e.target.value)}
             >
               {categories[category].map(u => <option key={u} value={u}>{u.toUpperCase()}</option>)}
             </select>
           </div>
-       </div>
-    </GlassCard>
-  );
-};
-
-// --- Percentage Calculator ---
-export const PercentageCalculator: React.FC = () => {
-  const [mode, setMode] = useState<'simple'|'phrase'|'change'>('simple');
-  const [val1, setVal1] = useState('');
-  const [val2, setVal2] = useState('');
-
-  const calculate = () => {
-    const v1 = parseFloat(val1);
-    const v2 = parseFloat(val2);
-    if(isNaN(v1) || isNaN(v2)) return null;
-
-    if(mode === 'simple') return (v1 * v2) / 100; // X% of Y
-    if(mode === 'phrase') return (v1 / v2) * 100; // X is what % of Y
-    if(mode === 'change') return ((v2 - v1) / v1) * 100; // Change from X to Y
-    return 0;
-  };
-
-  const res = calculate();
-
-  return (
-    <GlassCard title="Percentage Calc" className="h-full flex flex-col">
-       <div className="flex justify-between mb-4 bg-slate-100 dark:bg-white/5 p-1 rounded-lg">
-          <button onClick={()=>setMode('simple')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='simple' ? 'bg-white dark:bg-slate-700 shadow-[0_0_10px_rgba(188,19,254,0.3)] text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>% of</button>
-          <button onClick={()=>setMode('phrase')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='phrase' ? 'bg-white dark:bg-slate-700 shadow-[0_0_10px_rgba(188,19,254,0.3)] text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>what %</button>
-          <button onClick={()=>setMode('change')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='change' ? 'bg-white dark:bg-slate-700 shadow-[0_0_10px_rgba(188,19,254,0.3)] text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>change</button>
-       </div>
-
-       <div className="space-y-3 flex-grow">
-          <div className="flex items-center gap-2">
-             <span className="text-sm w-8">{mode === 'simple' ? 'What is' : mode === 'phrase' ? '' : 'From'}</span>
-             <input type="number" className="flex-grow bg-slate-100 dark:bg-slate-800/50 rounded p-2 outline-none focus:ring-1 focus:ring-neonPurple transition-all" value={val1} onChange={e=>setVal1(e.target.value)} placeholder={mode === 'simple' ? '20' : '50'} />
-             <span className="text-sm">{mode === 'simple' ? '% of' : mode === 'phrase' ? 'is what % of' : 'to'}</span>
-          </div>
-          <div className="flex items-center gap-2">
-             <input type="number" className="flex-grow bg-slate-100 dark:bg-slate-800/50 rounded p-2 outline-none focus:ring-1 focus:ring-neonPurple transition-all" value={val2} onChange={e=>setVal2(e.target.value)} placeholder={mode === 'simple' ? '100' : '200'} />
-             <span className="text-sm w-4">?</span>
-          </div>
-
-          {res !== null && (
-             <div className="mt-4 p-4 bg-slate-50 dark:bg-white/5 rounded-xl text-center">
-                <span className="text-xs text-slate-500 block mb-1">Result</span>
-                <span className="text-2xl font-bold text-neonBlue animate-pulse">
-                   {res.toFixed(2)}{mode !== 'simple' ? '%' : ''}
-                </span>
-             </div>
-          )}
        </div>
     </GlassCard>
   );
@@ -1451,7 +1393,7 @@ export const BasicCalculator: React.FC = () => {
 
   return (
     <GlassCard title="Basic Calculator" className="h-full flex flex-col">
-       <div className="bg-slate-900 text-right p-4 rounded-xl mb-4 text-white font-mono text-2xl overflow-hidden shadow-inner">
+       <div className="bg-slate-900 text-right p-4 rounded-xl mb-4 text-white font-mono text-2xl overflow-hidden shadow-inner border border-slate-700">
           {display}
        </div>
        <div className="grid grid-cols-4 gap-2 flex-grow">
@@ -1459,15 +1401,66 @@ export const BasicCalculator: React.FC = () => {
              <button 
                key={b}
                onClick={() => handleInput(b)}
-               className={`rounded-lg font-bold text-lg transition-all active:scale-95 hover:shadow-lg ${
-                 b === '=' ? 'row-span-2 bg-neonBlue text-slate-900 hover:brightness-110' : 
-                 ['C', '÷', '×', '-', '+'].includes(b) ? 'bg-slate-200 dark:bg-slate-700 text-neonPurple hover:bg-slate-300 dark:hover:bg-slate-600' : 
-                 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-gray-200 hover:bg-slate-200 dark:hover:bg-slate-700'
+               className={`rounded-lg font-bold text-lg transition-all active:scale-95 hover:shadow-lg border ${
+                 b === '=' ? 'row-span-2 bg-blue-600 dark:bg-neonBlue text-white dark:text-slate-900 hover:brightness-110 border-transparent' : 
+                 ['C', '÷', '×', '-', '+'].includes(b) ? 'bg-slate-200 dark:bg-slate-700 text-purple-700 dark:text-neonPurple hover:bg-slate-300 dark:hover:bg-slate-600 border-slate-300 dark:border-slate-600' : 
+                 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-gray-200 hover:bg-slate-100 dark:hover:bg-slate-700 border-slate-200 dark:border-slate-700'
                } ${b === '0' ? 'col-span-2' : ''}`}
              >
                {b}
              </button>
           ))}
+       </div>
+    </GlassCard>
+  );
+};
+
+// --- Percentage Calculator ---
+export const PercentageCalculator: React.FC = () => {
+  const [mode, setMode] = useState<'simple'|'phrase'|'change'>('simple');
+  const [val1, setVal1] = useState('');
+  const [val2, setVal2] = useState('');
+
+  const calculate = () => {
+    const v1 = parseFloat(val1);
+    const v2 = parseFloat(val2);
+    if(isNaN(v1) || isNaN(v2)) return null;
+
+    if(mode === 'simple') return (v1 * v2) / 100; // X% of Y
+    if(mode === 'phrase') return (v1 / v2) * 100; // X is what % of Y
+    if(mode === 'change') return ((v2 - v1) / v1) * 100; // Change from X to Y
+    return 0;
+  };
+
+  const res = calculate();
+
+  return (
+    <GlassCard title="Percentage Calc" className="h-full flex flex-col">
+       <div className="flex justify-between mb-4 bg-slate-100 dark:bg-white/5 p-1 rounded-lg border border-slate-200 dark:border-transparent">
+          <button onClick={()=>setMode('simple')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='simple' ? 'bg-white dark:bg-slate-700 shadow-sm text-purple-700 dark:text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>% of</button>
+          <button onClick={()=>setMode('phrase')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='phrase' ? 'bg-white dark:bg-slate-700 shadow-sm text-purple-700 dark:text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>what %</button>
+          <button onClick={()=>setMode('change')} className={`flex-1 text-[10px] py-1 rounded transition-all duration-300 ${mode==='change' ? 'bg-white dark:bg-slate-700 shadow-sm text-purple-700 dark:text-neonPurple scale-105 font-bold' : 'text-slate-500 hover:text-slate-700'}`}>change</button>
+       </div>
+
+       <div className="space-y-3 flex-grow">
+          <div className="flex items-center gap-2">
+             <span className="text-sm w-8 font-medium text-slate-600 dark:text-gray-400">{mode === 'simple' ? 'What is' : mode === 'phrase' ? '' : 'From'}</span>
+             <input type="number" className="flex-grow bg-slate-50 dark:bg-slate-800/50 rounded p-2 outline-none focus:ring-1 focus:ring-purple-600 dark:focus:ring-neonPurple transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={val1} onChange={e=>setVal1(e.target.value)} placeholder={mode === 'simple' ? '20' : '50'} />
+             <span className="text-sm font-medium text-slate-600 dark:text-gray-400">{mode === 'simple' ? '% of' : mode === 'phrase' ? 'is what % of' : 'to'}</span>
+          </div>
+          <div className="flex items-center gap-2">
+             <input type="number" className="flex-grow bg-slate-50 dark:bg-slate-800/50 rounded p-2 outline-none focus:ring-1 focus:ring-purple-600 dark:focus:ring-neonPurple transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={val2} onChange={e=>setVal2(e.target.value)} placeholder={mode === 'simple' ? '100' : '200'} />
+             <span className="text-sm w-4 font-bold text-slate-600 dark:text-gray-400">?</span>
+          </div>
+
+          {res !== null && (
+             <div className="mt-4 p-4 bg-slate-100 dark:bg-white/5 rounded-xl text-center border border-slate-300 dark:border-white/10">
+                <span className="text-xs text-slate-600 dark:text-slate-500 block mb-1 font-medium">Result</span>
+                <span className="text-2xl font-bold text-blue-600 dark:text-neonBlue animate-pulse">
+                   {res.toFixed(2)}{mode !== 'simple' ? '%' : ''}
+                </span>
+             </div>
+          )}
        </div>
     </GlassCard>
   );
@@ -1494,37 +1487,33 @@ export const DiscountCalculator: React.FC = () => {
           <InputGroup label="Original Price" id="disc-price" type="number" value={price} onChange={e=>setPrice(e.target.value)} />
           <div className="flex gap-2">
              <div className="flex-1">
-                <label className="text-xs text-slate-500 mb-1 block">Discount %</label>
-                <input type="number" className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all" value={discount} onChange={e=>setDiscount(e.target.value)} />
+                <label className="text-xs font-bold text-slate-600 mb-1 block">Discount %</label>
+                <input type="number" className="w-full bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={discount} onChange={e=>setDiscount(e.target.value)} />
              </div>
              <div className="flex-1">
-                <label className="text-xs text-slate-500 mb-1 block">Tax %</label>
-                <input type="number" className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all" value={tax} onChange={e=>setTax(e.target.value)} />
+                <label className="text-xs font-bold text-slate-600 mb-1 block">Tax %</label>
+                <input type="number" className="w-full bg-slate-50 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-blue-600 dark:focus:ring-neonBlue transition-all border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white" value={tax} onChange={e=>setTax(e.target.value)} />
              </div>
           </div>
        </div>
 
-       <div className="space-y-2 bg-slate-50 dark:bg-white/5 p-4 rounded-xl transition-transform hover:scale-[1.01]">
+       <div className="space-y-2 bg-slate-100 dark:bg-white/5 p-4 rounded-xl transition-transform hover:scale-[1.01] border border-slate-300 dark:border-white/10">
           <div className="flex justify-between text-sm">
-             <span className="text-slate-500">Savings</span>
-             <span className="text-green-500 font-medium">-${saveAmount.toFixed(2)}</span>
+             <span className="text-slate-600 dark:text-slate-500 font-medium">Savings</span>
+             <span className="text-green-600 font-bold">-${saveAmount.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between text-sm border-b border-slate-200 dark:border-white/10 pb-2">
-             <span className="text-slate-500">Tax</span>
-             <span className="text-slate-700 dark:text-gray-300">+${taxAmount.toFixed(2)}</span>
+          <div className="flex justify-between text-sm border-b border-slate-300 dark:border-white/10 pb-2">
+             <span className="text-slate-600 dark:text-slate-500 font-medium">Tax</span>
+             <span className="text-slate-800 dark:text-gray-300 font-bold">+${taxAmount.toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center pt-1">
-             <span className="font-bold text-slate-800 dark:text-white">Final Price</span>
-             <span className="text-2xl font-bold text-neonBlue">${final.toFixed(2)}</span>
+             <span className="font-bold text-slate-900 dark:text-white">Final Price</span>
+             <span className="text-2xl font-bold text-blue-600 dark:text-neonBlue">${final.toFixed(2)}</span>
           </div>
        </div>
     </GlassCard>
   );
 };
-
-// -----------------------------------------------------
-// SOCIAL MEDIA & CREATOR TOOLS
-// -----------------------------------------------------
 
 // --- YouTube Title Generator ---
 export const YouTubeTitleGen: React.FC = () => {
@@ -1533,25 +1522,17 @@ export const YouTubeTitleGen: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const generate = () => {
-    if(!topic) return;
+    if (!topic) return;
     setLoading(true);
-    setTitles([]);
-
     setTimeout(() => {
-      const templates = [
-        `Why ${topic} is Dead (And What to Do Next)`,
-        `I Tried ${topic} for 30 Days - Here's What Happened`,
-        `The Ultimate Guide to ${topic} in ${new Date().getFullYear()}`,
-        `Stop Doing ${topic} Wrong! (Common Mistakes)`,
-        `How to Master ${topic} in 10 Minutes`,
-        `The Truth About ${topic} No One Tells You`,
-        `${topic} vs. The Competition: Which is Better?`,
-        `7 Secret Hacks for ${topic} You Need to Know`,
-        `Is ${topic} Worth It? Honest Review`,
-        `Beginner's Tutorial: ${topic} Explained Simply`
-      ];
-      // Shuffle and pick 5
-      setTitles(templates.sort(() => 0.5 - Math.random()).slice(0, 5));
+      setTitles([
+        `Why ${topic} is Taking Over the World`,
+        `The Ultimate Guide to ${topic} (2024)`,
+        `I Tried ${topic} for 30 Days`,
+        `Stop Doing ${topic} Like This!`,
+        `The Secret Truth About ${topic}`,
+        `10 ${topic} Hacks You Need to Know`
+      ]);
       setLoading(false);
     }, 1000);
   };
@@ -1560,626 +1541,505 @@ export const YouTubeTitleGen: React.FC = () => {
     <GlassCard title="YouTube Title Generator" className="h-full flex flex-col">
        <div className="flex gap-2 mb-4">
          <input 
-            className="flex-grow bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 text-sm outline-none focus:ring-2 focus:ring-neonBlue transition-all focus:scale-[1.01]"
-            placeholder="Enter Video Topic (e.g. Coding)"
-            value={topic}
-            onChange={e => setTopic(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && generate()}
+           className="flex-grow bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 outline-none transition-all duration-300 focus:ring-2 focus:ring-red-600 dark:focus:ring-red-500 focus:scale-[1.01] text-slate-900 dark:text-white"
+           placeholder="Enter video topic..."
+           value={topic}
+           onChange={e => setTopic(e.target.value)}
+           onKeyDown={e => e.key === 'Enter' && generate()}
          />
-         <NeonButton onClick={generate} disabled={loading} className="w-12 px-0 flex items-center justify-center">
+         <NeonButton onClick={generate} disabled={loading} className="w-12 px-0 flex items-center justify-center !bg-gradient-to-r !from-red-600 !to-red-800">
            <Youtube size={18} />
          </NeonButton>
        </div>
-       
-       <div className="flex-grow overflow-y-auto space-y-2 max-h-[250px] pr-1 custom-scrollbar">
-          {loading ? (
-             <div className="text-center py-8 text-slate-400 animate-pulse text-xs">Generating viral titles...</div>
-          ) : titles.length > 0 ? (
-             titles.map((t, i) => (
-                <div key={i} className="bg-slate-50 dark:bg-white/5 p-3 rounded-lg border border-slate-100 dark:border-white/5 hover:border-neonBlue/30 hover:bg-slate-100 dark:hover:bg-white/10 transition-all group cursor-pointer" onClick={() => navigator.clipboard.writeText(t)}>
-                   <p className="text-sm font-medium text-slate-800 dark:text-white leading-tight">{t}</p>
-                   <span className="text-[10px] text-neonBlue opacity-0 group-hover:opacity-100 transition-opacity">Click to copy</span>
-                </div>
-             ))
-          ) : (
-             <div className="text-center py-10 text-slate-400 text-xs">Enter a topic to generate high-CTR titles</div>
-          )}
+       <div className="flex-grow overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+          {titles.length > 0 ? titles.map((t, i) => (
+             <div key={i} className="p-3 bg-slate-100 dark:bg-white/5 rounded-lg border border-slate-200 dark:border-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors cursor-pointer group flex justify-between items-center" onClick={() => navigator.clipboard.writeText(t)}>
+                <span className="text-sm font-medium text-slate-800 dark:text-gray-200">{t}</span>
+                <Copy size={14} className="opacity-0 group-hover:opacity-100 text-slate-400" />
+             </div>
+          )) : <div className="text-center py-8 text-slate-400 text-xs">Enter topic to generate viral titles</div>}
        </div>
     </GlassCard>
   );
 };
 
-// --- Reel Caption / Hooks Generator ---
+// --- Reel Hooks Generator ---
 export const ReelHooksGen: React.FC = () => {
-  const [niche, setNiche] = useState('');
-  const [hooks, setHooks] = useState<string[]>([]);
-  
-  const generate = () => {
-     if(!niche) return;
-     const templates = [
-        `Stop scrolling if you want to master ${niche} 🛑`,
-        `The secret to ${niche} that gurus won't tell you 🤫`,
-        `POV: You finally figured out ${niche} 🤯`,
-        `3 reasons why you're failing at ${niche} 👇`,
-        `Save this for your next ${niche} project! 💾`,
-        `If you do ${niche}, you NEED to see this...`,
-        `Don't make this mistake with ${niche} ❌`,
-        `How I went from 0 to Hero in ${niche} 🚀`
-     ];
-     setHooks(templates);
-  };
+    const [niche, setNiche] = useState('');
+    const [hooks, setHooks] = useState<string[]>([]);
+    const [loading, setLoading] = useState(false);
 
-  return (
-    <GlassCard title="Reel Hooks Generator" className="h-full flex flex-col">
-       <InputGroup label="Niche / Topic" id="reel-niche" value={niche} onChange={e=>setNiche(e.target.value)} placeholder="e.g. Fitness, AI, Cooking" />
-       <NeonButton onClick={generate} className="mb-4">Generate Hooks</NeonButton>
-       
-       <div className="flex-grow space-y-2 overflow-y-auto max-h-[200px] pr-1">
-          {hooks.map((h, i) => (
-             <div key={i} className="flex justify-between items-center p-2 bg-slate-50 dark:bg-white/5 rounded-lg border border-slate-100 dark:border-white/5 transition-transform hover:scale-[1.01]">
-                <span className="text-xs text-slate-700 dark:text-gray-200">{h}</span>
-                <button onClick={() => navigator.clipboard.writeText(h)} className="text-slate-400 hover:text-neonBlue"><Copy size={12}/></button>
-             </div>
-          ))}
-          {hooks.length === 0 && <div className="text-center text-slate-400 text-xs py-4">Generate scroll-stopping hooks</div>}
-       </div>
-    </GlassCard>
-  );
+    const generate = () => {
+        if(!niche) return;
+        setLoading(true);
+        setTimeout(() => {
+            setHooks([
+                `Stop scrolling if you want to fix ${niche}!`,
+                `The number one mistake people make with ${niche}...`,
+                `Here is how I mastered ${niche} in 30 days.`,
+                `You won't believe this ${niche} hack.`,
+                `3 tools for ${niche} you need today.`
+            ]);
+            setLoading(false);
+        }, 1000);
+    };
+
+    return (
+        <GlassCard title="Reel Hooks Generator" className="h-full flex flex-col">
+            <div className="flex gap-2 mb-4">
+                <input 
+                  className="flex-grow bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg px-4 py-2 outline-none transition-all duration-300 focus:ring-2 focus:ring-purple-600 dark:focus:ring-neonPurple focus:scale-[1.01] text-slate-900 dark:text-white"
+                  placeholder="Enter niche (e.g. Fitness)"
+                  value={niche}
+                  onChange={e => setNiche(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && generate()}
+                />
+                <NeonButton onClick={generate} disabled={loading} className="w-12 px-0 flex items-center justify-center">
+                    <Sparkles size={18} />
+                </NeonButton>
+            </div>
+            <div className="flex-grow overflow-y-auto space-y-2 pr-1 custom-scrollbar">
+                {hooks.map((h, i) => (
+                    <div key={i} className="p-3 bg-slate-100 dark:bg-white/5 rounded-lg border border-slate-200 dark:border-white/5 hover:bg-slate-200 dark:hover:bg-white/10 transition-colors cursor-pointer group flex justify-between items-center" onClick={() => navigator.clipboard.writeText(h)}>
+                        <span className="text-sm font-medium text-slate-800 dark:text-gray-200">{h}</span>
+                        <Copy size={14} className="opacity-0 group-hover:opacity-100 text-slate-400" />
+                    </div>
+                ))}
+            </div>
+        </GlassCard>
+    );
 };
 
-// --- Virality Score Checker ---
+// --- Virality Score ---
 export const ViralityScore: React.FC = () => {
-  const [text, setText] = useState('');
-  const [score, setScore] = useState<number|null>(null);
+    const [idea, setIdea] = useState('');
+    const [score, setScore] = useState<number | null>(null);
+    const [analyzing, setAnalyzing] = useState(false);
 
-  const analyze = () => {
-     if(!text) return;
-     // Fake heuristic logic
-     let s = 50;
-     if (text.length < 150) s += 10; // Short is good
-     if (text.includes('?')) s += 5; // Questions engage
-     if (text.match(/👇|🔥|🚀|😱/)) s += 10; // Emojis help
-     if (text.match(/you|your|we/i)) s += 5; // Personal
-     if (text.match(/secret|hack|mistake|stop/i)) s += 10; // Power words
-     setScore(Math.min(99, s));
-  };
+    const analyze = () => {
+        if(!idea) return;
+        setAnalyzing(true);
+        setScore(null);
+        setTimeout(() => {
+            setScore(Math.floor(Math.random() * 40) + 60); // 60-100
+            setAnalyzing(false);
+        }, 1500);
+    };
 
-  return (
-    <GlassCard title="Virality Score AI" className="h-full flex flex-col">
-       <textarea 
-          className="w-full h-24 bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-neonBlue outline-none resize-none mb-3 transition-all focus:scale-[1.01]"
-          placeholder="Paste your caption or script here..."
-          value={text}
-          onChange={e=>setText(e.target.value)}
-       />
-       <NeonButton onClick={analyze} className="mb-4">Analyze Content</NeonButton>
-       
-       {score !== null && (
-          <div className="text-center p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-100 dark:border-white/10 animate-fade-in-up">
-             <div className="text-xs text-slate-500 uppercase tracking-widest mb-1">Viral Potential</div>
-             <div className={`text-4xl font-black ${score > 80 ? 'text-neonGreen' : score > 60 ? 'text-neonBlue' : 'text-orange-400'}`}>
-                {score}/100
-             </div>
-             <p className="text-[10px] text-slate-400 mt-2">
-                {score > 80 ? "This is 🔥! Post it now." : "Add more hooks or emojis to boost engagement."}
-             </p>
-          </div>
-       )}
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Virality Score AI" className="h-full flex flex-col">
+            <textarea
+                className="w-full h-32 bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none resize-none transition-all focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white placeholder-slate-400 mb-4"
+                placeholder="Describe your content idea..."
+                value={idea}
+                onChange={e => setIdea(e.target.value)}
+            />
+            <div className="flex-grow flex items-center justify-center">
+                {analyzing ? (
+                    <Loader2 className="animate-spin text-blue-600 dark:text-neonBlue" size={32} />
+                ) : score !== null ? (
+                    <div className="text-center">
+                        <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple mb-2">{score}/100</div>
+                        <p className="text-sm text-slate-500">{score > 80 ? 'Viral Potential! 🔥' : 'Good, but needs a hook.'}</p>
+                    </div>
+                ) : (
+                    <p className="text-xs text-slate-400">AI analysis of viral probability</p>
+                )}
+            </div>
+            <NeonButton onClick={analyze} disabled={analyzing} className="w-full mt-4">Check Score</NeonButton>
+        </GlassCard>
+    );
 };
 
-// --- Hashtag Reach Estimator ---
+// --- Hashtag Reach ---
 export const HashtagReach: React.FC = () => {
-  const [tags, setTags] = useState('');
-  const [reach, setReach] = useState<string|null>(null);
+    const [tag, setTag] = useState('');
+    const [data, setData] = useState<{reach: string, competition: string} | null>(null);
 
-  const estimate = () => {
-     if(!tags) return;
-     const count = tags.split('#').length - 1 || 1;
-     // Random estimate logic
-     const base = Math.floor(Math.random() * 50000) + 10000;
-     const total = base * count;
-     setReach((total > 1000000 ? (total/1000000).toFixed(1)+'M' : (total/1000).toFixed(1)+'K'));
-  };
+    const check = () => {
+        if(!tag) return;
+        // Mock data
+        const reach = Math.floor(Math.random() * 1000000) + 5000;
+        const comp = ['Low', 'Medium', 'High', 'Very High'][Math.floor(Math.random() * 4)];
+        setData({ reach: reach.toLocaleString(), competition: comp });
+    };
 
-  return (
-    <GlassCard title="Hashtag Reach" className="h-full flex flex-col">
-       <textarea 
-          className="w-full h-20 bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-neonBlue outline-none resize-none mb-3 transition-all focus:scale-[1.01]"
-          placeholder="#marketing #business #growth"
-          value={tags}
-          onChange={e=>setTags(e.target.value)}
-       />
-       <NeonButton onClick={estimate} className="mb-4">Estimate Reach</NeonButton>
-       
-       {reach && (
-          <div className="flex justify-between items-center p-4 bg-slate-50 dark:bg-white/5 rounded-xl animate-pulse">
-             <span className="text-sm font-medium text-slate-600 dark:text-gray-300">Est. Reach</span>
-             <span className="text-2xl font-bold text-neonPurple">{reach}</span>
-          </div>
-       )}
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Hashtag Reach" className="h-full flex flex-col">
+            <div className="flex gap-2 mb-6">
+                 <div className="relative flex-grow">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 font-bold">#</span>
+                    <input className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg pl-7 pr-3 py-2 outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white" value={tag} onChange={e => setTag(e.target.value)} placeholder="hashtag" onKeyDown={e => e.key === 'Enter' && check()} />
+                 </div>
+                 <NeonButton onClick={check} className="w-12 px-0 flex items-center justify-center"><Search size={18}/></NeonButton>
+            </div>
+            <div className="flex-grow flex flex-col justify-center space-y-4">
+                {data ? (
+                    <>
+                    <div className="bg-slate-100 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/10 text-center">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Est. Reach</div>
+                        <div className="text-2xl font-black text-slate-900 dark:text-white">{data.reach}</div>
+                    </div>
+                    <div className="bg-slate-100 dark:bg-white/5 p-4 rounded-xl border border-slate-200 dark:border-white/10 text-center">
+                        <div className="text-xs text-slate-500 uppercase tracking-wider font-bold mb-1">Competition</div>
+                        <div className={`text-2xl font-black ${data.competition === 'High' ? 'text-red-500' : 'text-green-500'}`}>{data.competition}</div>
+                    </div>
+                    </>
+                ) : <div className="text-center text-slate-400 text-xs">Enter a hashtag to analyze</div>}
+            </div>
+        </GlassCard>
+    );
 };
 
-// --- Instagram Bio Audit ---
+// --- Bio Audit ---
 export const BioAudit: React.FC = () => {
-  const [bio, setBio] = useState('');
-  const [tips, setTips] = useState<string[]>([]);
+    const [bio, setBio] = useState('');
+    const [audit, setAudit] = useState<any>(null);
 
-  const audit = () => {
-     if(!bio) return;
-     const t = [];
-     if (!bio.includes('http')) t.push("Missing a link! Add a CTA.");
-     if ((bio.match(/\n/g) || []).length < 2) t.push("Use line breaks for readability.");
-     if (!bio.match(/👇|⬇️|🔗/)) t.push("Add a directional emoji pointing to your link.");
-     if (bio.length > 130) t.push("Bio is getting long, keep it punchy.");
-     if (t.length === 0) t.push("Great Bio! It looks optimized.");
-     setTips(t);
-  };
+    const runAudit = () => {
+        const hasLink = bio.includes('http') || bio.includes('www');
+        const hasEmoji = /\p{Emoji}/u.test(bio);
+        const length = bio.length;
+        const score = Math.min(100, (hasLink ? 30 : 0) + (hasEmoji ? 20 : 0) + (length > 20 && length < 150 ? 50 : 20));
+        setAudit({ score, tips: [
+            !hasLink && "Add a link (Linktree/Website)",
+            !hasEmoji && "Use emojis to break text",
+            (length < 20 || length > 150) && "Keep length between 20-150 chars"
+        ].filter(Boolean)});
+    };
 
-  return (
-    <GlassCard title="Insta Bio Audit" className="h-full flex flex-col">
-       <textarea 
-          className="w-full h-24 bg-slate-100 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm focus:ring-2 focus:ring-neonBlue outline-none resize-none mb-3 transition-all focus:scale-[1.01]"
-          placeholder="Paste your bio here..."
-          value={bio}
-          onChange={e=>setBio(e.target.value)}
-          maxLength={150}
-       />
-       <div className="text-right text-[10px] text-slate-400 mb-2">{bio.length}/150</div>
-       <NeonButton onClick={audit} className="mb-4">Audit Bio</NeonButton>
-       
-       <div className="space-y-1">
-          {tips.map((tip, i) => (
-             <div key={i} className="flex gap-2 items-start text-xs text-slate-600 dark:text-gray-300 animate-fade-in-up" style={{animationDelay: `${i*100}ms`}}>
-                <Check size={14} className="text-neonGreen mt-0.5 flex-none"/> {tip}
-             </div>
-          ))}
-       </div>
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Instagram Bio Audit" className="h-full flex flex-col">
+            <textarea className="w-full h-24 bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-3 text-sm outline-none resize-none mb-4 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white" placeholder="Paste your bio..." value={bio} onChange={e => setBio(e.target.value)} />
+            <NeonButton onClick={runAudit} className="w-full mb-4">Audit Bio</NeonButton>
+            {audit && (
+                <div className="flex-grow bg-slate-100 dark:bg-white/5 rounded-xl p-4 border border-slate-200 dark:border-white/10">
+                    <div className="flex justify-between items-center mb-2">
+                        <span className="font-bold text-slate-700 dark:text-white">Score</span>
+                        <span className={`text-xl font-black ${audit.score > 70 ? 'text-green-500' : 'text-orange-500'}`}>{audit.score}/100</span>
+                    </div>
+                    <ul className="text-xs text-slate-600 dark:text-slate-400 space-y-1 list-disc pl-4">
+                        {audit.tips.length > 0 ? audit.tips.map((t: string, i: number) => <li key={i}>{t}</li>) : <li>Great Bio!</li>}
+                    </ul>
+                </div>
+            )}
+        </GlassCard>
+    );
 };
 
-// --- Thumbnail Text Analyzer ---
+// --- Thumbnail Analyzer ---
 export const ThumbnailAnalyzer: React.FC = () => {
-  const [text, setText] = useState('');
-  const [analysis, setAnalysis] = useState('');
-
-  const check = () => {
-     const words = text.trim().split(/\s+/).length;
-     if (words > 5) setAnalysis("Too many words! Aim for < 5 for impact.");
-     else if (text.length === 0) setAnalysis("Enter text.");
-     else setAnalysis("Great length! Ensure high contrast colors.");
-  };
-
-  return (
-    <GlassCard title="Thumbnail Text" className="h-full flex flex-col">
-       <div className="relative mb-4">
-          <div className="aspect-video bg-slate-800 rounded-lg flex items-center justify-center overflow-hidden border border-slate-600 shadow-lg">
-             <span className="text-4xl font-black text-white uppercase drop-shadow-md text-center px-4">{text || "YOUR TEXT"}</span>
-          </div>
-       </div>
-       <input 
-          className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 text-sm outline-none mb-3 transition-all focus:ring-2 focus:ring-neonBlue focus:scale-[1.01]"
-          placeholder="Thumbnail text..."
-          value={text}
-          onChange={e=>setText(e.target.value)}
-       />
-       <NeonButton onClick={check}>Analyze</NeonButton>
-       {analysis && <p className={`mt-3 text-xs font-medium text-center ${analysis.includes('Too') ? 'text-red-400' : 'text-green-400'}`}>{analysis}</p>}
-    </GlassCard>
-  );
+    const [text, setText] = useState('');
+    
+    return (
+        <GlassCard title="Thumbnail Text Checker" className="h-full flex flex-col">
+            <InputGroup label="Thumbnail Text" id="thumb-txt" value={text} onChange={e => setText(e.target.value)} placeholder="e.g., I QUIT!" />
+            <div className="flex-grow flex items-center justify-center bg-slate-900 rounded-xl mb-4 relative overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&q=80" className="opacity-30 absolute inset-0 w-full h-full object-cover" alt="bg" />
+                <h1 className="relative z-10 text-white font-black text-4xl uppercase drop-shadow-lg text-center px-4 leading-tight transform -rotate-2">
+                    {text || "YOUR TEXT"}
+                </h1>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-center text-xs">
+                <div className={`p-2 rounded border ${text.length < 20 ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'}`}>Length: {text.length}/20</div>
+                <div className={`p-2 rounded border ${!text.includes(' ') ? 'bg-yellow-100 text-yellow-700' : 'bg-green-100 text-green-700'}`}>Readability</div>
+            </div>
+        </GlassCard>
+    );
 };
 
 // --- Post Time Optimizer ---
 export const PostTimeOptimizer: React.FC = () => {
-  const [platform, setPlatform] = useState('instagram');
-  const [times, setTimes] = useState<string[]>([]);
+    const [platform, setPlatform] = useState('Instagram');
+    const times: any = {
+        Instagram: ['9:00 AM', '12:00 PM', '7:00 PM'],
+        YouTube: ['2:00 PM', '4:00 PM', '8:00 PM'],
+        LinkedIn: ['8:00 AM', '10:00 AM', '1:00 PM'],
+        TikTok: ['6:00 AM', '10:00 AM', '9:00 PM']
+    };
 
-  const getTimes = () => {
-     // Static best practices data
-     const map: any = {
-        instagram: ["Mon 9:00 AM", "Wed 11:00 AM", "Fri 2:00 PM"],
-        youtube: ["Thu 2:00 PM", "Fri 12:00 PM", "Sun 10:00 AM"],
-        tiktok: ["Tue 7:00 AM", "Thu 10:00 AM", "Fri 8:00 PM"],
-        twitter: ["Wed 9:00 AM", "Thu 9:00 AM", "Fri 9:00 AM"]
-     };
-     setTimes(map[platform] || []);
-  };
-
-  useEffect(() => { getTimes(); }, [platform]);
-
-  return (
-    <GlassCard title="Best Time to Post" className="h-full flex flex-col">
-       <div className="flex gap-2 mb-6">
-          {['instagram', 'youtube', 'tiktok'].map(p => (
-             <button 
-                key={p} 
-                onClick={() => setPlatform(p)} 
-                className={`flex-1 p-2 rounded-lg flex justify-center items-center transition-all duration-300 ${platform === p ? 'bg-neonBlue/20 text-neonBlue border border-neonBlue shadow-[0_0_15px_rgba(0,243,255,0.2)]' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}
-             >
-                {p === 'instagram' && <Instagram size={18} />}
-                {p === 'youtube' && <Youtube size={18} />}
-                {p === 'tiktok' && <Smartphone size={18} />}
-             </button>
-          ))}
-       </div>
-       
-       <div className="space-y-3">
-          <p className="text-xs text-center text-slate-500 mb-2">Recommended Global Times (EST)</p>
-          {times.map((t, i) => (
-             <div key={i} className="flex justify-between items-center p-3 bg-slate-50 dark:bg-white/5 rounded-lg border border-slate-200 dark:border-white/5 transition-transform hover:scale-[1.01]">
-                <span className="font-bold text-slate-700 dark:text-white">{t.split(' ')[0]}</span>
-                <span className="text-neonPurple font-mono">{t.split(' ').slice(1).join(' ')}</span>
-             </div>
-          ))}
-       </div>
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Best Time to Post" className="h-full flex flex-col">
+            <select className="w-full bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-lg p-2.5 outline-none mb-6 focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue text-slate-900 dark:text-white" value={platform} onChange={e => setPlatform(e.target.value)}>
+                {Object.keys(times).map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
+            <div className="flex-grow space-y-3">
+                {times[platform].map((t: string, i: number) => (
+                    <div key={i} className="flex items-center gap-4 p-3 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10">
+                        <Clock className="text-blue-600 dark:text-neonBlue" />
+                        <span className="text-lg font-bold text-slate-800 dark:text-white">{t}</span>
+                    </div>
+                ))}
+            </div>
+        </GlassCard>
+    );
 };
 
-// --- Engagement Rate Calculator ---
+// --- Engagement Rate ---
 export const EngagementRate: React.FC = () => {
-  const [likes, setLikes] = useState('');
-  const [comments, setComments] = useState('');
-  const [followers, setFollowers] = useState('');
-  const [rate, setRate] = useState<string|null>(null);
+    const [followers, setFollowers] = useState('');
+    const [likes, setLikes] = useState('');
+    const [comments, setComments] = useState('');
+    const [rate, setRate] = useState<number | null>(null);
 
-  const calculate = () => {
-     const l = parseFloat(likes) || 0;
-     const c = parseFloat(comments) || 0;
-     const f = parseFloat(followers) || 1;
-     const er = ((l + c) / f) * 100;
-     setRate(er.toFixed(2));
-  };
+    const calc = () => {
+        const f = parseFloat(followers);
+        const l = parseFloat(likes);
+        const c = parseFloat(comments);
+        if(f && l && c >= 0) {
+            setRate(((l + c) / f) * 100);
+        }
+    };
 
-  return (
-    <GlassCard title="Engagement Rate" className="h-full flex flex-col">
-       <div className="space-y-3 mb-4">
-          <InputGroup label="Likes" id="er-likes" type="number" value={likes} onChange={e=>setLikes(e.target.value)} />
-          <InputGroup label="Comments" id="er-comments" type="number" value={comments} onChange={e=>setComments(e.target.value)} />
-          <InputGroup label="Followers" id="er-followers" type="number" value={followers} onChange={e=>setFollowers(e.target.value)} />
-       </div>
-       <NeonButton onClick={calculate}>Calculate</NeonButton>
-       
-       {rate && (
-          <div className="mt-4 text-center animate-fade-in-up">
-             <span className="text-xs text-slate-500 block">Engagement Rate</span>
-             <span className="text-3xl font-bold text-neonBlue">{rate}%</span>
-          </div>
-       )}
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Engagement Calculator" className="h-full flex flex-col">
+            <div className="space-y-3 mb-4">
+                <InputGroup label="Followers" id="eng-f" type="number" value={followers} onChange={e => setFollowers(e.target.value)} />
+                <div className="flex gap-2">
+                    <InputGroup label="Likes" id="eng-l" type="number" value={likes} onChange={e => setLikes(e.target.value)} />
+                    <InputGroup label="Comments" id="eng-c" type="number" value={comments} onChange={e => setComments(e.target.value)} />
+                </div>
+            </div>
+            <NeonButton onClick={calc} className="w-full">Calculate</NeonButton>
+            {rate !== null && (
+                <div className="mt-4 text-center p-4 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-300 dark:border-white/10">
+                    <div className="text-3xl font-black text-blue-600 dark:text-neonBlue">{rate.toFixed(2)}%</div>
+                    <div className="text-xs text-slate-500 font-bold uppercase">Engagement Rate</div>
+                </div>
+            )}
+        </GlassCard>
+    );
 };
-
-// -----------------------------------------------------
-// CAREER, EDUCATION & PRODUCTIVITY
-// -----------------------------------------------------
 
 // --- Exam Rank Predictor ---
 export const ExamRankPredictor: React.FC = () => {
-  const [marks, setMarks] = useState('');
-  const [total, setTotal] = useState('100');
-  const [difficulty, setDifficulty] = useState('medium');
-  const [rank, setRank] = useState<string|null>(null);
+    const [marks, setMarks] = useState('');
+    const [total, setTotal] = useState('100');
+    const [rank, setRank] = useState<string>('');
 
-  const predict = () => {
-     if(!marks || !total) return;
-     const m = parseFloat(marks);
-     const t = parseFloat(total);
-     const percentage = (m / t) * 100;
-     
-     // Simulated prediction logic
-     let baseRank = 10000;
-     if (difficulty === 'hard') baseRank = 5000;
-     if (difficulty === 'easy') baseRank = 15000;
-     
-     // Invert: Higher % = lower rank
-     const predicted = Math.max(1, Math.floor(baseRank * (1 - (percentage / 100)) + Math.random() * 50));
-     setRank(predicted.toLocaleString());
-  };
+    const predict = () => {
+        const m = parseFloat(marks);
+        const t = parseFloat(total);
+        if(!m || !t) return;
+        const percent = (m/t)*100;
+        let r = '';
+        if(percent > 95) r = 'Top 1%';
+        else if(percent > 90) r = 'Top 5%';
+        else if(percent > 80) r = 'Top 15%';
+        else if(percent > 60) r = 'Average';
+        else r = 'Needs Improvement';
+        setRank(r);
+    };
 
-  return (
-    <GlassCard title="Exam Rank Predictor" className="h-full flex flex-col">
-       <div className="space-y-3 mb-4">
-          <div className="flex gap-2">
-            <div className="flex-1">
-               <label className="text-xs text-slate-500 mb-1 block">Marks Scored</label>
-               <input type="number" className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all focus:scale-[1.01]" value={marks} onChange={e=>setMarks(e.target.value)} />
+    return (
+        <GlassCard title="Rank Predictor" className="h-full flex flex-col">
+            <div className="flex gap-2 mb-4">
+                <InputGroup label="Marks Scored" id="rank-m" type="number" value={marks} onChange={e => setMarks(e.target.value)} />
+                <InputGroup label="Total Marks" id="rank-t" type="number" value={total} onChange={e => setTotal(e.target.value)} />
             </div>
-            <div className="flex-1">
-               <label className="text-xs text-slate-500 mb-1 block">Total Marks</label>
-               <input type="number" className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all focus:scale-[1.01]" value={total} onChange={e=>setTotal(e.target.value)} />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs text-slate-500 mb-1 block">Paper Difficulty</label>
-            <select className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none text-sm focus:ring-1 focus:ring-neonBlue transition-all" value={difficulty} onChange={e=>setDifficulty(e.target.value)}>
-               <option value="easy">Easy</option>
-               <option value="medium">Medium</option>
-               <option value="hard">Hard</option>
-            </select>
-          </div>
-       </div>
-       <NeonButton onClick={predict}>Predict Rank</NeonButton>
-       
-       {rank && (
-          <div className="mt-4 text-center p-3 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 animate-pulse">
-             <span className="text-xs text-slate-500 uppercase tracking-widest">Est. Rank</span>
-             <div className="text-3xl font-black text-neonPurple mt-1">#{rank}</div>
-          </div>
-       )}
-    </GlassCard>
-  );
+            <NeonButton onClick={predict} className="w-full">Predict Rank</NeonButton>
+            {rank && (
+                 <div className="mt-6 text-center animate-bounce-in">
+                    <GraduationCap size={48} className="mx-auto text-blue-600 dark:text-neonBlue mb-2" />
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{rank}</div>
+                 </div>
+            )}
+        </GlassCard>
+    );
 };
 
-// --- Attendance Shortage Calculator ---
+// --- Attendance Calculator ---
 export const AttendanceCalc: React.FC = () => {
-  const [total, setTotal] = useState('');
-  const [attended, setAttended] = useState('');
-  const [required, setRequired] = useState('75');
-  const [result, setResult] = useState<{current: number, needed: number, canMiss: number} | null>(null);
+    const [attended, setAttended] = useState('');
+    const [total, setTotal] = useState('');
+    const [res, setRes] = useState<any>(null);
 
-  const calculate = () => {
-     const t = parseFloat(total);
-     const a = parseFloat(attended);
-     const r = parseFloat(required);
-     if(!t || isNaN(a)) return;
+    const calc = () => {
+        const a = parseInt(attended);
+        const t = parseInt(total);
+        if(isNaN(a) || isNaN(t) || t === 0) return;
+        const current = (a/t)*100;
+        const target = 75;
+        let status = '';
+        let advice = '';
 
-     const current = (a / t) * 100;
-     let needed = 0;
-     let canMiss = 0;
+        if(current >= target) {
+            const bunkable = Math.floor((a - 0.75 * t) / 0.75);
+            status = 'Safe Zone';
+            advice = `You can bunk ${bunkable} classes.`;
+        } else {
+            const need = Math.ceil((0.75 * t - a) / 0.25);
+            status = 'Danger Zone';
+            advice = `Attend next ${need} classes.`;
+        }
+        setRes({ current, status, advice });
+    };
 
-     if (current < r) {
-        // Solve (a + x) / (t + x) = r/100
-        needed = Math.ceil((r * t - 100 * a) / (100 - r));
-     } else {
-        // Solve (a) / (t + x) = r/100
-        canMiss = Math.floor((100 * a - r * t) / r);
-     }
-     setResult({current, needed: Math.max(0, needed), canMiss: Math.max(0, canMiss)});
-  };
-
-  return (
-    <GlassCard title="Attendance Manager" className="h-full flex flex-col">
-       <div className="space-y-3 mb-4">
-          <InputGroup label="Total Classes" id="att-total" type="number" value={total} onChange={e=>setTotal(e.target.value)} />
-          <InputGroup label="Attended Classes" id="att-attended" type="number" value={attended} onChange={e=>setAttended(e.target.value)} />
-          <div>
-            <label className="text-xs text-slate-500 mb-1 block">Required % (e.g. 75)</label>
-            <input type="number" className="w-full bg-slate-100 dark:bg-slate-800/50 rounded-lg px-3 py-2 outline-none focus:ring-1 focus:ring-neonBlue transition-all focus:scale-[1.01]" value={required} onChange={e=>setRequired(e.target.value)} />
-          </div>
-       </div>
-       <NeonButton onClick={calculate}>Check Status</NeonButton>
-       
-       {result && (
-          <div className="mt-4 text-center animate-fade-in-up">
-             <div className={`text-2xl font-bold mb-2 ${result.current >= parseFloat(required) ? 'text-green-500' : 'text-red-500'}`}>
-                {result.current.toFixed(1)}%
-             </div>
-             {result.current < parseFloat(required) ? (
-                <p className="text-sm text-slate-600 dark:text-gray-300">
-                   Attend <span className="font-bold text-slate-900 dark:text-white">{result.needed}</span> more classes to hit target.
-                </p>
-             ) : (
-                <p className="text-sm text-slate-600 dark:text-gray-300">
-                   You can bunk <span className="font-bold text-slate-900 dark:text-white">{result.canMiss}</span> classes safely.
-                </p>
-             )}
-          </div>
-       )}
-    </GlassCard>
-  );
-};
-
-// --- Project Deadline Risk Analyzer ---
-export const ProjectRisk: React.FC = () => {
-  const [days, setDays] = useState('');
-  const [tasks, setTasks] = useState('');
-  const [team, setTeam] = useState('1');
-  const [risk, setRisk] = useState<{level: string, color: string} | null>(null);
-
-  const analyze = () => {
-     const d = parseFloat(days);
-     const t = parseFloat(tasks);
-     const m = parseFloat(team);
-     if(!d || !t || !m) return;
-     
-     // Tasks per person per day required
-     const load = t / (d * m);
-     
-     if (load > 3) setRisk({level: 'CRITICAL', color: 'text-red-600'});
-     else if (load > 1.5) setRisk({level: 'HIGH', color: 'text-orange-500'});
-     else if (load > 0.8) setRisk({level: 'MODERATE', color: 'text-yellow-500'});
-     else setRisk({level: 'SAFE', color: 'text-green-500'});
-  };
-
-  return (
-    <GlassCard title="Deadline Risk AI" className="h-full flex flex-col">
-       <div className="grid grid-cols-2 gap-3 mb-4">
-          <InputGroup label="Days Left" id="risk-days" type="number" value={days} onChange={e=>setDays(e.target.value)} />
-          <InputGroup label="Tasks Left" id="risk-tasks" type="number" value={tasks} onChange={e=>setTasks(e.target.value)} />
-       </div>
-       <InputGroup label="Team Size" id="risk-team" type="number" value={team} onChange={e=>setTeam(e.target.value)} />
-       <NeonButton onClick={analyze} className="mt-2">Analyze Risk</NeonButton>
-       
-       {risk && (
-          <div className="mt-4 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 flex items-center justify-between animate-pulse">
-             <span className="text-sm font-medium text-slate-600 dark:text-gray-300">Risk Level</span>
-             <span className={`text-xl font-black ${risk.color}`}>{risk.level}</span>
-          </div>
-       )}
-    </GlassCard>
-  );
-};
-
-// --- Internship Readiness Score ---
-export const InternshipScore: React.FC = () => {
-  const [checks, setChecks] = useState({
-     resume: false,
-     linkedin: false,
-     projects: false,
-     skills: false,
-     interview: false
-  });
-  const [score, setScore] = useState<number|null>(null);
-
-  const toggle = (key: keyof typeof checks) => {
-     const newChecks = {...checks, [key]: !checks[key]};
-     setChecks(newChecks);
-     const count = Object.values(newChecks).filter(Boolean).length;
-     setScore((count / 5) * 100);
-  };
-
-  return (
-    <GlassCard title="Internship Ready?" className="h-full flex flex-col">
-       <div className="space-y-3 flex-grow">
-          {[
-            {id: 'resume', label: 'Resume Updated & ATS Friendly'},
-            {id: 'linkedin', label: 'LinkedIn Profile Optimized'},
-            {id: 'projects', label: '2+ Portfolio Projects Ready'},
-            {id: 'skills', label: 'Core Technical Skills Mastered'},
-            {id: 'interview', label: 'Mock Interview Practice Done'}
-          ].map(item => (
-             <div key={item.id} className="flex items-center gap-3 p-2 hover:bg-slate-50 dark:hover:bg-white/5 rounded-lg cursor-pointer transition-colors" onClick={() => toggle(item.id as any)}>
-                <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${checks[item.id as keyof typeof checks] ? 'bg-neonBlue border-neonBlue text-slate-900' : 'border-slate-300 dark:border-slate-600'}`}>
-                   {checks[item.id as keyof typeof checks] && <Check size={14} />}
-                </div>
-                <span className="text-sm text-slate-700 dark:text-gray-300">{item.label}</span>
-             </div>
-          ))}
-       </div>
-       
-       <div className="mt-4 pt-4 border-t border-slate-200 dark:border-white/10">
-          <div className="flex justify-between items-center">
-             <span className="text-xs font-bold text-slate-500 uppercase">Readiness Score</span>
-             <span className={`text-2xl font-bold ${score === 100 ? 'text-neonGreen' : 'text-neonBlue'}`}>{score || 0}%</span>
-          </div>
-          <div className="w-full bg-slate-200 dark:bg-slate-700 h-1.5 rounded-full mt-2 overflow-hidden">
-             <div className="bg-neonBlue h-full transition-all duration-1000 ease-out" style={{width: `${score || 0}%`}}></div>
-          </div>
-       </div>
-    </GlassCard>
-  );
-};
-
-// --- Typing Speed Rank Predictor ---
-export const TypingRank: React.FC = () => {
-  const [wpm, setWpm] = useState('');
-  const [percentile, setPercentile] = useState<string|null>(null);
-
-  const predict = () => {
-     const w = parseFloat(wpm);
-     if(!w) return;
-     let p = 0;
-     // Rough WPM distribution logic
-     if (w < 20) p = 10;
-     else if (w < 40) p = 40; // Average
-     else if (w < 60) p = 70; // Good
-     else if (w < 80) p = 90; // Pro
-     else if (w < 100) p = 98; // Expert
-     else p = 99.9; // Godlike
-     
-     setPercentile(`Top ${100 - p}%`);
-  };
-
-  return (
-    <GlassCard title="Typing Rank" className="h-full flex flex-col">
-       <InputGroup label="Your Speed (WPM)" id="type-wpm" type="number" value={wpm} onChange={e=>setWpm(e.target.value)} />
-       <NeonButton onClick={predict} className="mt-2">Check Rank</NeonButton>
-       
-       {percentile && (
-          <div className="mt-6 text-center animate-fade-in-up">
-             <Keyboard size={48} className="mx-auto text-neonPurple mb-2 opacity-80" />
-             <div className="text-3xl font-bold text-white">{percentile}</div>
-             <p className="text-xs text-slate-400 mt-1">of global typists</p>
-          </div>
-       )}
-    </GlassCard>
-  );
-};
-
-// --- Salary Hike Prediction Tool ---
-export const SalaryHike: React.FC = () => {
-  const [ctc, setCtc] = useState('');
-  const [rating, setRating] = useState('3');
-  const [newCtc, setNewCtc] = useState<string|null>(null);
-
-  const predict = () => {
-     const c = parseFloat(ctc);
-     if(!c) return;
-     const r = parseFloat(rating);
-     
-     // Hike Logic: 1=0%, 3=8-12%, 5=20%+
-     const hikePercent = (r - 1) * 5 + Math.random() * 2; 
-     const hike = c * (hikePercent / 100);
-     const total = c + hike;
-     setNewCtc(total.toFixed(2));
-  };
-
-  return (
-    <GlassCard title="Salary Hike Predictor" className="h-full flex flex-col">
-       <div className="space-y-4 mb-4">
-          <InputGroup label="Current CTC (LPA)" id="sal-ctc" type="number" value={ctc} onChange={e=>setCtc(e.target.value)} />
-          <div>
-            <label className="text-xs text-slate-500 mb-1 block">Performance Rating (1-5)</label>
-            <input type="range" min="1" max="5" step="0.5" className="w-full accent-neonBlue" value={rating} onChange={e=>setRating(e.target.value)} />
-            <div className="flex justify-between text-[10px] text-slate-400">
-               <span>Poor (1)</span>
-               <span className="text-neonBlue font-bold text-sm">{rating}</span>
-               <span>Star (5)</span>
+    return (
+        <GlassCard title="Attendance Manager" className="h-full flex flex-col">
+            <div className="flex gap-2 mb-4">
+                <InputGroup label="Attended" id="att-a" type="number" value={attended} onChange={e => setAttended(e.target.value)} />
+                <InputGroup label="Total" id="att-t" type="number" value={total} onChange={e => setTotal(e.target.value)} />
             </div>
-          </div>
-       </div>
-       <NeonButton onClick={predict}>Predict New CTC</NeonButton>
-       
-       {newCtc && (
-          <div className="mt-4 p-4 bg-slate-50 dark:bg-white/5 rounded-xl border border-green-500/30 animate-pulse">
-             <span className="text-xs text-slate-500 uppercase">Estimated New Package</span>
-             <div className="text-2xl font-bold text-green-500 mt-1">{newCtc} LPA</div>
-          </div>
-       )}
-    </GlassCard>
-  );
+            <NeonButton onClick={calc} className="w-full">Check Status</NeonButton>
+            {res && (
+                <div className={`mt-4 p-4 rounded-xl border ${res.current >= 75 ? 'bg-green-50 border-green-200 text-green-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+                    <div className="text-3xl font-bold mb-1">{res.current.toFixed(1)}%</div>
+                    <div className="font-bold mb-1">{res.status}</div>
+                    <div className="text-sm">{res.advice}</div>
+                </div>
+            )}
+        </GlassCard>
+    );
 };
 
-// --- Office Productivity Score ---
+// --- Project Risk ---
+export const ProjectRisk: React.FC = () => {
+    const [days, setDays] = useState('');
+    const [tasks, setTasks] = useState('');
+    const [risk, setRisk] = useState('');
+
+    const calc = () => {
+        const d = parseFloat(days);
+        const t = parseFloat(tasks);
+        if(!d || !t) return;
+        const ratio = t/d;
+        if(ratio < 1) setRisk('Low Risk (Chill)');
+        else if(ratio < 3) setRisk('Medium Risk (Focus)');
+        else setRisk('High Risk (Panic Mode)');
+    };
+
+    return (
+        <GlassCard title="Deadline Risk Analysis" className="h-full flex flex-col">
+            <InputGroup label="Days Left" id="risk-d" type="number" value={days} onChange={e => setDays(e.target.value)} />
+            <InputGroup label="Tasks Remaining" id="risk-t" type="number" value={tasks} onChange={e => setTasks(e.target.value)} />
+            <NeonButton onClick={calc} variant="secondary" className="w-full">Analyze</NeonButton>
+            {risk && (
+                <div className="mt-4 text-center font-bold text-xl text-slate-900 dark:text-white animate-pulse">
+                    {risk}
+                </div>
+            )}
+        </GlassCard>
+    );
+};
+
+// --- Internship Score ---
+export const InternshipScore: React.FC = () => {
+    const [gpa, setGpa] = useState('');
+    const [projects, setProjects] = useState('');
+    const [score, setScore] = useState<number | null>(null);
+
+    const calc = () => {
+        const g = parseFloat(gpa) || 0;
+        const p = parseFloat(projects) || 0;
+        const normGpa = g > 4 ? g : g * 2.5; 
+        const s = Math.min(100, (normGpa * 6) + (p * 10));
+        setScore(Math.round(s));
+    };
+
+    return (
+        <GlassCard title="Internship Ready?" className="h-full flex flex-col">
+            <InputGroup label="GPA / CGPA" id="int-g" type="number" value={gpa} onChange={e => setGpa(e.target.value)} />
+            <InputGroup label="Projects Completed" id="int-p" type="number" value={projects} onChange={e => setProjects(e.target.value)} />
+            <NeonButton onClick={calc} className="w-full">Get Score</NeonButton>
+            {score !== null && (
+                <div className="mt-6 relative h-6 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                    <div className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-neonBlue transition-all duration-1000" style={{width: `${score}%`}}></div>
+                    <div className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white drop-shadow-md">{score}% Ready</div>
+                </div>
+            )}
+        </GlassCard>
+    );
+};
+
+// --- Typing Rank ---
+export const TypingRank: React.FC = () => {
+    const [wpm, setWpm] = useState('');
+    const [rank, setRank] = useState('');
+
+    const check = () => {
+        const w = parseFloat(wpm);
+        if(!w) return;
+        if(w < 40) setRank('Novice (Top 60%)');
+        else if(w < 60) setRank('Average (Top 40%)');
+        else if(w < 80) setRank('Pro (Top 20%)');
+        else if(w < 100) setRank('Master (Top 5%)');
+        else setRank('God Mode (Top 1%)');
+    };
+
+    return (
+        <GlassCard title="Typing Speed Rank" className="h-full flex flex-col">
+            <InputGroup label="Your WPM" id="type-w" type="number" value={wpm} onChange={e => setWpm(e.target.value)} />
+            <NeonButton onClick={check} className="w-full">Check Rank</NeonButton>
+            {rank && <div className="mt-6 text-center text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-blue-500">{rank}</div>}
+        </GlassCard>
+    );
+};
+
+// --- Salary Hike ---
+export const SalaryHike: React.FC = () => {
+    const [current, setCurrent] = useState('');
+    const [rating, setRating] = useState('3');
+    const [hike, setHike] = useState<{newSal: number, percent: number} | null>(null);
+
+    const calc = () => {
+        const c = parseFloat(current);
+        const r = parseFloat(rating);
+        if(!c) return;
+        const p = r * 3 + Math.random() * 2;
+        const increase = c * (p/100);
+        setHike({ newSal: c + increase, percent: p });
+    };
+
+    return (
+        <GlassCard title="Appraisal Predictor" className="h-full flex flex-col">
+            <InputGroup label="Current CTC" id="sal-c" type="number" value={current} onChange={e => setCurrent(e.target.value)} />
+            <div className="mb-4">
+                <label className="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-1">Performance Rating (1-5)</label>
+                <input type="range" min="1" max="5" step="0.5" value={rating} onChange={e => setRating(e.target.value)} className="w-full accent-blue-600 dark:accent-neonBlue" />
+                <div className="text-center font-bold">{rating}</div>
+            </div>
+            <NeonButton onClick={calc} className="w-full">Predict</NeonButton>
+            {hike && (
+                <div className="mt-4 p-4 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/10 text-center">
+                    <div className="text-sm text-slate-500">Predicted Hike</div>
+                    <div className="text-3xl font-bold text-green-600 dark:text-green-400">+{hike.percent.toFixed(1)}%</div>
+                    <div className="text-sm font-medium mt-1">New: {hike.newSal.toFixed(0)}</div>
+                </div>
+            )}
+        </GlassCard>
+    );
+};
+
+// --- Office Score ---
 export const OfficeScore: React.FC = () => {
-  const [focus, setFocus] = useState('');
-  const [tasks, setTasks] = useState('');
-  const [breaks, setBreaks] = useState('');
-  const [score, setScore] = useState<number|null>(null);
+    const [tasks, setTasks] = useState('');
+    const [hours, setHours] = useState('');
+    const [score, setScore] = useState<number | null>(null);
 
-  const calculate = () => {
-     const f = parseFloat(focus) || 0; // Hours
-     const t = parseFloat(tasks) || 0;
-     const b = parseFloat(breaks) || 0; // Minutes
+    const calc = () => {
+        const t = parseFloat(tasks);
+        const h = parseFloat(hours);
+        if(!t || !h) return;
+        const val = (t / h) * 10;
+        setScore(Math.min(10, Math.max(0, val)));
+    };
 
-     // Formula: (Focus * 10) + (Tasks * 5) - (Breaks/10)
-     let s = (f * 10) + (t * 5) - (b / 10);
-     setScore(Math.min(100, Math.max(0, Math.round(s))));
-  };
-
-  return (
-    <GlassCard title="Productivity Score" className="h-full flex flex-col">
-       <div className="grid grid-cols-2 gap-3 mb-4">
-          <InputGroup label="Focus Hours" id="prod-focus" type="number" value={focus} onChange={e=>setFocus(e.target.value)} />
-          <InputGroup label="Tasks Done" id="prod-tasks" type="number" value={tasks} onChange={e=>setTasks(e.target.value)} />
-       </div>
-       <InputGroup label="Break Mins" id="prod-breaks" type="number" value={breaks} onChange={e=>setBreaks(e.target.value)} />
-       
-       <NeonButton onClick={calculate} className="mt-2">Get Score</NeonButton>
-       
-       {score !== null && (
-          <div className="mt-4 flex items-center justify-between p-3 bg-slate-50 dark:bg-white/5 rounded-xl animate-fade-in-up">
-             <span className="text-sm font-bold text-slate-700 dark:text-gray-200">Daily Score</span>
-             <div className={`text-3xl font-black ${score > 80 ? 'text-neonGreen' : score > 50 ? 'text-neonBlue' : 'text-orange-500'}`}>
-                {score}
-             </div>
-          </div>
-       )}
-    </GlassCard>
-  );
+    return (
+        <GlassCard title="Productivity Score" className="h-full flex flex-col">
+            <InputGroup label="Tasks Completed" id="off-t" type="number" value={tasks} onChange={e => setTasks(e.target.value)} />
+            <InputGroup label="Hours Worked" id="off-h" type="number" value={hours} onChange={e => setHours(e.target.value)} />
+            <NeonButton onClick={calc} className="w-full">Calculate</NeonButton>
+            {score !== null && (
+                <div className="mt-6 flex flex-col items-center">
+                    <div className={`text-4xl font-bold ${score > 7 ? 'text-green-500' : score > 4 ? 'text-yellow-500' : 'text-red-500'}`}>
+                        {score.toFixed(1)}/10
+                    </div>
+                    <div className="text-xs text-slate-400 mt-2">
+                        {score > 7 ? 'Productivity Machine! 🤖' : 'Keep Pushing! 🚀'}
+                    </div>
+                </div>
+            )}
+        </GlassCard>
+    );
 };
