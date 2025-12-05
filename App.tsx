@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign, Shield } from 'lucide-react';
-import { NeonButton, CursorGlow, BackToTop, AnimatedSection } from './components/UiKit';
+import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign, Shield, Users, Twitter, Send } from 'lucide-react';
+import { NeonButton, CursorGlow, BackToTop, AnimatedSection, GlassCard, InputGroup } from './components/UiKit';
 import { Hero3D } from './components/Hero3D';
 import { AdminDashboard } from './components/AdminDashboard';
 import { 
@@ -360,10 +360,132 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
   );
 };
 
+// --- About Section ---
+const AboutSection = () => (
+  <AnimatedSection id="about" className="py-24 scroll-mt-20">
+    <div className="max-w-5xl mx-auto px-6">
+      <div className="text-center mb-12">
+        <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">Crafted for Efficiency</h2>
+        <div className="h-1 w-24 bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple mx-auto rounded-full"></div>
+      </div>
+      
+      <GlassCard className="relative overflow-hidden">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-slate-800 dark:text-white">Why ToolCraft?</h3>
+            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-lg">
+              We believe essential digital tools should be accessible, beautiful, and privacy-focused. 
+              ToolCraft.ai brings together 40+ powerful utilities in one cohesive, ad-free environment without any server-side data collection.
+            </p>
+            <ul className="space-y-4 mt-6">
+              {[
+                {icon: <Shield size={20} className="text-green-500"/>, text: "100% Client-Side Privacy"},
+                {icon: <Zap size={20} className="text-yellow-500"/>, text: "Lightning Fast Performance"},
+                {icon: <Moon size={20} className="text-purple-500"/>, text: "Beautiful Dark Mode UI"},
+                {icon: <Globe size={20} className="text-blue-500"/>, text: "Works Offline (PWA Ready)"}
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-4 text-slate-700 dark:text-slate-200">
+                  <div className="p-2.5 bg-slate-100 dark:bg-white/5 rounded-xl border border-slate-200 dark:border-white/5 shadow-sm">{item.icon}</div>
+                  <span className="font-semibold">{item.text}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="relative hidden md:block">
+             {/* Abstract Visual */}
+             <div className="absolute inset-0 bg-gradient-to-tr from-blue-600/30 to-purple-600/30 rounded-full blur-3xl animate-pulse-slow"></div>
+             <div className="relative z-10 grid grid-cols-2 gap-4 transform rotate-3 hover:rotate-0 transition-transform duration-500">
+                <div className="bg-white/60 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-white/10 backdrop-blur-md shadow-xl translate-y-8">
+                   <Activity className="text-blue-600 dark:text-neonBlue mb-3" size={40} />
+                   <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">50k+</div>
+                   <div className="text-sm font-bold text-slate-500 uppercase tracking-wide">Calculations</div>
+                </div>
+                <div className="bg-white/60 dark:bg-slate-800/60 p-6 rounded-2xl border border-slate-200 dark:border-white/10 backdrop-blur-md shadow-xl -translate-y-4">
+                   <Users className="text-purple-600 dark:text-neonPurple mb-3" size={40} />
+                   <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">10k+</div>
+                   <div className="text-sm font-bold text-slate-500 uppercase tracking-wide">Daily Users</div>
+                </div>
+             </div>
+          </div>
+        </div>
+      </GlassCard>
+    </div>
+  </AnimatedSection>
+);
+
+// --- Contact Section ---
+const ContactSection = () => {
+  const [sent, setSent] = useState(false);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSent(true);
+    setTimeout(() => setSent(false), 3000);
+  }
+
+  return (
+    <AnimatedSection id="contact" className="py-24 scroll-mt-20">
+      <div className="max-w-3xl mx-auto px-6">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">Get In Touch</h2>
+          <p className="text-lg text-slate-500 dark:text-slate-400">Have a tool suggestion or found a bug? We'd love to hear from you.</p>
+        </div>
+
+        <GlassCard>
+           <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                <InputGroup label="Name" id="c-name" value="" onChange={()=>{}} placeholder="John Doe" />
+                <InputGroup label="Email" id="c-email" type="email" value="" onChange={()=>{}} placeholder="john@example.com" />
+              </div>
+              <div>
+                 <label className="block text-sm font-bold text-slate-700 dark:text-gray-300 mb-2">Message</label>
+                 <textarea className="w-full h-32 bg-slate-50 dark:bg-slate-800/50 border border-slate-300 dark:border-slate-600 rounded-xl p-4 text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue resize-none transition-all placeholder-slate-400" placeholder="Tell us what you think..."></textarea>
+              </div>
+              <NeonButton type="submit" className="w-full flex justify-center items-center gap-2">
+                 {sent ? <Check size={20} /> : <Send size={20} />}
+                 {sent ? 'Message Sent!' : 'Send Message'}
+              </NeonButton>
+           </form>
+
+           <div className="mt-10 pt-8 border-t border-slate-200 dark:border-white/10 flex justify-center gap-6">
+              {[
+                { Icon: Github, href: "https://github.com" },
+                { Icon: Twitter, href: "https://twitter.com" },
+                { Icon: Linkedin, href: "https://linkedin.com" },
+                { Icon: Mail, href: "mailto:hello@toolcraft.ai" }
+              ].map(({ Icon, href }, i) => (
+                 <a key={i} href={href} target="_blank" rel="noreferrer" className="p-3 bg-slate-100 dark:bg-white/5 rounded-full text-slate-600 dark:text-slate-400 hover:bg-blue-600 hover:text-white dark:hover:bg-neonBlue dark:hover:text-slate-900 transition-all hover:scale-110 hover:shadow-lg">
+                    <Icon size={22} />
+                 </a>
+              ))}
+           </div>
+        </GlassCard>
+      </div>
+    </AnimatedSection>
+  );
+};
+
+// --- Footer ---
+const Footer = () => (
+   <footer className="border-t border-slate-200 dark:border-white/5 py-12 mt-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
+      <div className="container mx-auto px-6 text-center">
+         <div className="flex items-center justify-center gap-2 mb-4 font-black text-2xl text-slate-900 dark:text-white">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple flex items-center justify-center text-white dark:text-slate-900">T</div>
+            ToolCraft<span className="text-blue-600 dark:text-neonBlue">.ai</span>
+         </div>
+         <p className="text-slate-500 dark:text-slate-400 text-sm mb-8 max-w-md mx-auto">
+            Premium utility suite for developers and creators. Open source and privacy-first.
+         </p>
+         <div className="text-xs text-slate-400 font-medium">
+            &copy; {new Date().getFullYear()} ToolCraft AI. All rights reserved.
+         </div>
+      </div>
+   </footer>
+);
+
 const App: React.FC = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [showHero, setShowHero] = useState(true);
-  const [currentView, setCurrentView] = useState<'home' | 'admin' | 'about' | 'contact'>('home');
+  const [currentView, setCurrentView] = useState<'home' | 'admin'>('home');
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -382,10 +504,31 @@ const App: React.FC = () => {
     if (view === 'root') {
       setCurrentView('home');
       setSelectedToolId(null);
-    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    
+    if (view === 'admin') {
       // @ts-ignore
-      setCurrentView(view);
+      setCurrentView('admin');
       setSelectedToolId(null);
+      return;
+    }
+
+    // Handle smooth scrolling for 'about' and 'contact'
+    if (view === 'about' || view === 'contact') {
+      if (currentView !== 'home') {
+        setCurrentView('home');
+        // Delay scroll to allow render
+        setTimeout(() => {
+          const el = document.getElementById(view);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else {
+        const el = document.getElementById(view);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
     }
   };
 
@@ -423,13 +566,13 @@ const App: React.FC = () => {
             onToolSelect={handleToolSelect}
           />
 
-          <main className="container mx-auto px-6 pt-32 pb-20 min-h-screen">
+          <main className="container mx-auto px-6 pt-32 pb-0 min-h-screen">
             {currentView === 'admin' ? (
               <AdminDashboard onLogout={() => handleNavigate('root')} />
-            ) : currentView === 'home' ? (
+            ) : (
               <>
                 {activeTool ? (
-                  <div className="max-w-4xl mx-auto animate-fade-in-up">
+                  <div className="max-w-4xl mx-auto animate-fade-in-up pb-20">
                     <button 
                       onClick={() => setSelectedToolId(null)}
                       className="group flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:hover:text-neonBlue mb-6 transition-colors font-bold text-sm"
@@ -514,22 +657,19 @@ const App: React.FC = () => {
                           </div>
                        )}
                     </div>
+                    
+                    {/* About Section */}
+                    <AboutSection />
+                    
+                    {/* Contact Section */}
+                    <ContactSection />
                   </div>
                 )}
               </>
-            ) : (
-               <div className="flex flex-col items-center justify-center min-h-[50vh] animate-fade-in-up">
-                  <div className="w-20 h-20 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 animate-pulse">
-                     <AlertTriangle size={32} className="text-yellow-500" />
-                  </div>
-                  <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Work in Progress</h2>
-                  <p className="text-slate-500 dark:text-slate-400 max-w-md text-center mb-8">
-                     The <span className="font-bold text-slate-900 dark:text-white">{currentView}</span> page is currently being built. Check back soon for updates.
-                  </p>
-                  <NeonButton onClick={() => handleNavigate('root')}>Return Home</NeonButton>
-               </div>
             )}
           </main>
+          
+          {currentView === 'home' && !activeTool && <Footer />}
         </div>
       )}
       <BackToTop />
