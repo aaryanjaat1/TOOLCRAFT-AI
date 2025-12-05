@@ -7,7 +7,7 @@ import {
   Users, Activity, Server, AlertCircle, TrendingUp, Clock, 
   Globe, Shield, Search, Terminal, LogOut, Mail, Lock, RefreshCw
 } from 'lucide-react';
-import { GlassCard, NeonButton, InputGroup } from './UI';
+import { GlassCard, NeonButton, InputGroup } from './UiKit';
 import { supabase } from '../lib/supabaseClient';
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8'];

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
-import { GlassCard, NeonButton, InputGroup } from './UI';
+import { GlassCard, NeonButton, InputGroup } from './UiKit';
 import { 
   RefreshCw, Copy, Check, Download, Dices, Sparkles, Heart, Circle,
   AlignLeft, Type, Code2, Globe, Eraser, Scissors, FileJson,

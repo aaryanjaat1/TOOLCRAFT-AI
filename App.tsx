@@ -361,270 +361,163 @@ const Navbar: React.FC<NavbarProps> = ({ toggleTheme, isDark, onNavigate, onTool
 };
 
 const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(true);
-  const [isDark, setIsDark] = useState(true);
-  const [search, setSearch] = useState('');
-  const [view, setView] = useState('home'); // home, tool-id, admin
+  const [darkMode, setDarkMode] = useState(true);
+  const [showHero, setShowHero] = useState(true);
+  const [currentView, setCurrentView] = useState<'home' | 'admin' | 'about' | 'contact'>('home');
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  // Theme toggle
-  const toggleTheme = () => {
-    setIsDark(!isDark);
-    if (isDark) {
-      document.documentElement.classList.remove('dark');
-    } else {
+  // Toggle Dark Mode
+  useEffect(() => {
+    if (darkMode) {
       document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => setDarkMode(!darkMode);
+
+  const handleNavigate = (view: string) => {
+    if (view === 'root') {
+      setCurrentView('home');
+      setSelectedToolId(null);
+    } else {
+      // @ts-ignore
+      setCurrentView(view);
+      setSelectedToolId(null);
     }
   };
-
-  useEffect(() => {
-    // Initial theme setup
-    document.documentElement.classList.add('dark');
-  }, []);
 
   const handleToolSelect = (id: string) => {
     setSelectedToolId(id);
-    setView('tool');
+    setCurrentView('home');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  const handleNavigate = (id: string) => {
-    if (id === 'root') {
-      setView('home');
-      setSelectedToolId(null);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else if (id === 'about' || id === 'contact') {
-      if (view !== 'home') {
-        setView('home');
-        // Wait for state update and render, then scroll
-        setTimeout(() => scrollToSection(id), 100);
-      } else {
-        scrollToSection(id);
-      }
-    } else {
-      setView(id); // fallback for other potential routes (e.g. 'admin')
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  const handleHeroComplete = () => {
+    setShowHero(false);
   };
 
   // Filter tools
   const filteredTools = toolsList.filter(t => 
-    t.name.toLowerCase().includes(search.toLowerCase()) || 
-    t.tags.includes(search.toLowerCase())
+    t.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    t.tags.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const activeTool = selectedToolId ? toolsList.find(t => t.id === selectedToolId) : null;
+
   return (
-    <>
-      {showIntro && <Hero3D onComplete={() => setShowIntro(false)} />}
+    <div className={`min-h-screen font-sans transition-colors duration-500 ${darkMode ? 'bg-[#020617] text-white' : 'bg-slate-50 text-slate-900'}`}>
       
-      <div className={`min-h-screen transition-all duration-1000 transform ${showIntro ? 'opacity-0 scale-95' : 'opacity-100 scale-100'} ${isDark ? 'dark bg-slate-900' : 'bg-slate-50'}`}>
-        <CursorGlow />
-        {view !== 'admin' && (
-           <Navbar toggleTheme={toggleTheme} isDark={isDark} onNavigate={handleNavigate} onToolSelect={handleToolSelect} />
-        )}
-        
-        <main className="container mx-auto px-6 min-h-screen flex flex-col relative">
-          
-          {/* --- ADMIN VIEW --- */}
-          {view === 'admin' && (
-             <div className="pt-8">
-               <AdminDashboard onLogout={() => handleNavigate('root')} />
-             </div>
-          )}
+      {showHero && <Hero3D onComplete={handleHeroComplete} />}
+      
+      <CursorGlow />
+      
+      {!showHero && (
+        <div className="animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDuration: '1s' }}>
+          <Navbar 
+            isDark={darkMode} 
+            toggleTheme={toggleTheme} 
+            onNavigate={handleNavigate}
+            onToolSelect={handleToolSelect}
+          />
 
-          {/* --- HOME VIEW --- */}
-          {view === 'home' && (
-            <div className="flex flex-col w-full">
-              {/* Full Screen Hero Section */}
-              <div className={`
-                 flex flex-col items-center justify-center text-center w-full max-w-4xl mx-auto
-                 transition-all duration-700 ease-[cubic-bezier(0.25,0.1,0.25,1)]
-                 ${search ? 'min-h-[40vh] pt-32 pb-10' : 'min-h-screen pt-20'}
-              `}>
-                <div className="flex flex-col items-center animate-fade-in-up">
-                    <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter text-slate-900 dark:text-white leading-[1.1]">
-                      Supercharge Your <br />
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple animate-pulse">Productivity</span>
-                    </h1>
-                    <p className="text-xl md:text-2xl text-slate-700 dark:text-gray-400 mb-12 leading-relaxed max-w-2xl font-light">
-                      Access a suite of powerful, developer-grade tools designed to simplify your daily tasks.
-                    </p>
-                    
-                    <div className="relative w-full max-w-2xl group z-10">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-purple-400 dark:from-neonBlue dark:to-neonPurple rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity duration-500"></div>
-                      <div className="relative bg-white dark:bg-slate-800 rounded-2xl p-2 flex items-center shadow-xl border border-slate-300 dark:border-white/10 transition-transform duration-300 group-hover:scale-[1.02]">
-                        <Search className="ml-4 text-slate-500 dark:text-slate-400 w-6 h-6" />
-                        <input 
-                          type="text" 
-                          placeholder="Search tools (e.g. bmi, qr, loan)..." 
-                          className="w-full bg-transparent border-none outline-none px-4 py-4 text-xl text-slate-900 dark:text-white placeholder-slate-400"
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                          autoFocus={!showIntro}
-                        />
-                      </div>
+          <main className="container mx-auto px-6 pt-32 pb-20 min-h-screen">
+            {currentView === 'admin' ? (
+              <AdminDashboard onLogout={() => handleNavigate('root')} />
+            ) : currentView === 'home' ? (
+              <>
+                {activeTool ? (
+                  <div className="max-w-4xl mx-auto animate-fade-in-up">
+                    <button 
+                      onClick={() => setSelectedToolId(null)}
+                      className="group flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:hover:text-neonBlue mb-6 transition-colors font-bold text-sm"
+                    >
+                      <span className="p-1 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:-translate-x-1 transition-transform">
+                        <ChevronDown size={16} className="rotate-90" />
+                      </span>
+                      Back to Tools
+                    </button>
+                    <div className="min-h-[600px]">
+                      {activeTool.component}
                     </div>
-                </div>
+                  </div>
+                ) : (
+                  <div className="space-y-16">
+                    {/* Hero Section */}
+                    <div className="text-center space-y-6 max-w-4xl mx-auto">
+                       <h1 className="text-4xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+                         The Ultimate <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple animate-pulse-slow">Dev & Life</span> Toolkit
+                       </h1>
+                       <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                         Access 40+ premium tools, calculators, and generators. Completely free, open-source, and privacy-focused.
+                       </p>
+                       
+                       <div className="relative max-w-xl mx-auto group">
+                          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 dark:group-focus-within:text-neonBlue transition-colors">
+                             <Search size={20} />
+                          </div>
+                          <input 
+                            type="text" 
+                            placeholder="Search tools (e.g., 'bmi', 'qr code', 'password')..." 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-6 text-lg shadow-xl shadow-slate-200/50 dark:shadow-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue outline-none transition-all hover:scale-[1.01] focus:scale-[1.01]"
+                          />
+                       </div>
+                    </div>
 
-                {/* Scroll Indicator (Only visible when search is empty) */}
-                {!search && (
-                   <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500 dark:text-slate-600 animate-bounce cursor-pointer opacity-70 hover:opacity-100 transition-opacity" onClick={() => window.scrollTo({top: window.innerHeight, behavior: 'smooth'})}>
-                      <span className="text-sm font-bold uppercase tracking-widest">Explore Tools</span>
-                      <ChevronDown size={24} />
-                   </div>
-                )}
-              </div>
-
-              {/* Tools Grid */}
-              <div className="pb-32">
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                   {filteredTools.map((tool, index) => (
-                    <AnimatedSection key={tool.id} delay={index * 50} className="h-full">
-                      <div 
-                        onClick={() => handleToolSelect(tool.id)}
-                        className="group relative h-full bg-white dark:bg-slate-800/40 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-[2rem] p-6 cursor-pointer overflow-hidden transition-all duration-500 hover:border-blue-400 dark:hover:border-neonBlue/50 shadow-sm hover:shadow-xl dark:hover:shadow-[0_0_40px_-10px_rgba(0,243,255,0.15)] hover:-translate-y-2"
-                      >
-                        {/* Inner Glow Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent dark:from-white/20 dark:to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-
-                        {/* Card Content */}
-                        <div className="relative z-10 flex flex-col h-full">
-                          
-                          {/* Header: Icon & Action */}
-                          <div className="flex justify-between items-start mb-6">
-                              {/* 3D Icon Container */}
-                              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-900 border border-slate-200 dark:border-white/20 shadow-md dark:shadow-xl flex items-center justify-center relative overflow-hidden group-hover:scale-110 transition-transform duration-500">
-                                {/* Inner Light */}
-                                <div className="absolute inset-0 bg-blue-400/20 dark:bg-neonBlue/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md"></div>
-                                {/* The Icon */}
-                                <div className="relative z-10 text-slate-700 dark:text-white group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300 drop-shadow-sm">
-                                    {React.cloneElement(tool.icon as React.ReactElement<any>, { size: 32, strokeWidth: 1.5 })}
+                    {/* Tools Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                       {filteredTools.length > 0 ? filteredTools.map((tool, idx) => (
+                          <AnimatedSection key={tool.id} delay={idx * 30}>
+                             <div 
+                               onClick={() => handleToolSelect(tool.id)}
+                               className="group h-full bg-white dark:bg-slate-900/40 backdrop-blur-md border border-slate-200 dark:border-white/5 rounded-2xl p-6 cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:hover:shadow-neonBlue/10 relative overflow-hidden"
+                             >
+                                <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity transform scale-150 group-hover:rotate-12 duration-500 text-blue-600 dark:text-neonBlue">
+                                   {tool.icon}
                                 </div>
-                              </div>
-                              
-                              {/* Arrow Action */}
-                              <div className="w-10 h-10 rounded-full border border-slate-300 dark:border-white/10 flex items-center justify-center text-slate-400 opacity-50 group-hover:opacity-100 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 group-hover:border-transparent transition-all duration-300">
-                                <ArrowUpRight size={20} />
-                              </div>
+                                
+                                <div className="w-12 h-12 rounded-xl bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5 flex items-center justify-center text-slate-700 dark:text-white mb-4 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white transition-colors duration-300">
+                                   {tool.icon}
+                                </div>
+                                
+                                <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors">{tool.name}</h3>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">{tool.description}</p>
+                             </div>
+                          </AnimatedSection>
+                       )) : (
+                          <div className="col-span-full py-20 text-center">
+                             <div className="inline-block p-4 rounded-full bg-slate-100 dark:bg-white/5 mb-4 text-slate-400">
+                                <Search size={32} />
+                             </div>
+                             <h3 className="text-xl font-bold text-slate-700 dark:text-white">No tools found</h3>
+                             <p className="text-slate-500">Try searching for something else like "finance" or "health".</p>
                           </div>
-
-                          {/* Text Info */}
-                          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-neonBlue transition-colors duration-300">
-                            {tool.name}
-                          </h3>
-                          <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed mb-6 line-clamp-2">
-                            {tool.description}
-                          </p>
-
-                          {/* Tags Footer */}
-                          <div className="mt-auto flex flex-wrap gap-2">
-                              {tool.tags.split(' ').slice(0, 3).map(tag => (
-                                <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-white/5 px-2.5 py-1 rounded-lg border border-slate-200 dark:border-transparent group-hover:border-blue-200 dark:group-hover:border-neonBlue/20 transition-colors">
-                                  #{tag}
-                                </span>
-                              ))}
-                          </div>
-                        </div>
-                      </div>
-                    </AnimatedSection>
-                  ))}
-                </div>
-
-                {filteredTools.length === 0 && (
-                  <div className="text-center py-20">
-                    <p className="text-2xl text-slate-400 font-light">No tools found matching "<span className="text-blue-600 dark:text-neonBlue">{search}</span>"</p>
-                    <button onClick={() => setSearch('')} className="mt-4 text-purple-600 dark:text-neonPurple hover:underline font-medium">Clear Search</button>
+                       )}
+                    </div>
                   </div>
                 )}
-              </div>
-
-              {/* About Section */}
-              <div id="about" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
-                 <AnimatedSection className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">About ToolCraft AI</h2>
-                    <p className="text-lg text-slate-700 dark:text-gray-300 mb-6 font-medium">
-                       ToolCraft AI is a premium suite of utility tools designed for modern creators, developers, and professionals. 
-                       We believe in clean design, speed, and privacy. All tools run client-side, meaning your data never leaves your device.
-                    </p>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
-                          <div className="text-3xl mb-2">⚡</div>
-                          <h3 className="font-bold text-slate-900 dark:text-white">Lightning Fast</h3>
-                          <p className="text-sm text-slate-600 dark:text-slate-500">Optimized for instant load times and zero lag.</p>
-                       </div>
-                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
-                          <div className="text-3xl mb-2">🔒</div>
-                          <h3 className="font-bold text-slate-900 dark:text-white">Privacy First</h3>
-                          <p className="text-sm text-slate-600 dark:text-slate-500">No data collection. Everything runs locally.</p>
-                       </div>
-                       <div className="p-6 rounded-2xl bg-white dark:bg-white/5 border border-slate-200 dark:border-white/5 shadow-md dark:shadow-none">
-                          <div className="text-3xl mb-2">🎨</div>
-                          <h3 className="font-bold text-slate-900 dark:text-white">Modern UI</h3>
-                          <p className="text-sm text-slate-600 dark:text-slate-500">Glassmorphism and neomorphism inspired design.</p>
-                       </div>
-                    </div>
-                 </AnimatedSection>
-              </div>
-
-              {/* Contact Section */}
-              <div id="contact" className="py-20 border-t border-slate-200 dark:border-white/5 scroll-mt-24">
-                 <AnimatedSection className="max-w-2xl mx-auto bg-white dark:bg-slate-800/50 rounded-2xl p-8 border border-slate-200 dark:border-white/5 text-center shadow-lg dark:shadow-none">
-                    <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Get in Touch</h2>
-                    <p className="text-slate-700 dark:text-gray-400 mb-8 font-medium">
-                       Have a suggestion for a new tool? Found a bug? Just want to say hi?
-                    </p>
-                    <div className="flex justify-center gap-6">
-                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-600 dark:hover:bg-neonBlue hover:text-white dark:hover:text-slate-900 transition-colors font-bold text-slate-700 dark:text-white">
-                          <Github size={20} /> GitHub
-                       </a>
-                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-purple-600 dark:hover:bg-neonPurple hover:text-white transition-colors font-bold text-slate-700 dark:text-white">
-                          <Mail size={20} /> Email
-                       </a>
-                       <a href="#" className="flex items-center gap-2 px-6 py-3 bg-slate-100 dark:bg-slate-700 rounded-xl hover:bg-blue-500 hover:text-white transition-colors font-bold text-slate-700 dark:text-white">
-                          <Linkedin size={20} /> LinkedIn
-                       </a>
-                    </div>
-                 </AnimatedSection>
-              </div>
-
-            </div>
-          )}
-
-          {/* --- SINGLE TOOL VIEW --- */}
-          {view === 'tool' && selectedToolId && (
-            <div className="animate-fade-in-up pt-32">
-              <button onClick={() => setView('home')} className="mb-6 flex items-center gap-2 text-slate-500 hover:text-blue-600 dark:hover:text-neonBlue transition-colors group">
-                <span className="p-2 rounded-full bg-slate-200 dark:bg-slate-800 group-hover:bg-blue-600 dark:group-hover:bg-neonBlue group-hover:text-white dark:group-hover:text-slate-900 transition-colors">
-                   <ChevronDown className="rotate-90" size={16} />
-                </span>
-                <span className="font-bold">Back to Tools</span>
-              </button>
-              <div className="max-w-4xl mx-auto min-h-[600px]">
-                {toolsList.find(t => t.id === selectedToolId)?.component}
-              </div>
-            </div>
-          )}
-        </main>
-
-        <footer className="py-8 text-center text-slate-500 text-sm border-t border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/50 font-medium">
-           <p className="mb-2">© {new Date().getFullYear()} ToolCraft AI. Made with 💙 and ☕.</p>
-           {view !== 'admin' && (
-             <button onClick={() => handleNavigate('admin')} className="text-xs text-slate-400 hover:text-blue-600 dark:hover:text-neonBlue flex items-center gap-1 mx-auto transition-colors opacity-50 hover:opacity-100">
-               <Shield size={10} /> Admin Login
-             </button>
-           )}
-        </footer>
-        
-        <BackToTop />
-      </div>
-    </>
+              </>
+            ) : (
+               <div className="flex flex-col items-center justify-center min-h-[50vh] animate-fade-in-up">
+                  <div className="w-20 h-20 bg-slate-100 dark:bg-white/5 rounded-full flex items-center justify-center mb-6 animate-pulse">
+                     <AlertTriangle size={32} className="text-yellow-500" />
+                  </div>
+                  <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-2">Work in Progress</h2>
+                  <p className="text-slate-500 dark:text-slate-400 max-w-md text-center mb-8">
+                     The <span className="font-bold text-slate-900 dark:text-white">{currentView}</span> page is currently being built. Check back soon for updates.
+                  </p>
+                  <NeonButton onClick={() => handleNavigate('root')}>Return Home</NeonButton>
+               </div>
+            )}
+          </main>
+        </div>
+      )}
+      <BackToTop />
+    </div>
   );
 };
 
