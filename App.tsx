@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, Github, Mail, Linkedin, Sun, Moon, Search, ChevronDown, ChevronRight, Check, Activity, Calculator, Calendar, Percent, Tag, ArrowRightLeft, QrCode, Lock, Loader2, Circle, Dices, Sparkles, Heart, AlignLeft, Type, Code2, Globe, Zap, Database, Smartphone, ListTodo, Wallet, Flame, Youtube, Music, TrendingUp, Hash, UserCheck, Image, Clock, BarChart2, GraduationCap, UserX, AlertTriangle, Briefcase, Keyboard, Coffee, ArrowUpRight, DollarSign, Shield } from 'lucide-react';
-import { NeonButton, CursorGlow, BackToTop, AnimatedSection } from './components/UI';
+import { NeonButton, CursorGlow, BackToTop, AnimatedSection } from './components/UiKit';
 import { Hero3D } from './components/Hero3D';
 import { AdminDashboard } from './components/AdminDashboard';
 import { 
@@ -415,7 +415,7 @@ const App: React.FC = () => {
       <CursorGlow />
       
       {!showHero && (
-        <div className="animate-fade-in opacity-0" style={{ animationFillMode: 'forwards', animationDuration: '1s' }}>
+        <div className="animate-fade-in-up opacity-0" style={{ animationFillMode: 'forwards', animationDuration: '1s' }}>
           <Navbar 
             isDark={darkMode} 
             toggleTheme={toggleTheme} 
@@ -444,32 +444,48 @@ const App: React.FC = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="space-y-16">
-                    {/* Hero Section */}
-                    <div className="text-center space-y-6 max-w-4xl mx-auto">
-                       <h1 className="text-4xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
-                         The Ultimate <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple animate-pulse-slow">Dev & Life</span> Toolkit
-                       </h1>
-                       <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
-                         Access 40+ premium tools, calculators, and generators. Completely free, open-source, and privacy-focused.
-                       </p>
+                  <div className="space-y-0">
+                    {/* Hero Section - Full Height Viewport */}
+                    <div className="flex flex-col items-center min-h-[calc(100vh-8rem)] text-center max-w-4xl mx-auto mb-10">
                        
-                       <div className="relative max-w-xl mx-auto group">
-                          <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 dark:group-focus-within:text-neonBlue transition-colors">
-                             <Search size={20} />
-                          </div>
-                          <input 
-                            type="text" 
-                            placeholder="Search tools (e.g., 'bmi', 'qr code', 'password')..." 
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl py-4 pl-12 pr-6 text-lg shadow-xl shadow-slate-200/50 dark:shadow-none focus:ring-2 focus:ring-blue-600 dark:focus:ring-neonBlue outline-none transition-all hover:scale-[1.01] focus:scale-[1.01]"
-                          />
+                       {/* Centered Content */}
+                       <div className="flex-1 flex flex-col justify-center items-center space-y-8 w-full">
+                           <h1 className="text-5xl md:text-8xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+                             The Ultimate <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-neonBlue dark:to-neonPurple animate-pulse-slow">Dev & Life</span> Toolkit
+                           </h1>
+                           <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                             Access 40+ premium tools, calculators, and generators. Completely free, open-source, and privacy-focused.
+                           </p>
+                           
+                           <div className="relative w-full max-w-2xl mx-auto group">
+                              <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none text-slate-400 group-focus-within:text-blue-600 dark:group-focus-within:text-neonBlue transition-colors">
+                                 <Search size={24} />
+                              </div>
+                              <input 
+                                type="text" 
+                                placeholder="Search tools (e.g., 'bmi', 'qr code', 'password')..." 
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-full py-5 pl-16 pr-8 text-xl shadow-2xl shadow-slate-200/50 dark:shadow-none focus:ring-4 focus:ring-blue-600/20 dark:focus:ring-neonBlue/20 outline-none transition-all hover:scale-[1.02] focus:scale-[1.02]"
+                              />
+                           </div>
                        </div>
+
+                       {/* Bottom Scroll Indicator */}
+                       <button 
+                         onClick={() => document.getElementById('tools-grid')?.scrollIntoView({ behavior: 'smooth' })}
+                         className="pb-12 text-slate-400 hover:text-blue-600 dark:hover:text-neonBlue transition-colors animate-bounce cursor-pointer pt-8"
+                         aria-label="Scroll down"
+                       >
+                         <div className="flex flex-col items-center gap-2 text-sm font-bold tracking-widest uppercase opacity-70">
+                            Explore Tools
+                            <ChevronDown size={24} />
+                         </div>
+                       </button>
                     </div>
 
-                    {/* Tools Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {/* Tools Grid - Below the fold */}
+                    <div id="tools-grid" className="scroll-mt-32 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
                        {filteredTools.length > 0 ? filteredTools.map((tool, idx) => (
                           <AnimatedSection key={tool.id} delay={idx * 30}>
                              <div 

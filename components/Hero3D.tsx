@@ -15,30 +15,44 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
   useEffect(() => {
     if (!mountRef.current) return;
 
+    let scene: THREE.Scene;
+    let camera: THREE.PerspectiveCamera;
+    let renderer: THREE.WebGLRenderer;
+    let geometry: THREE.BufferGeometry;
+    let material: THREE.Material;
+    let audioContext: AudioContext | null = null;
+    let frameId: number;
+    let started = false;
+
     // --- Scene Setup ---
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x020617); // Dark Slate
-    scene.fog = new THREE.FogExp2(0x020617, 0.05);
+    try {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x020617); // Dark Slate
+      scene.fog = new THREE.FogExp2(0x020617, 0.05);
 
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 12; // Start far for fly-in
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 12; // Start far for fly-in
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    mountRef.current.appendChild(renderer.domElement);
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.2;
+      mountRef.current.appendChild(renderer.domElement);
+    } catch (e) {
+      console.error("Three.js init failed", e);
+      onComplete();
+      return;
+    }
 
     // --- Objects ---
 
     // 1. Central Glass Object (Procedural Logo)
-    // Using a group to combine multiple geometries
     const logoGroup = new THREE.Group();
     
     // Core Crystal
-    const geometry = new THREE.IcosahedronGeometry(1.2, 0); 
-    const material = new THREE.MeshPhysicalMaterial({
+    geometry = new THREE.IcosahedronGeometry(1.2, 0); 
+    material = new THREE.MeshPhysicalMaterial({
       color: 0xffffff,
       metalness: 0.1,
       roughness: 0.1,
@@ -61,7 +75,6 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
     scene.add(logoGroup);
 
     // 2. Assemblage Particles (Light fragments that form the logo)
-    // We create particles scattered outward that will converge
     const particlesCount = 400;
     const posArray = new Float32Array(particlesCount * 3);
     const startPosArray = new Float32Array(particlesCount * 3);
@@ -190,16 +203,12 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
     scene.add(pointLight2);
 
     // --- Audio System ---
-    let audioContext: AudioContext | null = null;
-    let oscillator: OscillatorNode | null = null;
-    let gainNode: GainNode | null = null;
-
     const playSound = () => {
        if (muted) return;
        try {
           audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-          oscillator = audioContext.createOscillator();
-          gainNode = audioContext.createGain();
+          const oscillator = audioContext.createOscillator();
+          const gainNode = audioContext.createGain();
 
           oscillator.type = 'sine';
           // Frequency sweep for a sci-fi power-up sound
@@ -246,9 +255,6 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
     window.addEventListener('resize', handleResize);
 
     // --- Main Loop ---
-    let frameId: number;
-    let started = false;
-
     const animate = () => {
       const time = clock.getElapsedTime();
       
@@ -351,9 +357,9 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onComplete }) => {
       if (mountRef.current && renderer.domElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
+      if (geometry) geometry.dispose();
+      if (material) material.dispose();
+      if (renderer) renderer.dispose();
       if(audioContext) audioContext.close();
     };
   }, [muted]); 
