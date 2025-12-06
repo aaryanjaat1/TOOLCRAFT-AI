@@ -464,6 +464,59 @@ const ContactSection = () => {
   );
 };
 
+// --- Ad Component ---
+const AdUnit: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Prevent double injection if strict mode re-renders
+    if (containerRef.current && containerRef.current.innerHTML === '') {
+      const iframe = document.createElement('iframe');
+      // Set iframe size exactly to ad dimensions to prevent clipping or scrolling
+      iframe.width = "160";
+      iframe.height = "300";
+      iframe.style.border = "none";
+      iframe.style.overflow = "hidden";
+      iframe.title = "Advertisement";
+      
+      containerRef.current.appendChild(iframe);
+
+      const doc = iframe.contentWindow?.document;
+      if (doc) {
+        doc.open();
+        doc.write(`
+          <!DOCTYPE html>
+          <html style="overflow:hidden;">
+            <head><base target="_blank" /></head>
+            <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background-color:transparent;">
+              <script type="text/javascript">
+                atOptions = {
+                  'key' : 'a7f879761415e420911e3d695964c207',
+                  'format' : 'iframe',
+                  'height' : 300,
+                  'width' : 160,
+                  'params' : {}
+                };
+              </script>
+              <script type="text/javascript" src="//www.highperformanceformat.com/a7f879761415e420911e3d695964c207/invoke.js"></script>
+            </body>
+          </html>
+        `);
+        doc.close();
+      }
+    }
+  }, []);
+
+  return (
+    <div className="w-full flex flex-col items-center justify-center py-12 opacity-80 hover:opacity-100 transition-opacity">
+       <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-3 border border-slate-300 dark:border-slate-700 px-2 py-0.5 rounded-full">Sponsored</span>
+       <div className="rounded-xl overflow-hidden shadow-lg bg-white dark:bg-slate-800 p-2 border border-slate-200 dark:border-white/5">
+          <div ref={containerRef} className="flex justify-center bg-slate-50 dark:bg-black/20 rounded-lg"></div>
+       </div>
+    </div>
+  );
+};
+
 // --- Footer ---
 const Footer = () => (
    <footer className="border-t border-slate-200 dark:border-white/5 py-12 mt-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
@@ -662,6 +715,9 @@ const App: React.FC = () => {
                     
                     {/* Contact Section */}
                     <ContactSection />
+
+                    {/* Ad Unit - Safely Sandboxed in Iframe */}
+                    <AdUnit />
                   </div>
                 )}
               </>
