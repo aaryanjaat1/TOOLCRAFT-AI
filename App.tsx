@@ -551,7 +551,7 @@ const AdUnit: React.FC = () => {
 };
 
 // --- Footer ---
-const Footer = () => (
+const Footer: React.FC<{ onNavigate: (view: string) => void }> = ({ onNavigate }) => (
    <footer className="border-t border-slate-200 dark:border-white/5 py-12 mt-0 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
       <div className="container mx-auto px-6 text-center">
          <div className="flex items-center justify-center gap-2 mb-4 font-black text-2xl text-slate-900 dark:text-white">
@@ -561,8 +561,17 @@ const Footer = () => (
          <p className="text-slate-500 dark:text-slate-400 text-sm mb-8 max-w-md mx-auto">
             Premium utility suite for developers and creators. Open source and privacy-first.
          </p>
-         <div className="text-xs text-slate-400 font-medium">
-            &copy; {new Date().getFullYear()} ToolCraft AI. All rights reserved.
+         <div className="text-xs text-slate-400 font-medium flex flex-col items-center gap-2">
+            <span>&copy; {new Date().getFullYear()} ToolCraft AI. All rights reserved.</span>
+            
+            {/* Secret Admin Button */}
+            <button 
+              onClick={() => onNavigate('admin')} 
+              className="mt-2 p-2 opacity-0 hover:opacity-50 transition-opacity text-slate-500 hover:text-red-500"
+              title="Admin Access"
+            >
+              <Lock size={12} />
+            </button>
          </div>
       </div>
    </footer>
@@ -574,6 +583,15 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<'home' | 'admin'>('home');
   const [selectedToolId, setSelectedToolId] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Add URL check effect
+  useEffect(() => {
+    // Check for ?admin=true or #admin in URL to auto-navigate
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('view') === 'admin' || window.location.hash === '#admin') {
+      setCurrentView('admin');
+    }
+  }, []);
 
   // Toggle Dark Mode
   useEffect(() => {
@@ -757,7 +775,7 @@ const App: React.FC = () => {
             )}
           </main>
           
-          {currentView === 'home' && !activeTool && <Footer />}
+          {currentView === 'home' && !activeTool && <Footer onNavigate={handleNavigate} />}
         </div>
       )}
       <BackToTop />
