@@ -469,14 +469,13 @@ const AdUnit: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Prevent double injection if strict mode re-renders
-    if (containerRef.current && containerRef.current.innerHTML === '') {
+    // Only inject if the container is empty to prevent duplication in React Strict Mode
+    if (containerRef.current && !containerRef.current.querySelector('iframe')) {
       const iframe = document.createElement('iframe');
-      // Set iframe size exactly to ad dimensions to prevent clipping or scrolling
+      // Set iframe size exactly to ad dimensions: 160x300
       iframe.width = "160";
       iframe.height = "300";
       iframe.style.border = "none";
-      iframe.style.overflow = "hidden";
       iframe.title = "Advertisement";
       
       containerRef.current.appendChild(iframe);
@@ -484,11 +483,16 @@ const AdUnit: React.FC = () => {
       const doc = iframe.contentWindow?.document;
       if (doc) {
         doc.open();
+        // Use https protocol explicitly for the script source to avoid mixed content blocking
+        // Ensure styles inside iframe are minimal
         doc.write(`
           <!DOCTYPE html>
-          <html style="overflow:hidden;">
-            <head><base target="_blank" /></head>
-            <body style="margin:0;padding:0;display:flex;justify-content:center;align-items:center;background-color:transparent;">
+          <html>
+            <head>
+              <base target="_blank" />
+              <style>body{margin:0;padding:0;background:transparent;}</style>
+            </head>
+            <body>
               <script type="text/javascript">
                 atOptions = {
                   'key' : 'a7f879761415e420911e3d695964c207',
@@ -498,7 +502,7 @@ const AdUnit: React.FC = () => {
                   'params' : {}
                 };
               </script>
-              <script type="text/javascript" src="//www.highperformanceformat.com/a7f879761415e420911e3d695964c207/invoke.js"></script>
+              <script type="text/javascript" src="https://www.highperformanceformat.com/a7f879761415e420911e3d695964c207/invoke.js"></script>
             </body>
           </html>
         `);
@@ -508,10 +512,11 @@ const AdUnit: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-12 opacity-80 hover:opacity-100 transition-opacity">
-       <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-3 border border-slate-300 dark:border-slate-700 px-2 py-0.5 rounded-full">Sponsored</span>
-       <div className="rounded-xl overflow-hidden shadow-lg bg-white dark:bg-slate-800 p-2 border border-slate-200 dark:border-white/5">
-          <div ref={containerRef} className="flex justify-center bg-slate-50 dark:bg-black/20 rounded-lg"></div>
+    <div className="w-full flex flex-col items-center justify-center py-8">
+       <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-2">Sponsored</span>
+       <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-white/5 shadow-sm inline-block">
+          {/* Explicitly sized container for the 160x300 ad */}
+          <div ref={containerRef} className="w-[160px] h-[300px] flex items-center justify-center bg-white dark:bg-black/10"></div>
        </div>
     </div>
   );
