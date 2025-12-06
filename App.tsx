@@ -464,33 +464,46 @@ const ContactSection = () => {
   );
 };
 
-// --- Ad Component ---
+// --- Ad Component (Production Ready) ---
 const AdUnit: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    // Only inject if the container is empty to prevent duplication in React Strict Mode
-    if (containerRef.current && !containerRef.current.querySelector('iframe')) {
+    // 1. Double-render protection (React Strict Mode)
+    // Only create the iframe if the container is empty
+    if (containerRef.current && containerRef.current.childElementCount === 0) {
+      
       const iframe = document.createElement('iframe');
-      // Set iframe size exactly to ad dimensions: 160x300
+      
+      // 2. Fixed Dimensions & Styling
       iframe.width = "160";
       iframe.height = "300";
       iframe.style.border = "none";
+      iframe.style.overflow = "hidden"; // Prevent scrollbars
       iframe.title = "Advertisement";
+      
+      // 3. Accessibility & Layout
+      iframe.setAttribute('aria-label', 'Advertisement');
       
       containerRef.current.appendChild(iframe);
 
       const doc = iframe.contentWindow?.document;
       if (doc) {
         doc.open();
-        // Use https protocol explicitly for the script source to avoid mixed content blocking
-        // Ensure styles inside iframe are minimal
+        // 4. Explicit HTTPS & Error Handling
+        // We use explicit HTTPS for the script to avoid mixed-content blocking on deployed sites.
         doc.write(`
           <!DOCTYPE html>
-          <html>
+          <html style="margin:0;padding:0;overflow:hidden;">
             <head>
               <base target="_blank" />
-              <style>body{margin:0;padding:0;background:transparent;}</style>
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <style>
+                 body { margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; background: transparent; }
+                 /* Ensure banner fills iframe */
+                 iframe { max-width: 100%; max-height: 100%; } 
+              </style>
             </head>
             <body>
               <script type="text/javascript">
@@ -507,16 +520,31 @@ const AdUnit: React.FC = () => {
           </html>
         `);
         doc.close();
+        
+        // Mark as "loaded" (DOM injected) - note: we can't detect if the ad script *actually* renders content cross-frame easily
+        setIsLoaded(true);
       }
     }
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center justify-center py-8">
-       <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-2">Sponsored</span>
-       <div className="bg-slate-100 dark:bg-slate-800 p-2 rounded-lg border border-slate-200 dark:border-white/5 shadow-sm inline-block">
-          {/* Explicitly sized container for the 160x300 ad */}
-          <div ref={containerRef} className="w-[160px] h-[300px] flex items-center justify-center bg-white dark:bg-black/10"></div>
+    <div className="w-full flex flex-col items-center justify-center py-8 opacity-90 hover:opacity-100 transition-opacity">
+       <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-3 border border-slate-300 dark:border-slate-700 px-2 py-0.5 rounded-full bg-slate-50 dark:bg-slate-900">
+         Sponsored
+       </span>
+       
+       {/* 5. Fallback Background */}
+       <div className="relative rounded-xl overflow-hidden shadow-sm bg-slate-100 dark:bg-slate-800 p-2 border border-slate-200 dark:border-white/5">
+          {/* Placeholder Text (visible if ad is blank) */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4 z-0 opacity-50">
+             <span className="text-xs font-bold text-slate-400">Ad Space</span>
+             <span className="text-[10px] text-slate-400 mt-1">
+               Ads help keep this tool free. <br/> If blank, please disable AdBlock.
+             </span>
+          </div>
+
+          {/* Iframe Container - Z-index 10 covers placeholder */}
+          <div ref={containerRef} className="relative z-10 w-[160px] h-[300px] bg-transparent"></div>
        </div>
     </div>
   );
@@ -721,7 +749,7 @@ const App: React.FC = () => {
                     {/* Contact Section */}
                     <ContactSection />
 
-                    {/* Ad Unit - Safely Sandboxed in Iframe */}
+                    {/* Ad Unit - Safely Sandboxed in Iframe with Fallback */}
                     <AdUnit />
                   </div>
                 )}
