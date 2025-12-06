@@ -509,7 +509,6 @@ const App: React.FC = () => {
     }
     
     if (view === 'admin') {
-      // @ts-ignore
       setCurrentView('admin');
       setSelectedToolId(null);
       return;
